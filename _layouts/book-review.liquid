@@ -169,11 +169,11 @@ layout: default
       <h4>
         {% if page.start %}
           {{ site.data[site.active_lang].strings.book.start_date }}
-          {{ page.start | date: '%-d %B %Y' }}.
+          {% include date_format.liquid date=page.start format='long' %}.
         {% endif %}
         {% if page.end %}
           {{ site.data[site.active_lang].strings.book.end_date }}
-          {{ page.end | date: '%-d %B %Y' }}.
+          {% include date_format.liquid date=page.end format='long' %}.
         {% endif %}
       </h4>
       {{ content }}
