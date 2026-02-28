@@ -37,19 +37,19 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<!-- 预加载关键字体文件，减少 FOIT (Flash of Invisible Text) -->
-<link
-  rel="preload"
-  as="font"
-  type="font/woff2"
-  href="https://fonts.gstatic.com/s/sourcesanspro/v22/6xK3dSBYKcSV-LCoeQqfX1RYOo3qOK7lujVj9w.woff2"
-  crossorigin="anonymous">
-<link
-  rel="preload"
-  as="font"
-  type="font/woff2"
-  href="https://fonts.gstatic.com/s/sourceserifpro/v15/neIQzD-0qpwxpaWvjeD0X88SAOeasasatSyqxKcsdrM.woff2"
-  crossorigin="anonymous">
+<!--
+  可选字体预加载（与 _config.yml 同步）:
+  third_party_libraries:
+    google_fonts:
+      preload:
+        - https://fonts.gstatic.com/...
+-->
+{% if site.third_party_libraries.google_fonts.preload %}
+  <!-- 预加载关键字体文件，减少 FOIT (Flash of Invisible Text) -->
+  {% for font_preload_url in site.third_party_libraries.google_fonts.preload %}
+    <link rel="preload" as="font" type="font/woff2" href="{{ font_preload_url }}" crossorigin="anonymous">
+  {% endfor %}
+{% endif %}
 
 <!-- Fonts & Icons -->
 <link
