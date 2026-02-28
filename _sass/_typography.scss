@@ -42,6 +42,18 @@ table {
   }
 }
 
+code,
+kbd,
+pre,
+samp {
+  font-family: v.$font-family-code;
+}
+
+button,
+.btn {
+  font-family: v.$font-family-button;
+}
+
 a,
 table.table a {
   color: var(--global-theme-color);
@@ -68,14 +80,14 @@ blockquote {
   border-left: 5px solid var(--global-theme-color);
   margin: 1.5em 0;
   padding: 1em;
-  font-family: v.$font-family-headings;
+  font-family: v.$font-family-quote;
   font-size: v.$font-size-md;
   font-weight: v.$font-weight-normal;
   line-height: v.$line-height-relaxed;
 
   p {
     margin-bottom: 0;
-    font-family: v.$font-family-headings;
+    font-family: v.$font-family-quote;
   }
 
   // 提示、警告和危险引用块

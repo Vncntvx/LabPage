@@ -6,6 +6,8 @@
 @use "variables" as *;
 @use "fonts" as fonts;
 
+@include fonts.apply-responsive-font-scale();
+
 // 排版基础
 body {
   padding-bottom: 70px;

@@ -11,12 +11,23 @@
 // ============================================
 
 /// 无衬线字体栈 - 用于正文和UI元素
-/// 优先级：Source Sans Pro > Noto Sans SC > 系统字体
+/// 优先级：Source Sans Pro > Noto Sans SC/JP > 跨平台系统字体
 $font-family-sans-serif:
   "Source Sans Pro",
   "Noto Sans SC",
+  "Noto Sans JP",
+  "HarmonyOS Sans SC",
+  "HarmonyOS Sans",
   "PingFang SC",
+  "Hiragino Sans GB",
   "Microsoft YaHei",
+  "DengXian",
+  "Yu Gothic",
+  "Meiryo",
+  "Noto Sans CJK SC",
+  "Noto Sans CJK JP",
+  "WenQuanYi Micro Hei",
+  "Droid Sans Fallback",
   -apple-system,
   BlinkMacSystemFont,
   "Segoe UI",
@@ -26,12 +37,14 @@ $font-family-sans-serif:
   sans-serif !default;
 
 /// 衬线字体栈 - 用于标题和强调文本
-/// 优先级：Source Serif Pro > Noto Serif SC > 系统衬线字体
-$font-family-serif: "Source Serif Pro", "Noto Serif SC", "STSong", "SimSun", Georgia, "Times New Roman", serif !default;
+/// 优先级：Source Serif Pro > Noto Serif SC/JP > 系统衬线字体
+$font-family-serif: "Source Serif Pro", "Noto Serif SC", "Noto Serif JP", "Songti SC", "STSong", "SimSun", "Hiragino Mincho ProN", "Yu Mincho",
+  Georgia, "Times New Roman", serif !default;
 
 /// 等宽字体栈 - 用于代码和预格式化文本
 /// 优先级：SF Mono > Menlo > Consolas > 系统等宽字体
-$font-family-monospace: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", "Noto Sans Mono", monospace !default;
+$font-family-monospace: "SFMono-Regular", "JetBrains Mono", Menlo, Monaco, Consolas, "Cascadia Code", "Noto Sans Mono CJK SC", "Noto Sans Mono CJK JP",
+  "Liberation Mono", "Courier New", monospace !default;
 
 // ============================================
 // 2. 字体角色分配 (Font Role Assignments)
@@ -199,6 +212,9 @@ $font-preload-list: "Source Sans Pro:400,600,700", "Source Serif Pro:400,600", "
 // 9. 响应式字体配置 (Responsive Typography)
 // ============================================
 
+/// 是否启用响应式字体缩放
+$font-scale-enabled: true !default;
+
 /// 移动端字体缩放比例
 $font-scale-mobile: 0.9375 !default; // 15px base
 
@@ -210,6 +226,34 @@ $font-scale-desktop: 1 !default; // 16px base
 
 /// 大桌面字体缩放比例
 $font-scale-wide: 1.0625 !default; // 17px base
+
+/// 应用响应式根字体缩放
+/// @param {Number} $base-size - 根字号基准
+@mixin apply-responsive-font-scale($base-size: 16px) {
+  @if $font-scale-enabled {
+    html {
+      font-size: calc(#{$base-size} * #{$font-scale-mobile});
+    }
+
+    @media (min-width: 576px) {
+      html {
+        font-size: calc(#{$base-size} * #{$font-scale-tablet});
+      }
+    }
+
+    @media (min-width: 992px) {
+      html {
+        font-size: calc(#{$base-size} * #{$font-scale-desktop});
+      }
+    }
+
+    @media (min-width: 1400px) {
+      html {
+        font-size: calc(#{$base-size} * #{$font-scale-wide});
+      }
+    }
+  }
+}
 
 // ============================================
 // 10. 字体工具 Mixins
@@ -355,6 +399,16 @@ $font-families: (
   "nav": $font-family-nav,
   "caption": $font-family-caption,
 ) !default;
+
+/// 通过角色名返回字体栈
+/// @param {String} $role - 角色名
+@function font-role($role) {
+  @if map.has-key($font-families, $role) {
+    @return map.get($font-families, $role);
+  }
+
+  @error "Unknown font role `#{$role}`. Available roles: #{map.keys($font-families)}";
+}
 
 $font-weights: (
   "thin": $font-weight-thin,

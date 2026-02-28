@@ -1788,6 +1788,16 @@ lazy_loading_images: true
 - **代码和工具**：`_utilities.scss` - 代码高亮、表单、模态框、动画
 - **布局**：`_layout.scss` - 整体页面布局样式
 
+### 字体配置（推荐）
+
+字体系统推荐直接在 SCSS 层配置（不使用额外 YAML 字体配置文件）：
+
+- 在 `_sass/_fonts.scss` 维护字体栈、角色映射、字重/字号和响应式缩放变量
+- 在 `_sass/_typography.scss`、`_sass/_base.scss` 等模块应用字体角色（正文、标题、代码、引用、按钮）
+- 在 `_includes/head.liquid` 维护字体预连接、预加载和 Google Fonts 样式链接
+
+> 建议：字体配置只保留一处事实来源（SCSS），避免模板和样式分散维护。
+
 ## 定时发布
 
 主题包含一个工作流，可在每天结束时（23:30）自动发布所有预定在特定日期的帖子。默认情况下禁用此操作，要启用需转到 `.github/workflows/` 并找到名为 `schedule-posts.txt` 的工作流文件。将其重命名为 `schedule-posts.yml`。
