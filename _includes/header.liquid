@@ -142,69 +142,50 @@
           {% endif %}
           <!-- Toogle language -->
           {% if site.languages.size >= 2 %}
+            {% assign current_url = page.url %}
+            {% if site.active_lang != site.default_lang %}
+              {% assign prefix = '/' | append: site.active_lang %}
+              {% assign current_url = page.url | remove_first: prefix %}
+            {% endif %}
+            {% capture lang_switcher_globe_icon %}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="1em"
+                height="1em"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lang-icon lucide lucide-globe-icon lucide-globe">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
+                <path d="M2 12h20"/>
+              </svg>
+            {% endcapture %}
             {% if site.languages.size == 2 %}
               {% if site.active_lang == site.languages.first %}
                 {% assign other_language = site.languages.last %}
               {% else %}
                 {% assign other_language = site.languages.first %}
               {% endif %}
+              {% if site.active_lang == site.default_lang %}
+                {% assign single_switch_lang = other_language %}
+                {% assign single_switch_href = site.baseurl | append: '/' | append: other_language | append: current_url %}
+              {% else %}
+                {% assign single_switch_lang = site.default_lang %}
+                {% assign single_switch_href = site.baseurl | append: current_url %}
+              {% endif %}
               <li class="lang-switcher-item">
-                {% assign current_url = page.url %}
-                {% if site.active_lang != site.default_lang %}
-                  {% assign prefix = '/' | append: site.active_lang %}
-                  {% assign current_url = page.url | remove_first: prefix %}
-                {% endif %}
-                {% if site.active_lang == site.default_lang %}
-                  <a
-                    class="lang-switcher-single"
-                    {% static_href -%}
-                    href="{{ site.baseurl }}/{{ other_language }}{{ current_url }}"
-                    {%- endstatic_href %}>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="1em"
-                      height="1em"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      class="lang-icon lucide lucide-globe-icon lucide-globe">
-                      <circle cx="12" cy="12" r="10"/>
-                      <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
-                      <path d="M2 12h20"/>
-                    </svg>
-                    {% if site.country_flag %}
-                      <span class="flag-icon fi fi-{{ other_language | split: "_" | last }}"></span>
-                    {% else %}
-                      <span class="lang-label">{{ site.language_names[other_language] }}</span>
-                    {%- endif -%}
-                  </a>
-                {% else %}
-                  <a class="lang-switcher-single" {% static_href -%} href="{{ site.baseurl }}{{ current_url }}" {%- endstatic_href %}>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="1em"
-                      height="1em"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      class="lang-icon lucide lucide-globe-icon lucide-globe">
-                      <circle cx="12" cy="12" r="10"/>
-                      <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
-                      <path d="M2 12h20"/>
-                    </svg>
-                    {% if site.country_flag %}
-                      <span class="flag-icon fi fi-{{ site.default_lang | split: "_" | last }}"></span>
-                    {% else %}
-                      <span class="lang-label">{{ site.language_names[site.default_lang] }}</span>
-                    {%- endif -%}
-                  </a>
-                {% endif %}
+                <a class="lang-switcher-single" {% static_href -%} href="{{ single_switch_href }}" {%- endstatic_href %}>
+                  {{ lang_switcher_globe_icon }}
+                  {% if site.country_flag %}
+                    <span class="flag-icon fi fi-{{ single_switch_lang | split: "_" | last }}"></span>
+                  {% else %}
+                    <span class="lang-label">{{ site.language_names[single_switch_lang] }}</span>
+                  {%- endif -%}
+                </a>
               </li>
             {% else %}
               <li class="lang-switcher-item">
@@ -214,21 +195,7 @@
                     type="button"
                     aria-haspopup="true"
                     aria-expanded="false">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="1em"
-                      height="1em"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      class="lang-icon lucide lucide-globe-icon lucide-globe">
-                      <circle cx="12" cy="12" r="10"/>
-                      <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
-                      <path d="M2 12h20"/>
-                    </svg>
+                    {{ lang_switcher_globe_icon }}
                   </button>
                   <div class="lang-dropdown-menu" aria-labelledby="navbarDropdown">
                     {% assign language_set = false %}
@@ -236,39 +203,23 @@
                       {% if language_set %}
                         <div class="lang-dropdown-divider"></div>
                       {% endif %}
-                      {% assign current_url = page.url %}
-                      {% if site.active_lang != site.default_lang %}
-                        {% assign prefix = '/' | append: site.active_lang %}
-                        {% assign current_url = page.url | remove_first: prefix %}
-                      {% endif %}
-                      {% comment %} Build link for each language; include the active one and mark it .active {% endcomment %}
                       {% if l == site.default_lang %}
-                        <a
-                          class="lang-dropdown-item {% if l == site.active_lang %}active{% endif %}"
-                          {% static_href -%}
-                          href="{{ site.baseurl }}{{ current_url }}"
-                          {%- endstatic_href %}
-                          aria-current="{% if l == site.active_lang %}true{% else %}false{% endif %}">
-                          {% if site.country_flag %}
-                            <span class="flag-icon fi fi-{{ l | split: "_" | last }}"></span>
-                          {% else %}
-                            <span class="lang-label">{{ site.language_names[l] }}</span>
-                          {%- endif -%}
-                        </a>
+                        {% assign lang_href = site.baseurl | append: current_url %}
                       {% else %}
-                        <a
-                          class="lang-dropdown-item {% if l == site.active_lang %}active{% endif %}"
-                          {% static_href -%}
-                          href="{{ site.baseurl }}/{{ l }}{{ current_url }}"
-                          {%- endstatic_href %}
-                          aria-current="{% if l == site.active_lang %}true{% else %}false{% endif %}">
-                          {% if site.country_flag %}
-                            <span class="flag-icon fi fi-{{ l | split: "_" | last }}"></span>
-                          {% else %}
-                            <span class="lang-label">{{ site.language_names[l] }}</span>
-                          {%- endif -%}
-                        </a>
+                        {% assign lang_href = site.baseurl | append: '/' | append: l | append: current_url %}
                       {% endif %}
+                      <a
+                        class="lang-dropdown-item {% if l == site.active_lang %}active{% endif %}"
+                        {% static_href -%}
+                        href="{{ lang_href }}"
+                        {%- endstatic_href %}
+                        aria-current="{% if l == site.active_lang %}true{% else %}false{% endif %}">
+                        {% if site.country_flag %}
+                          <span class="flag-icon fi fi-{{ l | split: "_" | last }}"></span>
+                        {% else %}
+                          <span class="lang-label">{{ site.language_names[l] }}</span>
+                        {%- endif -%}
+                      </a>
                       {% assign language_set = true %}
                     {% endfor %}
                   </div>
