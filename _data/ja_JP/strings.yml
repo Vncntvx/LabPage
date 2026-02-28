@@ -6,13 +6,17 @@ archive:
 bibliography:
   abstract: 要旨
   awarded: 受賞
+  bib: Bib
   blog: ブログ
   book_prefix: 収録
   click_to_view: クリックして表示
   code: コード
+  doi: DOI
+  html: HTML
   last_author_prefix: および
   more_authors: 人の著者
   more_authors_plural: 人の著者
+  pdf: PDF
   poster: ポスター
   slides: スライド
   supp: 補足
@@ -127,6 +131,7 @@ research_summary: 研究概要
 news: ニュース
 newsletter:
   back: 戻る
+  email_placeholder: "user@example.com"
   error: "エラーが発生しました。もう一度お試しください。"
   subscribe: 購読する
   subscribed: "ニュースレターの購読が完了しました。"
@@ -136,6 +141,7 @@ newsletter:
 no_news: まだニュースはありません...
 no_posts: "まだ投稿はありません..."
 pagination:
+  page_navigation: "ブログページナビゲーション"
   page: ページ
 post:
   created_in: 作成日
@@ -144,6 +150,9 @@ post:
 references: 参照
 related_posts:
   description: "次におすすめの記事はこちら："
+  enjoy_reading: "この記事を楽しみましたか？"
+  more_articles: "次におすすめの記事はこちら："
+  subscribe_notify: "今後の記事を受け取るには購読してください："
   title: この記事を楽しみましたか？
 selected_publications: 代表的な出版物
 book:

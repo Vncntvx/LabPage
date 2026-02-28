@@ -6,13 +6,17 @@ archive:
 bibliography:
   abstract: Zusammenfassung
   awarded: Ausgezeichnet
+  bib: Bib
   blog: Blog
   book_prefix: In
   click_to_view: klicken zum Anzeigen
   code: Code
+  doi: DOI
+  html: HTML
   last_author_prefix: und
   more_authors: weiterer Autor
   more_authors_plural: weitere Autoren
+  pdf: PDF
   poster: Poster
   slides: Folien
   supp: Zusatz
@@ -127,6 +131,7 @@ research_summary: Forschungszusammenfassung
 news: Nachrichten
 newsletter:
   back: Zurück
+  email_placeholder: "user@example.com"
   error: "Hoppla! Etwas ist schiefgelaufen, bitte versuchen Sie es erneut."
   subscribe: abonnieren
   subscribed: "Sie haben den Newsletter erfolgreich abonniert."
@@ -136,6 +141,7 @@ newsletter:
 no_news: Bisher keine Nachrichten...
 no_posts: "Bisher keine Beiträge..."
 pagination:
+  page_navigation: "Blog-Seitennavigation"
   page: Seite
 post:
   created_in: Erstellt am
@@ -144,6 +150,9 @@ post:
 references: Referenzen
 related_posts:
   description: "Hier sind weitere Artikel, die Sie interessieren könnten:"
+  enjoy_reading: "Hat Ihnen dieser Artikel gefallen?"
+  more_articles: "Hier sind weitere Artikel, die Ihnen gefallen könnten:"
+  subscribe_notify: "Abonnieren Sie, um über zukünftige Artikel benachrichtigt zu werden:"
   title: Hat Ihnen dieser Artikel gefallen?
 selected_publications: Ausgewählte Veröffentlichungen
 book:

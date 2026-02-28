@@ -6,13 +6,17 @@ archive:
 bibliography:
   abstract: Abs
   awarded: Awarded
+  bib: Bib
   blog: Blog
   book_prefix: In
   click_to_view: click to view
   code: Code
+  doi: DOI
+  html: HTML
   last_author_prefix: and
   more_authors: more author
   more_authors_plural: more authors
+  pdf: PDF
   poster: Poster
   slides: Slides
   supp: Supp

@@ -6,13 +6,17 @@ archive:
 bibliography:
   abstract: 摘要
   awarded: 获奖
+  bib: Bib
   blog: 博客
   book_prefix: 收录于
   click_to_view: 点击查看
   code: 代码
+  doi: DOI
+  html: HTML
   last_author_prefix: 和
   more_authors: 位更多作者
   more_authors_plural: 位更多作者
+  pdf: PDF
   poster: 海报
   slides: 幻灯片
   supp: 补充材料
@@ -127,6 +131,7 @@ research_summary: 研究概要
 news: 新闻
 newsletter:
   back: 返回
+  email_placeholder: "user@example.com"
   error: "哎呀！出错了，请重试。"
   subscribe: 订阅
   subscribed: "你已成功订阅新闻通讯。"
@@ -136,6 +141,7 @@ newsletter:
 no_news: 暂无新闻...
 no_posts: "暂无文章..."
 pagination:
+  page_navigation: "博客页面导航"
   page: 页
 post:
   created_in: 创建于
@@ -144,6 +150,9 @@ post:
 references: 参考文献
 related_posts:
   description: "你可能还喜欢阅读以下文章："
+  enjoy_reading: "喜欢这篇文章吗？"
+  more_articles: "以下是一些你可能感兴趣的文章："
+  subscribe_notify: "订阅以获取未来文章通知："
   title: 喜欢这篇文章吗？
 selected_publications: 精选发表
 book:
