@@ -24,15 +24,32 @@ html {
       fill 0.25s cubic-bezier(0.4, 0, 0.2, 1),
       stroke 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 
-    // 全局应用过渡
-    * {
+    // 仅对常见可见元素启用过渡，避免 * 选择器带来的大面积重绘
+    body,
+    .navbar,
+    .card,
+    .dropdown-menu,
+    .btn,
+    button,
+    a,
+    hr,
+    table,
+    blockquote,
+    #back-to-top,
+    .lang-dropdown-menu,
+    .lang-dropdown-item {
       transition:
         background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1),
         color 0.25s cubic-bezier(0.4, 0, 0.2, 1),
         border-color 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    svg,
+    svg * {
+      transition:
         fill 0.25s cubic-bezier(0.4, 0, 0.2, 1),
-        stroke 0.25s cubic-bezier(0.4, 0, 0.2, 1),
-        box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        stroke 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
   }
 }
