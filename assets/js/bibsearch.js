@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", function () {
     bibSearchInput.addEventListener("input", function () {
       clearTimeout(timeoutId); // Clear the previous timeout
       const searchTerm = this.value.toLowerCase();
-      timeoutId = setTimeout(filterItems(searchTerm), 300);
+      timeoutId = setTimeout(() => filterItems(searchTerm), 300);
     });
   }
 
