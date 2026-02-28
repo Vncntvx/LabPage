@@ -3,16 +3,6 @@ archive:
   category_suffix: 属于该分类
   tag_suffix: 包含该标签
   year_suffix: 属于该年份
-archive_timeline:
-  intro: "从 %DATE% 的第一篇文章开始，本站已经更新"
-  posts_suffix: "篇文章"
-  posts_unit: "篇"
-  posts_label: "文章"
-  words_unit_wan: "万"
-  words_unit_thousand: "千"
-  words_label: "字数"
-  tags_unit: "个"
-  tags_label: "标签"
 bibliography:
   abstract: 摘要
   awarded: 获奖

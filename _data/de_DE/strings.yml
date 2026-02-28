@@ -3,16 +3,6 @@ archive:
   category_suffix: in dieser Kategorie
   tag_suffix: mit diesem Tag
   year_suffix: aus diesem Jahr
-archive_timeline:
-  intro: "Seit dem ersten Beitrag am %DATE% wurde die Seite aktualisiert"
-  posts_suffix: "Beiträge"
-  posts_unit: "Beiträge"
-  posts_label: "Artikel"
-  words_unit_wan: "0k"
-  words_unit_thousand: "k"
-  words_label: "Wörter"
-  tags_unit: "Tags"
-  tags_label: "Tags"
 bibliography:
   abstract: Zusammenfassung
   awarded: Ausgezeichnet

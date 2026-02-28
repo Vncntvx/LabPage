@@ -3,16 +3,6 @@ archive:
   category_suffix: in this category
   tag_suffix: with this tag
   year_suffix: from this year
-archive_timeline:
-  intro: "Since the first post on %DATE%, the site has been updated"
-  posts_suffix: "posts"
-  posts_unit: "posts"
-  posts_label: "Articles"
-  words_unit_wan: "0k"
-  words_unit_thousand: "k"
-  words_label: "Words"
-  tags_unit: "tags"
-  tags_label: "Tags"
 bibliography:
   abstract: Abs
   awarded: Awarded

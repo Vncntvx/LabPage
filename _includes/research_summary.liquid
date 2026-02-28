@@ -1,13 +1,18 @@
 <div id="research-summary">
-  {% assign research_page = site.pages | where: 'layout', 'page' | where: 'permalink', '/research/' | first %}
+  {% assign research_page = include.research_page %}
+  {% unless research_page %}
+    {% assign research_page = site.pages | where: 'layout', 'page' | where: 'permalink', '/research/' | first %}
+  {% endunless %}
   {% if research_page %}
+    {% assign research_questions = research_page.research_questions %}
     <div class="research-description-plain">
       {{ research_page.content | markdownify }}
     </div>
 
-    {% if research_page.research_questions and research_page.research_questions.size > 0 %}
-      <div class="research-tabs {% if research_page.research_questions.size <= 3 %}research-tabs-{{research_page.research_questions.size}}{% else %}research-tabs-multi{% endif %}">
-        {% for research in research_page.research_questions %}
+    {% if research_questions and research_questions.size > 0 %}
+      {% assign research_count = research_questions.size %}
+      <div class="research-tabs {% if research_count <= 3 %}research-tabs-{{ research_count }}{% else %}research-tabs-multi{% endif %}">
+        {% for research in research_questions %}
           <div
             class="research_tab {% if forloop.first %}active{% endif %}"
             role="tab"
@@ -21,7 +26,7 @@
       </div>
 
       <div class="research-contents">
-        {% for research in research_page.research_questions %}
+        {% for research in research_questions %}
           <div
             class="research_summary"
             id="research_{{ forloop.index }}"

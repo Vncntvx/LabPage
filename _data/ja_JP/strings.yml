@@ -3,16 +3,6 @@ archive:
   category_suffix: このカテゴリ内
   tag_suffix: このタグ付き
   year_suffix: この年から
-archive_timeline:
-  intro: "%DATE% の最初の投稿から、サイトは更新されました"
-  posts_suffix: "投稿"
-  posts_unit: "件"
-  posts_label: "投稿"
-  words_unit_wan: "万"
-  words_unit_thousand: "千"
-  words_label: "文字数"
-  tags_unit: "個"
-  tags_label: "タグ"
 bibliography:
   abstract: 要旨
   awarded: 受賞

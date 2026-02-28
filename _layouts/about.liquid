@@ -39,8 +39,8 @@ layout: default
 
     <!-- Research Summary -->
     {% if page.research_summary and page.research_summary.enabled %}
+      {% assign research_page = site.pages | where: 'layout', 'page' | where: 'permalink', '/research/' | first %}
       <h2>
-        {% assign research_page = site.pages | where: 'layout', 'page' | where: 'permalink', '/research/' | first %}
         {% if research_page %}
           <a href="{{ research_page.url | relative_url }}" style="color: inherit">
             {{- site.data[site.active_lang].strings.research_summary | default: 'Research Summary' -}}
@@ -50,7 +50,7 @@ layout: default
         {% endif %}
       </h2>
       <div class="content-section">
-        {% include research_summary.liquid %}
+        {% include research_summary.liquid research_page=research_page %}
       </div>
     {% endif %}
 
