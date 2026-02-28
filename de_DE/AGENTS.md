@@ -82,7 +82,7 @@ This project uses the `jekyll-polyglot` plugin for multilingual support. Configu
 
 ```yaml
 languages: ["en_US", "zh_CN", "de_DE", "ja_JP"]
-default_lang: "zh_CN"
+default_lang: "en_US"
 lang_from_path: true
 parallel_localization: false
 ```

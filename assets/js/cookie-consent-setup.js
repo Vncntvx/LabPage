@@ -40,36 +40,36 @@ gtag('consent', 'default', {
 // Get translations from Jekyll data
 var cookieConsentTranslations = {
   consentModal: {
-    title: "我们使用 Cookie",
-    description: "本网站使用 Cookie 以改善您的体验并分析网站流量。点击"全部接受"即表示您同意我们使用 Cookie。",
-    acceptAllBtn: "全部接受",
-    acceptNecessaryBtn: "全部拒绝",
-    showPreferencesBtn: "管理个人偏好"
+    title: "We use cookies",
+    description: "This website uses cookies to improve your experience and analyze site traffic. By clicking "Accept all", you consent to our use of cookies.",
+    acceptAllBtn: "Accept all",
+    acceptNecessaryBtn: "Reject all",
+    showPreferencesBtn: "Manage Individual preferences"
   },
   preferencesModal: {
-    title: "管理 Cookie 偏好",
-    acceptAllBtn: "全部接受",
-    acceptNecessaryBtn: "全部拒绝",
-    savePreferencesBtn: "接受当前选择",
-    closeIconLabel: "关闭弹窗",
+    title: "Manage cookie preferences",
+    acceptAllBtn: "Accept all",
+    acceptNecessaryBtn: "Reject all",
+    savePreferencesBtn: "Accept current selection",
+    closeIconLabel: "Close modal",
     sections: [
       {
-        title: "Cookie 使用说明",
-        description: "我们使用 Cookie 以确保网站的基本功能并提升您的在线体验。您可以随时选择是否接受各类 Cookie。"
+        title: "Cookie usage",
+        description: "We use cookies to ensure the basic functionalities of the website and to enhance your online experience. You can choose for each category to opt-in/out whenever you want."
       },
       {
-        title: "必要 Cookie",
-        description: "这些 Cookie 对于网站的正常运行至关重要。没有这些 Cookie，网站将无法正常工作。",
+        title: "Strictly Necessary cookies",
+        description: "These cookies are essential for the proper functioning of the website. Without these cookies, the website would not work properly.",
         linkedCategory: 'necessary'
       },
       {
-        title: "分析 Cookie",
-        description: "这些 Cookie 使我们能够衡量流量并分析您的行为，以改进我们的服务。",
+        title: "Analytics cookies",
+        description: "These cookies allow us to measure traffic and analyze your behavior to improve our service.",
         linkedCategory: 'analytics'
       },
       {
-        title: "更多信息",
-        description: "如有关于我们的 Cookie 政策和您的选择的任何问题，请<a class="cc-link" href="{{ site.url }}{{ site.baseurl }}/#contact">联系我们</a>。"
+        title: "More information",
+        description: "For any queries in relation to our policy on cookies and your choices, please <a class="cc-link" href="{{ site.url }}{{ site.baseurl }}/#contact">contact us</a>."
       }
     ]
   }
