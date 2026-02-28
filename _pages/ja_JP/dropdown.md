@@ -1,5 +1,5 @@
 ---
-id: dropdown
+page_id: dropdown
 layout: page
 title: その他
 nav: false

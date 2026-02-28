@@ -1,11 +1,10 @@
 ---
-id: dropdown
+page_id: dropdown
 layout: page
 title: More
 nav: false
 nav_order: 7
 dropdown: true
-children:
 children:
   - title: cv
     permalink: /cv/
