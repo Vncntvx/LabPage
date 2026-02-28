@@ -3,7 +3,7 @@ page_id: about
 layout: about
 title: 自己紹介
 permalink: /
-subtitle: こんにちは 👋、Wayne Xu（徐文杰）です。
+subtitle: こんにちは 👋、Vincent Xu（徐文杰）です。
 profile:
   align: right
   image: prof_pic.jpg
@@ -35,6 +35,6 @@ latest_posts:
 
 💻 プログラミングとソフトウェア開発に情熱を持ち、実用的なツールの作成や**オープンソース技術**への貢献に取り組んでいます。
 
-✍️ [ブログ](https://waynexucn.github.io/blog/)で研究進捗、技術リソース、テクノロジーやマネジメント分野のトレンドについて発信しています。
+✍️ [ブログ](https://lab.wenjiexu.site/blog/)で研究進捗、技術リソース、テクノロジーやマネジメント分野のトレンドについて発信しています。
 
 🌐 コラボレーションも歓迎しています。お気軽に [wenjie.xu.cn@outlook.com](mailto:wenjie.xu.cn@outlook.com) までご連絡ください！

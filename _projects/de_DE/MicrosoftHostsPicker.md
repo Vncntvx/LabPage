@@ -49,7 +49,7 @@ In bestimmten Regionen können Microsoft-Dienste schlechte Leistung zeigen, da D
 
 ```sh
 pip install uv
-git clone https://github.com/WayneXuCN/MicrosoftHostsPicker.git
+git clone https://github.com/Vncntvx/MicrosoftHostsPicker.git
 cd MicrosoftHostsPicker
 uv sync
 ```
@@ -57,7 +57,7 @@ uv sync
 ### Methode 2: Mit pip
 
 ```sh
-git clone https://github.com/WayneXuCN/MicrosoftHostsPicker.git
+git clone https://github.com/Vncntvx/MicrosoftHostsPicker.git
 cd MicrosoftHostsPicker
 pip install ping3==4.0.4
 ```

@@ -3,7 +3,7 @@ page_id: about
 layout: about
 title: Über mich
 permalink: /
-subtitle: Hallo 👋, ich bin Wayne Xu (Wenjie Xu).
+subtitle: Hallo 👋, ich bin Vincent Xu (Wenjie Xu).
 profile:
   align: right
   image: prof_pic.jpg
@@ -35,6 +35,6 @@ latest_posts:
 
 💻 Leidenschaft für Programmierung und Softwareentwicklung, mit Fokus auf praktische Tools und Beiträge zu **Open-Source-Technologien**.
 
-✍️ Erkenntnisse und Tutorials teile ich auf meinem [Blog](https://waynexucn.github.io/blog/), mit Themen zu Forschungsfortschritt, technischen Ressourcen und Trends in Technologie und Management.
+✍️ Erkenntnisse und Tutorials teile ich auf meinem [Blog](https://lab.wenjiexu.site/blog/), mit Themen zu Forschungsfortschritt, technischen Ressourcen und Trends in Technologie und Management.
 
 🌐 Offen für Zusammenarbeit – kontaktieren Sie mich gerne unter [wenjie.xu.cn@outlook.com](mailto:wenjie.xu.cn@outlook.com)!

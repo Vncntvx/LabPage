@@ -18,21 +18,21 @@
   icon: https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg
   screenshot: https://xwj770427414.oss-cn-beijing.aliyuncs.com/img/MicrosoftHostsPicker_screenshot.png
   open_url: /app/MicrosoftHostsPicker/index.html
-  github_url: https://github.com/waynexucn/MicrosoftHostsPicker
+  github_url: https://github.com/Vncntvx/MicrosoftHostsPicker
 - type: Python スクリプト
   title: MicrosoftHostsPicker
   desc: Microsoftサービス用のhostsを自動でフィルタリング・生成するPythonスクリプト。
   icon: https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg
   screenshot: https://xwj770427414.oss-cn-beijing.aliyuncs.com/img/MicrosoftHostsPicker_screenshot.png
   open_url: /app/MicrosoftHostsPicker/index.html
-  github_url: https://github.com/waynexucn/MicrosoftHostsPicker
+  github_url: https://github.com/Vncntvx/MicrosoftHostsPicker
 - type: コマンドラインツール
   title: HostImageBackup
   desc: Pythonベースのコマンドラインツールで、各種画像ホスティングサービスの画像をローカルにバックアップできます。
   icon: https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/bash/bash-original.svg
   screenshot: https://xwj770427414.oss-cn-beijing.aliyuncs.com/img/HostImageBackup_screenshot.png
   open_url: /app/HostImageBackup/index.html
-  github_url: https://github.com/waynexucn/HostImageBackup
+  github_url: https://github.com/Vncntvx/HostImageBackup
 - type: コマンドラインツール
   title: Python-Markdown
   desc: John GruberのMarkdownのPython実装。

@@ -52,7 +52,7 @@ giscus_comments: true
 pip install uv
 
 # 克隆仓库
-git clone https://github.com/WayneXuCN/MicrosoftHostsPicker.git
+git clone https://github.com/Vncntvx/MicrosoftHostsPicker.git
 cd MicrosoftHostsPicker
 
 # 安装依赖
@@ -63,7 +63,7 @@ uv sync
 
 ```sh
 # 克隆仓库
-git clone https://github.com/WayneXuCN/MicrosoftHostsPicker.git
+git clone https://github.com/Vncntvx/MicrosoftHostsPicker.git
 cd MicrosoftHostsPicker
 
 # 安装依赖

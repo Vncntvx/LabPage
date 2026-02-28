@@ -12,7 +12,7 @@ description: > # the ">" symbol means to ignore newlines until "footer_text:"
   Wenjie Xu's home page. feedId:120017115220794368+userId:72841831310508032
 footer_text: >
   Powered by <a href="https://jekyllrb.com/" target="_blank">Jekyll</a>.
-keywords: Wenjie Xu, Wayne Xu, 徐文杰, UCAS, University of Chinese Academy of Sciences, Institutes of Science and Development, Chinese Academy of Sciences # add your own keywords or leave empty
+keywords: Wenjie Xu, Vincent Xu, 徐文杰, UCAS, University of Chinese Academy of Sciences, Institutes of Science and Development, Chinese Academy of Sciences # add your own keywords or leave empty
 lang: en_US # the language of your site (for example: en, fr, cn, ru, etc.)
 icon: favicon.ico # the emoji used as the favicon (alternatively, provide image name in /assets/img/)
 
@@ -95,7 +95,7 @@ related_blog_posts:
 # Giscus comments (RECOMMENDED)
 # Follow instructions on https://giscus.app/ to setup for your repo to fill out the information below.
 giscus:
-  repo: WayneXuCN/BlogComments # <your-github-user-name>/<your-github-repo-name>
+  repo: Vncntvx/BlogComments # <your-github-user-name>/<your-github-repo-name>
   repo_id: R_kgDOMFTH3A # leave empty or specify your repo_id (see https://giscus.app/)
   category: Announcements # name of the category under which discussions will be created
   category_id: DIC_kwDOMFTH3M4Cf4dF # leave empty or specify your category_id (see https://giscus.app/)
@@ -278,7 +278,7 @@ display_categories: ["Research", "Writing", "Code", "Tools", "Productivity", "Li
 
 scholar:
   last_name: [Xu, 徐]
-  first_name: [Wenjie, Wayne, 文杰]
+  first_name: [Wenjie, Vincent, 文杰]
 
   style: apa
   locale: en

@@ -18,21 +18,21 @@
   icon: https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg
   screenshot: https://xwj770427414.oss-cn-beijing.aliyuncs.com/img/MicrosoftHostsPicker_screenshot.png
   open_url: /app/MicrosoftHostsPicker/index.html
-  github_url: https://github.com/waynexucn/MicrosoftHostsPicker
+  github_url: https://github.com/Vncntvx/MicrosoftHostsPicker
 - type: Python 脚本
   title: MicrosoftHostsPicker
   desc: 一个用于自动筛选和生成 Microsoft 服务 hosts 的 Python 脚本。
   icon: https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg
   screenshot: https://xwj770427414.oss-cn-beijing.aliyuncs.com/img/MicrosoftHostsPicker_screenshot.png
   open_url: /app/MicrosoftHostsPicker/index.html
-  github_url: https://github.com/waynexucn/MicrosoftHostsPicker
+  github_url: https://github.com/Vncntvx/MicrosoftHostsPicker
 - type: 命令行工具
   title: HostImageBackup
   desc: 一个基于 Python 的命令行工具，可将各类图床图片备份到本地存储。
   icon: https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/bash/bash-original.svg
   screenshot: https://xwj770427414.oss-cn-beijing.aliyuncs.com/img/HostImageBackup_screenshot.png
   open_url: /app/HostImageBackup/index.html
-  github_url: https://github.com/waynexucn/HostImageBackup
+  github_url: https://github.com/Vncntvx/HostImageBackup
 - type: 命令行工具
   title: Python-Markdown
   desc: 一个 John Gruber 的 Markdown 的 Python 实现。

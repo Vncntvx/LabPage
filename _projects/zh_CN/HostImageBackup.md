@@ -64,7 +64,7 @@ hib --help
 
 ```sh
 # 克隆仓库
-git clone https://github.com/WayneXuCN/HostImageBackup.git
+git clone https://github.com/Vncntvx/HostImageBackup.git
 cd HostImageBackup
 
 # 推荐使用 uv 安装
@@ -207,7 +207,7 @@ HostImageBackup/
 
 ## 📄 许可证
 
-本项目采用 MIT 许可证，详情见 [LICENSE](https://github.com/WayneXuCN/HostImageBackup/blob/main/LICENSE)。
+本项目采用 MIT 许可证，详情见 [LICENSE](https://github.com/Vncntvx/HostImageBackup/blob/main/LICENSE)。
 
 <footer lang="zh-cn" style="
   background-color: #f8f9fa;

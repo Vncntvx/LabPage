@@ -4,12 +4,12 @@ layout: default
 {% comment %}
   Unified CV layout that handles both RenderCV (YAML) and JSONResume (JSON) formats
   - If page.cv_format is set, it determines which format to render:
-    - 'rendercv': Load and render only RenderCV data (site.data.cv.cv)
-    - 'jsonresume': Load and render only JSONResume data (site.data.resume)
+  - 'rendercv': Load and render only RenderCV data (site.data.cv.cv)
+  - 'jsonresume': Load and render only JSONResume data (site.data.resume)
   - If page.cv_format is not set, the legacy behavior applies:
-    - RenderCV data is in site.data.cv.cv
-    - JSONResume data is in site.data.resume
-    - RenderCV is prioritized if both exist
+  - RenderCV data is in site.data.cv.cv
+  - JSONResume data is in site.data.resume
+  - RenderCV is prioritized if both exist
   Both formats use the same unified rendering includes for consistent output
 {% endcomment %}
 
@@ -118,10 +118,18 @@ layout: default
                       <b>{{ site.data[site.active_lang].strings.cv.location }}</b>
                     </td>
                     <td class="p-1 pl-2 font-weight-light">
-                      {% if cv.address.street %}{{ cv.address.street }}, {% endif %}
-                      {% if cv.address.city %}{{ cv.address.city }}, {% endif %}
-                      {% if cv.address.region %}{{ cv.address.region }} {% endif %}
-                      {% if cv.address.postalCode %}{{ cv.address.postalCode }}{% endif %}
+                      {% if cv.address.street %}
+                        {{ cv.address.street }},
+                      {% endif %}
+                      {% if cv.address.city %}
+                        {{ cv.address.city }},
+                      {% endif %}
+                      {% if cv.address.region %}
+                        {{ cv.address.region }}
+                      {% endif %}
+                      {% if cv.address.postalCode %}
+                        {{ cv.address.postalCode -}}
+                      {%- endif %}
                     </td>
                   </tr>
                 {% endif %}
@@ -148,11 +156,17 @@ layout: default
           {% endif %}
 
           <!-- RenderCV Sections - Merge Experience and Volunteer -->
-          {% comment %} First, combine Experience and Volunteer entries {% endcomment %}
+          {% comment %} Detect experience/volunteer sections by entry structure (language-agnostic) {% endcomment %}
           {% assign empty_array = '' | split: ',' %}
-          {% assign exp = cv.sections.Experience | default: empty_array %}
-          {% assign vol = cv.sections.Volunteer | default: empty_array %}
-          {% assign combined_experience = exp | concat: vol %}
+          {% assign combined_experience = empty_array %}
+          {% assign experience_section_names = '' %}
+          {% for section_pair in cv.sections %}
+            {% assign s_first = section_pair[1] | first %}
+            {% if s_first.company or s_first.organization %}
+              {% assign combined_experience = combined_experience | concat: section_pair[1] %}
+              {% assign experience_section_names = experience_section_names | append: '|||' | append: section_pair[0] | append: '|||' %}
+            {% endif %}
+          {% endfor %}
           {% if combined_experience.size > 0 %}
             <a class="anchor" id="experience"></a>
             <div class="card mt-3 p-3">
@@ -164,45 +178,69 @@ layout: default
             </div>
           {% endif %}
 
-          {% comment %} Now render all other sections except Experience and Volunteer {% endcomment %}
+          {% comment %} Now render all other sections except experience/volunteer {% endcomment %}
           {% for section_pair in cv.sections %}
             {% assign section_title = section_pair[0] %}
             {% assign section_entries = section_pair[1] %}
 
-            {% comment %} Skip Experience and Volunteer as we've already processed them combined {% endcomment %}
-            {% if section_title == 'Experience' or section_title == 'Volunteer' %}
+            {% comment %} Skip sections already processed as experience/volunteer {% endcomment %}
+            {% assign check_name = '|||' | append: section_title | append: '|||' %}
+            {% if experience_section_names contains check_name %}
               {% continue %}
+            {% endif %}
+
+            {% comment %} Detect section type by entry structure (language-agnostic) {% endcomment %}
+            {% assign first_entry = section_entries | first %}
+            {% assign section_type = 'generic' %}
+            {% if first_entry.institution and first_entry.degree %}
+              {% assign section_type = 'education' %}
+            {% elsif first_entry.awarder %}
+              {% assign section_type = 'awards' %}
+            {% elsif first_entry.publisher %}
+              {% assign section_type = 'publications' %}
+            {% elsif first_entry.name and first_entry.level %}
+              {% assign section_type = 'skills' %}
+            {% elsif first_entry.language and first_entry.fluency %}
+              {% assign section_type = 'languages' %}
+            {% elsif first_entry.reference %}
+              {% assign section_type = 'references' %}
+            {% elsif first_entry.name and first_entry.keywords %}
+              {% assign section_type = 'interests' %}
+            {% elsif first_entry.name and first_entry.issuer %}
+              {% assign section_type = 'certificates' %}
+            {% elsif first_entry.name and first_entry.url and first_entry.description %}
+              {% assign section_type = 'projects' %}
             {% endif %}
 
             <a class="anchor" id="{{ section_title | slugify }}"></a>
             <div class="card mt-3 p-3">
               <h3 class="card-title font-weight-medium">{{ section_title }}</h3>
               <div>
-                {% if section_title == 'Education' %}
+                {% if section_type == 'education' %}
                   {% assign entries = section_entries %}
                   {% include cv/education.liquid %}
-                {% elsif section_title == 'Awards' or section_title == 'Honors and Awards' %}
+                {% elsif section_type == 'awards' %}
                   {% assign entries = section_entries %}
                   {% include cv/awards.liquid %}
-                {% elsif section_title == 'Publications' %}
+                {% elsif section_type == 'publications' %}
                   {% assign entries = section_entries %}
                   {% include cv/publications.liquid %}
-                {% elsif section_title == 'Skills' %}
+                {% elsif section_type == 'skills' %}
                   {% assign entries = section_entries %}
                   {% include cv/skills.liquid %}
-                {% elsif section_title == 'Languages' %}
+                {% elsif section_type == 'languages' %}
                   {% assign entries = section_entries %}
                   {% include cv/languages.liquid %}
-                {% elsif section_title == 'Interests' or section_title == 'Academic Interests' %}
+                {% elsif section_type == 'interests' %}
                   {% assign entries = section_entries %}
                   {% include cv/interests.liquid %}
-                {% elsif section_title == 'Certificates' %}
+                {% elsif section_type == 'certificates' %}
                   {% assign entries = section_entries %}
                   {% include cv/certificates.liquid %}
-                {% elsif section_title == 'Projects' or section_title == 'Open Source Projects' %}
+                {% elsif section_type == 'projects' %}
                   {% assign entries = section_entries %}
                   {% include cv/projects.liquid %}
-                {% elsif section_title == 'References' %}
+                {% elsif section_type == 'references' %}
                   {% assign entries = section_entries %}
                   {% include cv/references.liquid %}
                 {% else %}
@@ -214,7 +252,8 @@ layout: default
                       </ul>
                     {% elsif entry.label %}
                       <div class="card-text font-weight-light">
-                        <strong>{{ entry.label }}:</strong> {{ entry.details }}
+                        <strong>{{ entry.label }}:</strong>
+                        {{ entry.details }}
                       </div>
                     {% endif %}
                   {% endfor %}
@@ -276,10 +315,18 @@ layout: default
                       <b>{{ site.data[site.active_lang].strings.cv.location }}</b>
                     </td>
                     <td class="p-1 pl-2 font-weight-light">
-                      {% if basics.location.address %}{{ basics.location.address }}, {% endif %}
-                      {% if basics.location.city %}{{ basics.location.city }}, {% endif %}
-                      {% if basics.location.region %}{{ basics.location.region }} {% endif %}
-                      {% if basics.location.postalCode %}{{ basics.location.postalCode }}{% endif %}
+                      {% if basics.location.address %}
+                        {{ basics.location.address }},
+                      {% endif %}
+                      {% if basics.location.city %}
+                        {{ basics.location.city }},
+                      {% endif %}
+                      {% if basics.location.region %}
+                        {{ basics.location.region }}
+                      {% endif %}
+                      {% if basics.location.postalCode %}
+                        {{ basics.location.postalCode -}}
+                      {%- endif %}
                     </td>
                   </tr>
                 {% endif %}

@@ -64,7 +64,7 @@ hib --help
 
 ```sh
 # リポジトリをクローン
-git clone https://github.com/WayneXuCN/HostImageBackup.git
+git clone https://github.com/Vncntvx/HostImageBackup.git
 cd HostImageBackup
 
 # uv でインストール（推奨）
@@ -207,7 +207,7 @@ HostImageBackup/
 
 ## 📄 ライセンス
 
-本プロジェクトは MIT ライセンスです。詳細は [LICENSE](https://github.com/WayneXuCN/HostImageBackup/blob/main/LICENSE) を参照してください。
+本プロジェクトは MIT ライセンスです。詳細は [LICENSE](https://github.com/Vncntvx/HostImageBackup/blob/main/LICENSE) を参照してください。
 
 <footer lang="ja" style="
   background-color: #f8f9fa;

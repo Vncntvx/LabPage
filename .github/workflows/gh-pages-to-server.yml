@@ -113,7 +113,7 @@ jobs:
 
             # If you want to use a Git proxy mirror, set the remote accordingly;
             # otherwise remove the next line.
-            git remote set-url origin https://gh.xmly.dev/https://github.com/WayneXuCN/LabPage || true
+            git remote set-url origin https://gh.xmly.dev/https://github.com/Vncntvx/LabPage || true
 
             # Git safe directory config
             git config --global --add safe.directory "$(pwd)" || true

@@ -8,7 +8,7 @@ cv:
     - network: ORCID
       username: 0000-0002-7778-0450
     - network: GitHub
-      username: WayneXuCN
+      username: Vncntvx
   sections:
     教育背景:
       - institution: 中国科学院科技战略咨询研究院
@@ -76,4 +76,4 @@ design:
     font_family: Noto Sans
 
 locale:
-  language: mandarin_chineese
+  language: mandarin_chinese

@@ -52,7 +52,7 @@ In certain regions, Microsoft services may experience poor performance due to DN
 pip install uv
 
 # Clone the repository
-git clone https://github.com/WayneXuCN/MicrosoftHostsPicker.git
+git clone https://github.com/Vncntvx/MicrosoftHostsPicker.git
 cd MicrosoftHostsPicker
 
 # Install dependencies
@@ -63,7 +63,7 @@ uv sync
 
 ```sh
 # Clone the repository
-git clone https://github.com/WayneXuCN/MicrosoftHostsPicker.git
+git clone https://github.com/Vncntvx/MicrosoftHostsPicker.git
 cd MicrosoftHostsPicker
 
 # Install dependencies

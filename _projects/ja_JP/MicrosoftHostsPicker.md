@@ -49,7 +49,7 @@ Microsoft サービス向けの最速 IP アドレスを自動で検索・選択
 
 ```sh
 pip install uv
-git clone https://github.com/WayneXuCN/MicrosoftHostsPicker.git
+git clone https://github.com/Vncntvx/MicrosoftHostsPicker.git
 cd MicrosoftHostsPicker
 uv sync
 ```
@@ -57,7 +57,7 @@ uv sync
 ### 方法 2: pip を使用
 
 ```sh
-git clone https://github.com/WayneXuCN/MicrosoftHostsPicker.git
+git clone https://github.com/Vncntvx/MicrosoftHostsPicker.git
 cd MicrosoftHostsPicker
 pip install ping3==4.0.4
 ```

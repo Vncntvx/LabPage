@@ -8,7 +8,7 @@ category: work
 giscus_comments: true
 ---
 
-## [UCAS Thesis Typst Template](https://github.com/waynexucn/typst-ucas-thesis)
+## [UCAS Thesis Typst Template](https://github.com/Vncntvx/typst-ucas-thesis)
 
 ![Project Status](https://img.shields.io/badge/Status-In%20Progress-yellow)
 

@@ -64,7 +64,7 @@ hib --help
 
 ```sh
 # Repository klonen
-git clone https://github.com/WayneXuCN/HostImageBackup.git
+git clone https://github.com/Vncntvx/HostImageBackup.git
 cd HostImageBackup
 
 # Mit uv installieren (empfohlen)
@@ -207,7 +207,7 @@ Beiträge sind willkommen! Das Projekt folgt modernen Python-Entwicklungspraktik
 
 ## 📄 Lizenz
 
-Dieses Projekt ist unter der MIT-Lizenz lizenziert – siehe [LICENSE](https://github.com/WayneXuCN/HostImageBackup/blob/main/LICENSE) für Details.
+Dieses Projekt ist unter der MIT-Lizenz lizenziert – siehe [LICENSE](https://github.com/Vncntvx/HostImageBackup/blob/main/LICENSE) für Details.
 
 <footer lang="de" style="
   background-color: #f8f9fa;

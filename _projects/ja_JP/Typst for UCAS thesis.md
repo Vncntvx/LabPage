@@ -8,7 +8,7 @@ category: work
 giscus_comments: true
 ---
 
-## [中国科学院大学学位論文 Typst テンプレート](https://github.com/waynexucn/typst-ucas-thesis)
+## [中国科学院大学学位論文 Typst テンプレート](https://github.com/Vncntvx/typst-ucas-thesis)
 
 ![Project Status](https://img.shields.io/badge/Status-In%20Progress-yellow)
 
