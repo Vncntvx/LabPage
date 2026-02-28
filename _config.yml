@@ -12,7 +12,7 @@ description: > # the ">" symbol means to ignore newlines until "footer_text:"
   Wenjie Xu's home page. feedId:120017115220794368+userId:72841831310508032
 footer_text: >
   Powered by <a href="https://jekyllrb.com/" target="_blank">Jekyll</a>.
-keywords: Wenjie Xu, Wayne Xu, 徐文杰，UCAS, University of Chinese Academy of Sciences, Institutes of Science and Development, Chinese Academy of Sciences # add your own keywords or leave empty
+keywords: Wenjie Xu, Wayne Xu, 徐文杰, UCAS, University of Chinese Academy of Sciences, Institutes of Science and Development, Chinese Academy of Sciences # add your own keywords or leave empty
 lang: en_US # the language of your site (for example: en, fr, cn, ru, etc.)
 icon: favicon.ico # the emoji used as the favicon (alternatively, provide image name in /assets/img/)
 
@@ -228,7 +228,7 @@ sass:
 # -----------------------------------------------------------------------------
 
 languages: ["en_US", "zh_CN", "de_DE", "ja_JP"]
-default_lang: "zh_CN"
+default_lang: "en_US"
 exclude_from_localization: ["assets", "sitemap.xml", "feed.xml", "robots.txt"]
 lang_from_path: true
 country_flag: false # set true for allowing flag symbol in language toggle

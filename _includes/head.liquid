@@ -2,11 +2,12 @@
 {% include metadata.liquid %}
 
 <!-- Security: Content Security Policy -->
-<!-- Permissive CSP suitable for academic websites. Allows external images, videos, and common embed services. -->
+<!-- Hardened CSP with explicit script/style/font/connect allowlists. -->
+<!-- Note: 'unsafe-inline' is currently retained for legacy inline scripts/event handlers. -->
 <!-- To customize for your needs, see: https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
 <meta
   http-equiv="Content-Security-Policy"
-  content="default-src 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https:; media-src 'self' https:; frame-src 'self' https:; connect-src 'self' https:;">
+  content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self' https://app.loops.so; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://www.googletagmanager.com https://rum.cronitor.io https://api.pirsch.io https://openpanel.dev https://d1bxh8uas1mnw7.cloudfront.net https://badge.dimensions.ai https://giscus.app https://*.disqus.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' data: https://fonts.gstatic.com https://cdn.jsdelivr.net; media-src 'self'; frame-src 'self' https://giscus.app https://calendar.google.com https://*.disqus.com; connect-src 'self' https://giscus.app https://www.google-analytics.com https://region1.google-analytics.com https://rum.cronitor.io https://api.pirsch.io https://openpanel.dev https://*.disqus.com;">
 
 <!-- Bootstrap & MDB -->
 <link rel="stylesheet" href="{{ '/assets/css/bootstrap.min.css' | relative_url | bust_file_cache }}">
