@@ -1,0 +1,58 @@
+---
+import { lastUpdatedDate } from "../lib/site-meta";
+import { notFoundPayload, serializeNotFoundData } from "../lib/not-found-payload";
+import { locales, type Locale } from "../lib/i18n";
+
+interface Props {
+  /** The locale this 404 file was built for. */
+  locale: Locale;
+  /** Read once by `NotFound.astro` and shared here, so a render reads it once. */
+  pages: Array<import("astro:content").CollectionEntry<"pages">>;
+}
+
+/**
+ * Ships the per-locale strings a 404 page needs to relabel itself, and the script
+ * that applies them. Rendered at the end of the document by `NotFound.astro`.
+ *
+ * WHY THIS EXISTS. Astro emits one status page per route file, and a server that
+ * cannot find a matching file falls back to a single default — here
+ * `dist/404.html`, the English one. So `/zh-CN/anything/` renders an English
+ * shell: heading, buttons, nav, footer and search dialog all in the wrong
+ * language, with no way to reach the translated copy because the page has no
+ * server-side locale of its own.
+ *
+ * The fix cannot be a second static file: which file a server serves for a
+ * missing path is the server's decision, not the build's. So the locale's strings
+ * travel with the page and are applied on the client.
+ *
+ * This does not replace the real `/zh-CN/404/` route, which remains the
+ * correctly-built page and is what a server configured for per-locale error pages
+ * will serve; it repairs the case where the server is not.
+ *
+ * ONLY THE OTHER LOCALES ARE SHIPPED. The page is already correct for the locale
+ * it was built for — the script detects that case and does nothing — so its own
+ * copy would be bytes the browser never reads. Each 404 file therefore carries
+ * exactly the locales it can be wrongly served as: `404.html` (English) carries
+ * the Chinese copy, and `zh-CN/404/index.html` carries the English one.
+ */
+const { locale: buildLocale, pages } = Astro.props;
+const lastUpdated = await lastUpdatedDate();
+
+const payload = Object.fromEntries(
+  locales.filter(({ code }) => code !== buildLocale).map(({ code }) => [code, notFoundPayload(code, pages, lastUpdated)])
+);
+
+/**
+ * The payload travels as a JSON tag: it stays data the module parses, the module
+ * body is bundled and minified on its own, and escaping `<` is what keeps a
+ * literal `</script>` from closing the tag early.
+ */
+const data = serializeNotFoundData(payload);
+---
+
+<script type="application/json" id="not-found-locale-data" set:html={data}></script>
+<script>
+  // A module script is deferred, so it runs after the document is parsed — which
+  // is what the rewrite needs, since it edits the header, main and footer alike.
+  import "../scripts/not-found-locale";
+</script>

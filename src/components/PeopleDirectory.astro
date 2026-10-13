@@ -1,0 +1,291 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { strings, type Locale } from "../lib/i18n";
+import ChipButton from "./ui/ChipButton.astro";
+import EmptyState from "./EmptyState.astro";
+import SectionHeader from "./SectionHeader.astro";
+
+interface Props {
+  locale: Locale;
+  people: CollectionEntry<"people">[];
+  opportunities: CollectionEntry<"opportunities">[];
+}
+
+const { locale, people, opportunities } = Astro.props;
+const labels = strings(locale).people;
+const current = people.filter(({ data }) => data.status === "current");
+const alumni = people.filter(({ data }) => data.status === "alumni");
+const openOpportunities = opportunities.filter(({ data }) => data.status === "open");
+const sortByOrder = <Entry extends { data: { order: number; title: string } }>(entries: Entry[]) =>
+  [...entries].sort((a, b) => a.data.order - b.data.order || a.data.title.localeCompare(b.data.title));
+---
+
+<section class="people-section people-section--members" aria-labelledby="current-members">
+  <SectionHeader id="current-members" title={labels.current} locale={locale} count={current.length} countForms={labels.current_count} />
+  {current.length ? (
+    <div class="member-profiles">
+      {sortByOrder(current).map(({ data }) => (
+        <article class="member-profile">
+          <header>
+            <p class="member-role">{data.role}</p>
+            <h3>{data.title}</h3>
+          </header>
+          <p class="member-description">{data.description}</p>
+          <div class="member-footer">
+            {data.research.length > 0 && <p class="member-research">{data.research.join(" · ")}</p>}
+            {data.homepage && (
+              <ChipButton href={data.homepage} target="_blank" rel="noreferrer" size="sm" tone="accent">
+                {labels.learn_more}
+              </ChipButton>
+            )}
+          </div>
+        </article>
+      ))}
+    </div>
+  ) : (
+    <EmptyState message={labels.empty} />
+  )}
+</section>
+
+<section class="people-section people-section--alumni" aria-labelledby="alumni">
+  <SectionHeader id="alumni" title={labels.alumni} locale={locale} count={alumni.length} countForms={labels.alumni_count} />
+  {alumni.length ? (
+    <div class="alumni-index">
+      {sortByOrder(alumni).map(({ data }) => (
+        <article class="alumni-entry">
+          <h3>{data.title}</h3>
+          <p>{data.role}</p>
+          <span>
+            {data.joined && `${labels.joined} ${data.joined}`}
+            {data.joined && data.left && " · "}
+            {data.left && `${labels.left} ${data.left}`}
+          </span>
+        </article>
+      ))}
+    </div>
+  ) : (
+    <EmptyState message={labels.empty} />
+  )}
+</section>
+
+<section class="people-section people-section--opportunities" aria-labelledby="opportunities">
+  <SectionHeader
+    id="opportunities"
+    title={labels.opportunities}
+    locale={locale}
+    count={openOpportunities.length}
+    countForms={labels.opportunity_count}
+  />
+  {openOpportunities.length ? (
+    <div class="opportunity-notice">
+      {sortByOrder(openOpportunities).map(({ data }) => (
+        <article class="opportunity-entry">
+          <p class="opportunity-type">{labels.types[data.type]}</p>
+          <div>
+            <h3>{data.title}</h3>
+            <p>{data.description}</p>
+            {data.deadline && (
+              <small>
+                <strong>{labels.deadline}:</strong> {data.deadline}
+              </small>
+            )}
+          </div>
+          {data.url && (
+            <ChipButton href={data.url} target="_blank" rel="noreferrer" size="sm" tone="accent">
+              {labels.apply}
+            </ChipButton>
+          )}
+        </article>
+      ))}
+    </div>
+  ) : (
+    <EmptyState message={labels.empty_opportunities} />
+  )}
+</section>
+
+<style>
+  .people-section + .people-section {
+    margin-top: 4rem;
+  }
+
+  .member-profiles {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem 2.25rem;
+  }
+
+  .member-profile {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    min-height: 12rem;
+    border-left: 3px solid var(--accent);
+    background: var(--surface);
+    padding: 1.25rem 1.35rem 1.1rem;
+  }
+
+  .member-role,
+  .opportunity-type {
+    margin: 0 0 0.35rem;
+    color: var(--accent);
+    font-size: var(--font-size-2xs);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+
+  .member-profile h3,
+  .alumni-entry h3,
+  .opportunity-entry h3 {
+    margin: 0;
+    font-family: var(--serif);
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-snug);
+  }
+
+  .member-description {
+    margin: 0.9rem 0 0;
+    color: var(--muted);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-normal);
+  }
+
+  .member-footer {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: auto;
+    padding-top: 1.2rem;
+  }
+
+  .member-research {
+    margin: 0;
+    color: var(--text);
+    font-size: var(--font-size-xs);
+    line-height: var(--line-height-normal);
+  }
+
+  .alumni-index {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 2.25rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .alumni-entry {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: baseline;
+    gap: 0.25rem 1rem;
+    border-bottom: 1px solid var(--border);
+    padding: 0.85rem 0;
+  }
+
+  .alumni-entry h3 {
+    font-size: var(--font-size-lg);
+  }
+
+  .alumni-entry p,
+  .alumni-entry span {
+    margin: 0;
+    color: var(--muted);
+    font-size: var(--font-size-xs);
+  }
+
+  .alumni-entry p {
+    grid-column: 1 / -1;
+  }
+
+  .alumni-entry span {
+    grid-column: 2;
+    grid-row: 1;
+    white-space: nowrap;
+  }
+
+  .opportunity-notice {
+    border-left: 3px solid var(--accent);
+    background: var(--accent-soft);
+    padding: 0 1.25rem;
+  }
+
+  .opportunity-entry {
+    display: grid;
+    grid-template-columns: minmax(8rem, 0.3fr) minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 1rem 1.5rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+    padding: 1.15rem 0;
+  }
+
+  .opportunity-entry:last-child {
+    border-bottom: 0;
+  }
+
+  .opportunity-type {
+    margin: 0;
+  }
+
+  .opportunity-entry h3 {
+    font-size: var(--font-size-lg);
+  }
+
+  .opportunity-entry p:not(.opportunity-type),
+  .opportunity-entry small {
+    display: block;
+    margin: 0.4rem 0 0;
+    color: var(--muted);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-normal);
+  }
+
+  .opportunity-entry small {
+    font-size: var(--font-size-xs);
+  }
+
+  .opportunity-entry small strong {
+    color: var(--text);
+    font-weight: var(--font-weight-medium);
+  }
+
+  @media (max-width: 767px) {
+    .member-profiles,
+    .alumni-index {
+      grid-template-columns: 1fr;
+    }
+
+    .opportunity-entry {
+      grid-template-columns: 1fr auto;
+    }
+
+    .opportunity-entry > div {
+      grid-column: 1 / -1;
+      grid-row: 2;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .people-section + .people-section {
+      margin-top: 3rem;
+    }
+
+    .member-profile {
+      min-height: 0;
+    }
+
+    .member-footer {
+      align-items: start;
+      flex-direction: column;
+    }
+
+    .alumni-entry span {
+      grid-column: 1 / -1;
+      grid-row: auto;
+    }
+
+    .opportunity-notice {
+      padding: 0 1rem;
+    }
+  }
+</style>

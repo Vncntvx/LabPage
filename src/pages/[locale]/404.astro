@@ -1,0 +1,10 @@
+---
+import NotFound from "../../components/NotFound.astro";
+import { prefixedLocales } from "../../lib/i18n";
+export function getStaticPaths() {
+  return prefixedLocales.map((locale) => ({ params: { locale }, props: { locale } }));
+}
+const { locale } = Astro.props;
+---
+
+<NotFound locale={locale} />

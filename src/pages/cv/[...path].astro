@@ -1,0 +1,10 @@
+---
+import { pageShapeStaticPaths } from "../../lib/route-paths";
+import { defaultLocale } from "../../lib/locale";
+import CVView from "../../views/CVView.astro";
+
+export const getStaticPaths = pageShapeStaticPaths("cv", [defaultLocale]);
+const { entry, locale, path } = Astro.props;
+---
+
+<CVView entry={entry} locale={locale} path={path} />

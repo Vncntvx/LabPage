@@ -1,0 +1,52 @@
+---
+/**
+ * A page section whose heading links to the page that owns the detail — the
+ * home page's "Research Summary" and "News" blocks both use it. A rule under
+ * the heading separates consecutive sections.
+ */
+interface Props {
+  title: string;
+  /** Turns the heading into a link to the full page. */
+  href?: string;
+  id?: string;
+}
+
+const { title, href, id } = Astro.props;
+---
+
+<section class="content-section">
+  <h2 id={id}>{href ? <a href={href}>{title}</a> : title}</h2>
+  <slot />
+</section>
+
+<style>
+  .content-section {
+    position: relative;
+    margin: 0 0 2.25rem;
+  }
+
+  .content-section > h2 {
+    display: inline-block;
+    margin-bottom: 1.25rem;
+    font-family: var(--serif);
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-tight);
+  }
+
+  /* `:last-of-type` rather than a prop: the divider is dropped on whichever
+     section happens to come last, which depends on the caller's ordering. */
+  .content-section:not(:last-of-type)::after {
+    display: block;
+    height: 1px;
+    margin-top: 2.25rem;
+    background: linear-gradient(to right, transparent, rgb(0 0 0 / 10%) 50%, transparent);
+    content: "";
+  }
+
+  @media (max-width: 600px) {
+    .content-section > h2 {
+      font-size: 1.85rem;
+    }
+  }
+</style>

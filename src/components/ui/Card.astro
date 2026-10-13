@@ -1,0 +1,107 @@
+---
+/**
+ * The bordered, hover-lifting card used for a project entry, a tool entry and
+ * a course entry. They differed only in their contents, so the shell — border,
+ * radius, shadow and the hover lift — lives here once.
+ *
+ * `media` and `actions` are named slots for the optional thumbnail and the
+ * trailing action row; everything else goes through the default slot. The card
+ * renders both containers itself, so the media zoom and the action divider
+ * belong here too: a caller cannot style another component's internals.
+ *
+ * The description paragraph's metrics are driven by custom properties rather
+ * than fixed values, because a scoped descendant rule outranks anything a
+ * caller writes — without them a card with different prose could not adopt it.
+ */
+interface Props {
+  class?: string;
+  /** Aspect ratio for the media container; omit when there is no thumbnail. */
+  aspect?: "wide" | "square";
+}
+
+const { class: className, aspect = "wide" } = Astro.props;
+---
+
+<article class:list={["card", className]}>
+  {Astro.slots.has("media") && (
+    <div class="card-media" data-aspect={aspect}>
+      <slot name="media" />
+    </div>
+  )}
+  <div class="card-body">
+    <slot />
+  </div>
+  {Astro.slots.has("actions") && (
+    <div class="card-actions">
+      <slot name="actions" />
+    </div>
+  )}
+</article>
+
+<style>
+  .card {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--page-bg);
+    box-shadow: var(--shadow);
+    transition:
+      transform var(--dur-medium) ease,
+      box-shadow var(--dur-medium) ease,
+      border-color var(--dur-medium) ease;
+  }
+
+  .card:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent);
+    box-shadow: var(--shadow-hover);
+  }
+
+  .card-media {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    background: var(--surface-strong);
+  }
+
+  .card-media[data-aspect="wide"] {
+    aspect-ratio: 16 / 9;
+  }
+
+  .card-media[data-aspect="square"] {
+    aspect-ratio: 1;
+  }
+
+  /* `:global` because the thumbnail arrives through the `media` slot, so it
+     carries no scope attribute of its own. */
+  .card:hover .card-media :global(img) {
+    transform: scale(1.025);
+  }
+
+  .card-body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: var(--card-pad-y, 1.1rem) var(--card-pad-x, 1.2rem) var(--card-pad-bottom, 1.2rem);
+  }
+
+  /* A full-bleed footer row, divided from the body by a hairline. */
+  .card-actions {
+    border-top: 1px solid var(--border);
+  }
+
+  /* The description is the one paragraph that fills the remaining height, so it
+     stays left-aligned even though body copy is justified document-wide. */
+  .card-body > :global(p) {
+    flex: 1;
+    margin: var(--card-p-margin-block, 0.55rem 0 0);
+    color: var(--muted);
+    font-family: var(--sans);
+    font-size: var(--card-p-size, var(--font-size-sm));
+    line-height: var(--card-p-leading, var(--line-height-normal));
+    text-align: left;
+  }
+</style>

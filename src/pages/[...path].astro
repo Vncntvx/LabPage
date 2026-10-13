@@ -1,0 +1,10 @@
+---
+import { pageShapeStaticPaths } from "../lib/route-paths";
+import { defaultLocale } from "../lib/locale";
+import HomeView from "../views/HomeView.astro";
+
+export const getStaticPaths = pageShapeStaticPaths("about", [defaultLocale]);
+const { entry, locale, path } = Astro.props;
+---
+
+<HomeView entry={entry} locale={locale} path={path} />

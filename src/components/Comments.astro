@@ -1,0 +1,51 @@
+---
+import type { Locale } from "../lib/i18n";
+interface Props {
+  locale: Locale;
+  title: string;
+}
+const { locale, title } = Astro.props;
+---
+
+<div class="comments" data-comment-language={locale} data-comment-title={title}></div>
+<script>
+  document.querySelectorAll<HTMLElement>(".comments").forEach((container) => {
+    const script = document.createElement("script");
+    const attributes = {
+      src: "https://giscus.app/client.js",
+      "data-repo": "Vncntvx/BlogComments",
+      "data-repo-id": "R_kgDOMFTH3A",
+      "data-category": "Announcements",
+      "data-category-id": "DIC_kwDOMFTH3M4Cf4dF",
+      "data-mapping": "specific",
+      "data-term": container.dataset.commentTitle ?? "",
+      "data-strict": "1",
+      "data-reactions-enabled": "1",
+      "data-emit-metadata": "0",
+      "data-input-position": "bottom",
+      "data-theme": document.documentElement.dataset.theme ?? "light",
+      "data-lang": container.dataset.commentLanguage ?? "en",
+      crossorigin: "anonymous",
+      async: "true",
+    };
+    Object.entries(attributes).forEach(([key, value]) => script.setAttribute(key, value));
+    container.append(script);
+  });
+
+  // Registered once for the page rather than once per container: the handler
+  // walks the containers that exist, so a page with several would not stack a
+  // duplicate document listener for each.
+  document.addEventListener("theme-change", () => {
+    document.querySelectorAll<HTMLElement>(".comments").forEach((container) => {
+      container
+        .querySelector<HTMLIFrameElement>("iframe.giscus-frame")
+        ?.contentWindow?.postMessage({ giscus: { setConfig: { theme: document.documentElement.dataset.theme ?? "light" } } }, "https://giscus.app");
+    });
+  });
+</script>
+
+<style>
+  .comments {
+    margin-top: 3rem;
+  }
+</style>

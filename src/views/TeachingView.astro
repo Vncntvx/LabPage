@@ -1,0 +1,24 @@
+---
+import { render, type CollectionEntry } from "astro:content";
+import type { Locale } from "../lib/i18n";
+import EntryLayout from "../layouts/EntryLayout.astro";
+import Teaching from "../components/Teaching.astro";
+import Prose from "../components/ui/Prose.astro";
+
+/** The teaching page: an intro body, then the course catalog and calendar. */
+interface Props {
+  entry: CollectionEntry<"pages">;
+  locale: Locale;
+  path: string;
+}
+
+const { entry, locale, path } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<EntryLayout entry={entry} locale={locale} path={path}>
+  <Prose>
+    <Content />
+  </Prose>
+  <Teaching locale={locale} calendar={entry.data.calendar} />
+</EntryLayout>

@@ -1,0 +1,90 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { strings, type Locale } from "../lib/i18n";
+import { courseMetaPairs } from "../lib/courses";
+import SectionHeader from "./SectionHeader.astro";
+import EmptyState from "./EmptyState.astro";
+import ScrollTable from "./ui/ScrollTable.astro";
+import MetaList from "./ui/MetaList.astro";
+interface Props {
+  entry: CollectionEntry<"teachings">;
+  locale: Locale;
+}
+const { entry, locale } = Astro.props;
+const course = entry.data,
+  labels = strings(locale).courses;
+// The detail page's meta list is the only place a course's term appears, so it
+// is folded into the shared rows rather than shown beside the title as on a card.
+const metaPairs = courseMetaPairs(course, labels, { withTerm: true });
+---
+
+<MetaList pairs={metaPairs} variant="detail" />
+<section class="course-schedule" aria-labelledby="course-schedule-title">
+  <SectionHeader id="course-schedule-title" title={labels.schedule} locale={locale} count={course.schedule.length} countForms={labels.sessions} />
+  {course.schedule.length ? (
+    <ScrollTable>
+      <thead>
+        <tr>
+          <th>{labels.week}</th>
+          <th>{labels.date}</th>
+          <th>{labels.topic}</th>
+          <th>{labels.materials}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {course.schedule.map((row) => (
+          <tr>
+            <td>{row.week}</td>
+            <td>{row.date}</td>
+            <td>
+              <strong>{row.topic}</strong>
+              <p>{row.description}</p>
+            </td>
+            <td>
+              <ul class="schedule-materials">
+                {row.materials.map((material) => (
+                  <li>
+                    <a href={material.url}>{material.name}</a>
+                  </li>
+                ))}
+              </ul>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </ScrollTable>
+  ) : (
+    <EmptyState message={strings(locale).empty_state.course_schedule} />
+  )}
+</section>
+
+<style>
+  /* The two-column rail layout now comes from `MetaList`'s `detail` variant,
+     which `Teaching`'s course cards read the same fields through. */
+
+  .course-schedule {
+    margin-top: 2.5rem;
+  }
+
+  /* `:global` because the cells arrive through `ScrollTable`'s slot. */
+  .course-schedule :global(td:first-child),
+  .course-schedule :global(td:nth-child(2)) {
+    width: 5.5rem;
+    white-space: nowrap;
+  }
+
+  .course-schedule :global(td:nth-child(3)) {
+    min-width: 22rem;
+  }
+
+  .course-schedule :global(td p) {
+    margin: 0.35rem 0 0;
+    color: var(--muted);
+    font-size: 0.88rem;
+  }
+
+  .schedule-materials {
+    margin: 0;
+    padding-left: 1.1rem;
+  }
+</style>

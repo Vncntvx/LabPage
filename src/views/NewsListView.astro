@@ -1,0 +1,19 @@
+---
+import type { CollectionEntry } from "astro:content";
+import type { Locale } from "../lib/i18n";
+import EntryLayout from "../layouts/EntryLayout.astro";
+import NewsList from "../components/NewsList.astro";
+
+/** The news index: every visible announcement, newest first. */
+interface Props {
+  entry: CollectionEntry<"pages">;
+  locale: Locale;
+  path: string;
+}
+
+const { entry, locale, path } = Astro.props;
+---
+
+<EntryLayout entry={entry} locale={locale} path={path}>
+  <NewsList locale={locale} />
+</EntryLayout>

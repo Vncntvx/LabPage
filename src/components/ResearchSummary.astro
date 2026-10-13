@@ -1,0 +1,149 @@
+---
+import { Image } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
+import { render } from "astro:content";
+import { resolveAsset, researchImages } from "../lib/assets";
+import Prose from "./ui/Prose.astro";
+interface Props {
+  entry: CollectionEntry<"pages">;
+}
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const questions = entry.data.researchQuestions.map((question) => {
+  const image = resolveAsset(researchImages, question.image);
+  if (!image) throw new Error(`Unknown research image: ${question.image}`);
+  return { ...question, image };
+});
+
+// Tabs and panels are wired by `aria-controls` / `aria-labelledby`, so their ids
+// must be unique across the document — the about page and /research/ both embed
+// this component, and they can appear on one page together.
+const idBase = `research-${Astro.props.entry.id.replace(/[^\w-]/g, "-")}-${crypto.randomUUID().slice(0, 8)}`;
+---
+
+<div class="research-summary">
+  <Prose measure="full">
+    <Content />
+  </Prose>
+  <div class="research-tabs" role="tablist" aria-label={entry.data.title} hidden>
+    {questions.map((question, index) => (
+      <button
+        type="button"
+        role="tab"
+        id={`${idBase}-tab-${index}`}
+        aria-controls={`${idBase}-panel-${index}`}
+        aria-selected={index === 0 ? "true" : "false"}
+        tabindex={index === 0 ? 0 : -1}>
+        {question.title}
+      </button>
+    ))}
+  </div>
+  {questions.map((question, index) => (
+    <section class="research-panel" id={`${idBase}-panel-${index}`} aria-labelledby={`${idBase}-tab-${index}`} tabindex="0">
+      <h3>{question.title}</h3>
+      <Image src={question.image} alt={question.title} widths={[480, 960, 1440]} sizes="(max-width: 1040px) 95vw, 1000px" />
+    </section>
+  ))}
+</div>
+<script>
+  document.querySelectorAll<HTMLElement>(".research-summary").forEach((section) => {
+    const tablist = section.querySelector<HTMLElement>("[role=tablist]");
+    const tabs = [...section.querySelectorAll<HTMLButtonElement>("[role=tab]")];
+    const panels = [...section.querySelectorAll<HTMLElement>(".research-panel")];
+    const select = (index: number, focus = false) => {
+      tabs.forEach((tab, i) => {
+        tab.setAttribute("aria-selected", String(i === index));
+        tab.tabIndex = i === index ? 0 : -1;
+      });
+      panels.forEach((panel, i) => {
+        panel.hidden = i !== index;
+        panel.setAttribute("role", "tabpanel");
+      });
+      if (focus) tabs[index].focus();
+    };
+    if (!tablist || !tabs.length) return;
+    tablist.hidden = false;
+    section.classList.add("tabs-enhanced");
+    select(0);
+    tabs.forEach((tab, index) => {
+      tab.addEventListener("click", () => select(index));
+      tab.addEventListener("keydown", (event) => {
+        const next =
+          event.key === "ArrowRight"
+            ? (index + 1) % tabs.length
+            : event.key === "ArrowLeft"
+              ? (index - 1 + tabs.length) % tabs.length
+              : event.key === "Home"
+                ? 0
+                : event.key === "End"
+                  ? tabs.length - 1
+                  : undefined;
+        if (next !== undefined) {
+          event.preventDefault();
+          select(next, true);
+        }
+      });
+    });
+  });
+</script>
+
+<style>
+  .research-summary {
+    margin-bottom: 1rem;
+    color: var(--text);
+  }
+
+  .research-tabs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 0.9rem;
+    margin-block: 1.5rem 1.55rem;
+  }
+
+  /* A ~42px row, so `--radius-md` is the matching step. The panel image below
+     keeps `--radius-lg`, which is sized for a large surface. */
+  .research-tabs button {
+    border-radius: var(--radius-md);
+    background: var(--surface);
+    color: var(--text);
+    padding: 0.65rem 1rem;
+    text-align: center;
+    font-family: var(--sans);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--line-height-snug);
+    transition:
+      background-color var(--dur-base) ease,
+      border-color var(--dur-base) ease,
+      color var(--dur-base) ease,
+      box-shadow var(--dur-base) ease;
+  }
+
+  .research-tabs button[aria-selected="true"] {
+    border-color: var(--research-accent);
+    background: var(--research-accent);
+    color: var(--research-on-accent);
+    box-shadow: var(--shadow);
+  }
+
+  .research-panel :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 0;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+  }
+
+  /* Once the script reveals the tablist each panel's heading is redundant with
+     its tab, so the enhanced view drops it. */
+  .tabs-enhanced .research-panel h3 {
+    display: none;
+  }
+
+  @media (max-width: 600px) {
+    .research-tabs {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

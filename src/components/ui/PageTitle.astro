@@ -1,0 +1,53 @@
+---
+import { dateLabel, type Locale } from "../../lib/i18n";
+
+/**
+ * The heading block at the top of every page. The about page and the routed
+ * entry views rendered their own copies of this markup; keeping it here means
+ * the description and date styling cannot drift between them.
+ *
+ * The `data-page-title` / `data-page-description` markers let a page that
+ * relabels its own shell (the 404 does, when a server serves it for a locale it
+ * was not built for) retitle the block without reaching in by tag name or class.
+ */
+interface Props {
+  title: string;
+  /** Rendered under the title in muted text. Omit when a page has no summary. */
+  description?: string;
+  /** A news entry's publication date; omit for pages that have no date. */
+  time?: Date;
+  locale: Locale;
+}
+
+const { title, description, time, locale } = Astro.props;
+---
+
+<header class="page-title">
+  <h1 data-page-title>{title}</h1>
+  {description && (
+    <p class="page-description" data-page-description>
+      {description}
+    </p>
+  )}
+  {time && <time datetime={time.toISOString()}>{dateLabel(time, locale)}</time>}
+</header>
+
+<style>
+  .page-title {
+    margin-bottom: 1rem;
+  }
+
+  .page-title > .page-description {
+    margin-bottom: 2rem;
+    color: var(--muted);
+    font-family: var(--sans);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-normal);
+  }
+
+  .page-title > time {
+    margin-bottom: 0;
+    color: var(--muted);
+  }
+</style>

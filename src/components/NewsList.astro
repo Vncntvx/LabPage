@@ -1,0 +1,79 @@
+---
+import { getCollection, render } from "astro:content";
+import { entryRoute } from "../lib/content";
+import { visible } from "../lib/dev-mode";
+import { dateLabel, strings, localeUrl, type Locale } from "../lib/i18n";
+import EmptyState from "./EmptyState.astro";
+import Prose from "./ui/Prose.astro";
+interface Props {
+  locale: Locale;
+  limit?: number | null;
+  scrollable?: boolean;
+}
+const { locale, limit, scrollable } = Astro.props;
+const entries = (await getCollection("news", (entry) => entry.data.locale === locale && visible(entry))).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime()
+);
+const selected = limit ? entries.slice(0, limit) : entries;
+const news = await Promise.all(selected.map(async (entry) => ({ entry, ...(await render(entry)) })));
+---
+
+<div class:list={["news-list", { "news-scroll": scrollable && news.length > 3 }]}>
+  {news.length ? (
+    <ul>
+      {news.map(({ entry, Content }) => (
+        <li>
+          <time datetime={entry.data.date.toISOString()}>{dateLabel(entry.data.date, locale)}</time>
+          {/* `as="div"`: an `<article>` would misdeclare a row in a list as a
+              standalone document. */}
+          <Prose as="div">
+            {entry.data.inline ? <Content /> : <a href={localeUrl(locale, entryRoute(entry.collection, entry))}>{entry.data.title}</a>}
+          </Prose>
+        </li>
+      ))}
+    </ul>
+  ) : (
+    <EmptyState message={strings(locale).empty_state.news} />
+  )}
+</div>
+
+<style>
+  .news-list ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .news-list li {
+    display: grid;
+    grid-template-columns: 9rem minmax(0, 1fr);
+    gap: 1rem;
+    padding-block: 0.15rem;
+  }
+
+  .news-list li:first-child {
+    padding-top: 0;
+  }
+
+  .news-list time {
+    color: var(--muted);
+    font-size: 0.88rem;
+  }
+
+  /* The Markdown body carries the global `.prose`; only its spacing is local. */
+  .news-list :global(p) {
+    margin: 0;
+  }
+
+  .news-scroll {
+    max-height: 19rem;
+    overflow-y: auto;
+  }
+
+  @media (max-width: 600px) {
+    .news-list li {
+      grid-template-columns: 1fr;
+      gap: 0.25rem;
+    }
+  }
+</style>

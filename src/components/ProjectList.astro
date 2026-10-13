@@ -1,0 +1,186 @@
+---
+import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
+import { visible } from "../lib/dev-mode";
+import { localeUrl, strings, type Locale } from "../lib/i18n";
+import { projectImages, resolveAsset } from "../lib/assets";
+import SectionHeader from "./SectionHeader.astro";
+import Card from "./ui/Card.astro";
+import ChipButton from "./ui/ChipButton.astro";
+
+interface Props {
+  locale: Locale;
+  categories?: string[];
+}
+
+interface HubCard {
+  key: string;
+  title: string;
+  description: string;
+  href: string;
+  image: ImageMetadata | undefined;
+  github: string | undefined;
+  group: string;
+}
+
+const { locale, categories = [] } = Astro.props;
+const projectLabels = strings(locale).projects;
+const projects = (await getCollection("projects", (entry) => entry.data.locale === locale && visible(entry))).sort(
+  (a, b) => a.data.importance - b.data.importance || a.data.title.localeCompare(b.data.title)
+);
+const categoryLabels = strings(locale).categories;
+const labels = {
+  action: projectLabels.action,
+  github: "GitHub",
+  repository: projectLabels.repository,
+  thumbnail: projectLabels.thumbnail_alt,
+};
+
+const projectCards: HubCard[] = projects.map(({ data }) => ({
+  key: `project:${data.routeSlug}`,
+  title: data.title,
+  description: data.description,
+  href: localeUrl(locale, `/projects/${data.routeSlug}/`),
+  image: resolveAsset(projectImages, data.image),
+  github: data.github,
+  group: data.category ?? "",
+}));
+
+const projectCategories = [...new Set([...categories, ...projectCards.map((card) => card.group)])].filter((category) =>
+  projectCards.some((card) => card.group === category)
+);
+const groups = [
+  ...projectCategories.map((category) => ({
+    id: `project-category-${category}`,
+    title: categoryLabels[category as keyof typeof categoryLabels] ?? category,
+    countForms: projectLabels.count,
+    cards: projectCards.filter((card) => card.group === category),
+  })),
+];
+---
+
+<div class="project-hub">
+  {groups.map((group) => (
+    <section class="project-group">
+      <SectionHeader id={group.id} title={group.title} locale={locale} count={group.cards.length} countForms={group.countForms} />
+      <div class="project-grid">
+        {group.cards.map((card) => (
+          <Card>
+            {card.image && (
+              <div slot="media">
+                <a class="project-card-media-link" href={card.href} aria-label={`${labels.action}: ${card.title}`}>
+                  <Image
+                    src={card.image}
+                    alt={`${card.title} ${labels.thumbnail}`}
+                    width={640}
+                    widths={[320, 640]}
+                    sizes="(max-width: 767px) 100vw, (max-width: 1100px) 50vw, 320px"
+                    loading="lazy"
+                  />
+                </a>
+              </div>
+            )}
+            <div class="project-card-heading">
+              <h3>{card.title}</h3>
+            </div>
+            <p>{card.description}</p>
+            <div class="project-card-actions">
+              <ChipButton href={card.href} primary>
+                {labels.action}
+              </ChipButton>
+              {card.github && (
+                <ChipButton href={card.github} target="_blank" rel="noreferrer" aria-label={`${labels.repository}: ${card.title}`}>
+                  <img class="project-card-github-icon" src="/assets/img/github.svg" alt="" width="14" height="14" />
+                  {labels.github}
+                </ChipButton>
+              )}
+            </div>
+          </Card>
+        ))}
+      </div>
+    </section>
+  ))}
+</div>
+
+<style>
+  .project-hub {
+    margin-top: 0.5rem;
+  }
+
+  .project-group {
+    margin-top: 2rem;
+  }
+
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.15rem;
+    align-items: stretch;
+  }
+
+  /* `:global` because `astro:assets` renders the `<img>` and the caller's `<a>`
+       sits in a named slot, so neither carries this component's scope. The
+       media container and its hover zoom belong to `Card`, which owns the
+       element they wrap. */
+  .project-card-media-link {
+    display: block;
+    height: 100%;
+  }
+
+  .project-card-media-link :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform var(--dur-slow) ease;
+  }
+
+  .project-card-heading {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+    min-width: 0;
+  }
+
+  /* `:global` because the `<h3>` is the caller's, passed through `Card`'s
+       default slot rather than rendered here. */
+  .project-card-heading :global(h3) {
+    margin: 0;
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-snug);
+  }
+
+  .project-card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin-top: 0.85rem;
+  }
+
+  .project-card-github-icon {
+    width: 0.9rem;
+    height: 0.9rem;
+    margin-right: 0.35rem;
+    object-fit: contain;
+  }
+
+  /* GitHub's mark is dark-on-transparent, which vanishes in the dark theme. */
+  :global(:root[data-theme="dark"]) .project-card-github-icon {
+    filter: invert(1);
+  }
+
+  @media (max-width: 600px) {
+    .project-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 900px) {
+    .project-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>

@@ -1,0 +1,211 @@
+{
+  "bibliography": {
+    "abstract": "摘要",
+    "awarded": "获奖",
+    "bib": "Bib",
+    "blog": "博客",
+    "book_prefix": "收录于",
+    "click_to_view": "点击查看",
+    "code": "代码",
+    "doi": "DOI",
+    "html": "HTML",
+    "last_author_prefix": "和",
+    "pdf": "PDF",
+    "poster": "海报",
+    "slides": "幻灯片",
+    "supp": "补充材料",
+    "video": "视频",
+    "website": "网站",
+    "filter": "筛选发表",
+    "empty": "没有匹配的发表。",
+    "more_authors_label": {
+      "one": "和 {count} 位更多作者",
+      "other": "和 {count} 位更多作者"
+    },
+    "hide_authors": "收起作者",
+    "copy_bibtex": "复制 BibTeX",
+    "copied_bibtex": "已复制",
+    "scholar_citations": "Google Scholar 引用",
+    "publication_information": "出版物信息",
+    "preview_alt": "放大论文缩略图",
+    "lightbox_label": "论文缩略图预览",
+    "close_preview": "关闭预览",
+    "count": {
+      "one": "{count} 篇发表",
+      "other": "{count} 篇发表"
+    },
+    "copy_failed": "复制失败"
+  },
+  "categories": {
+    "fun": "娱乐",
+    "research": "Research",
+    "typst": "Typst",
+    "work": "工作"
+  },
+  "contact_note": "欢迎随时通过邮箱与我联系：",
+  "cv": {
+    "table_of_contents": "目录",
+    "social_networks": "社交网络"
+  },
+  "footer": {
+    "copyright": "保留所有权利",
+    "last_updated": "更新于"
+  },
+  "research_summary": "研究概要",
+  "news": "新闻",
+  "courses": {
+    "calendar": "日历",
+    "calendar_description": "查看近期教学安排和办公时间。",
+    "courses_count": {
+      "one": "{count} 门课程",
+      "other": "{count} 门课程"
+    },
+    "date": "日期",
+    "instructor": "讲师",
+    "location": "地点",
+    "materials": "材料",
+    "schedule": "课程表",
+    "term": "学期",
+    "time": "时间",
+    "topic": "主题",
+    "upcoming": "近期安排",
+    "view_course": "查看课程",
+    "show_calendar": "展开日历",
+    "sessions": {
+      "one": "{count} 个课次",
+      "other": "{count} 个课次"
+    },
+    "week": "周"
+  },
+  "people": {
+    "current": "现有成员",
+    "alumni": "校友",
+    "opportunities": "加入课题组",
+    "current_count": {
+      "one": "{count} 位成员",
+      "other": "{count} 位成员"
+    },
+    "alumni_count": {
+      "one": "{count} 位校友",
+      "other": "{count} 位校友"
+    },
+    "opportunity_count": {
+      "one": "{count} 个机会",
+      "other": "{count} 个机会"
+    },
+    "research": "研究方向",
+    "joined": "加入时间",
+    "left": "离开时间",
+    "learn_more": "个人主页",
+    "deadline": "截止日期",
+    "apply": "了解详情",
+    "empty": "暂无可展示的人员信息。",
+    "empty_opportunities": "暂无开放的招生或职位机会。",
+    "types": {
+      "phd": "博士生",
+      "postdoc": "博士后",
+      "research-assistant": "研究助理",
+      "visitor": "访问学者",
+      "collaboration": "合作机会"
+    }
+  },
+  "resources": {
+    "software": "软件",
+    "dataset": "数据集",
+    "facility": "实验设施",
+    "guide": "文档与指南",
+    "other": "其他资源",
+    "resource_count": {
+      "one": "{count} 项资源",
+      "other": "{count} 项资源"
+    },
+    "access": {
+      "public": "公开",
+      "restricted": "受限访问"
+    },
+    "maintainer": "维护者",
+    "open": "查看资源",
+    "empty": "暂无可展示的资源。"
+  },
+  "search": {
+    "dark_theme": {
+      "description": "切换为深色主题",
+      "title": "切换到深色主题"
+    },
+    "dropdown": "下拉菜单",
+    "email": "发送邮件",
+    "footer": {
+      "close": "关闭",
+      "navigate": "导航",
+      "parent": "返回上级",
+      "select": "选择"
+    },
+    "languages": "语言",
+    "light_theme": {
+      "description": "切换为浅色主题",
+      "title": "切换到浅色主题"
+    },
+    "navigation": "导航菜单",
+    "news": "新闻",
+    "placeholder": "输入以开始搜索",
+    "bib_placeholder": "输入以筛选",
+    "empty": "没有找到匹配的内容。",
+    "loading": "正在加载搜索索引…",
+    "result_count": {
+      "one": "{count} 个结果",
+      "other": "{count} 个结果"
+    },
+    "load_failed": "搜索索引加载失败。",
+    "projects": "项目",
+    "socials": "社交",
+    "system_theme": {
+      "description": "跟随系统主题",
+      "title": "使用系统默认主题"
+    },
+    "theme": "主题"
+  },
+  "header": {
+    "toggle_navigation": "切换导航",
+    "search": "搜索",
+    "change_theme": "更改主题",
+    "reading_progress": "阅读进度"
+  },
+  "projects": {
+    "count": {
+      "one": "{count} 个项目",
+      "other": "{count} 个项目"
+    },
+    "thumbnail_alt": "项目缩略图",
+    "action": "查看项目",
+    "repository": "代码仓库"
+  },
+  "labels": {
+    "home": "首页",
+    "primary": "主导航",
+    "back": "返回顶部",
+    "powered": "由 Astro 驱动",
+    "language": "语言",
+    "skip": "跳转到正文",
+    "wechat": "微信二维码",
+    "social_links": "社交链接",
+    "copy_unavailable": "剪贴板不可用"
+  },
+  "not_found": {
+    "code": "404",
+    "title": "页面未找到",
+    "description": "看起来出现了错误，这里什么都没有。",
+    "suggestions": "试试这些页面",
+    "home": "返回首页",
+    "search": "站内搜索"
+  },
+  "feed": {
+    "title": "徐文杰 — 新闻",
+    "description": "徐文杰的获奖情况与学术进展。"
+  },
+  "share_image_alt": "徐文杰 — 管理科学与工程博士研究生，中国科学院科技战略咨询研究院 · 风险管理",
+  "empty_state": {
+    "news": "暂无新闻...",
+    "courses": "暂无课程。",
+    "course_schedule": "该课程暂无课程安排。"
+  }
+}

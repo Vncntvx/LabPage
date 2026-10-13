@@ -1,0 +1,53 @@
+---
+/**
+ * A floating panel anchored below its toggle. The shared panel geometry, notch
+ * and item styling live in the global `.menu-panel` layer; this component owns
+ * only the markup and lets the caller anchor the panel to an edge.
+ *
+ * Open/closed state is not a prop: the caller's own script writes `data-open`
+ * on the wrapping element and the global layer reveals the panel from it, so
+ * one rule serves every caller.
+ */
+interface Props {
+  /** Which corner the panel is anchored to. */
+  align?: "left" | "right";
+  /** Overrides the caller's own class on the `<ul>`. */
+  class?: string;
+}
+
+const { align = "left", class: className } = Astro.props;
+---
+
+<ul class:list={["menu-panel", className, { "menu-panel--left": align === "left", "menu-panel--right": align === "right" }]}>
+  <slot />
+</ul>
+
+<style>
+  /* The two anchors differ in which edge they use, how far below the toggle they
+     hang and which of the header's two stacking tiers they occupy; everything
+     else is the shared `.menu-panel` primitive. */
+  .menu-panel--left {
+    left: 0;
+    min-width: 9.5rem;
+    transform-origin: top left;
+    z-index: var(--z-dropdown);
+  }
+
+  .menu-panel--left::before {
+    left: 1.25rem;
+  }
+
+  /* Overrides the base rule's 0.35rem drop with a slightly wider one, and sits
+     a tier below the left-anchored dropdown because it opens upward on mobile. */
+  .menu-panel--right {
+    top: calc(100% + 0.5rem);
+    right: 0;
+    min-width: 8.75rem;
+    transform-origin: top right;
+    z-index: var(--z-menu);
+  }
+
+  .menu-panel--right::before {
+    right: 0.75rem;
+  }
+</style>

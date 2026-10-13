@@ -1,0 +1,116 @@
+---
+import { Image } from "astro:assets";
+import { getCollection, render, type CollectionEntry } from "astro:content";
+import { profileImages, resolveAsset } from "../lib/assets";
+import { enabled, visible } from "../lib/dev-mode";
+import { strings, localeUrl, type Locale } from "../lib/i18n";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ResearchSummary from "../components/ResearchSummary.astro";
+import SocialLinks from "../components/SocialLinks.astro";
+import NewsList from "../components/NewsList.astro";
+import PageTitle from "../components/ui/PageTitle.astro";
+import LinkedSection from "../components/ui/LinkedSection.astro";
+import Prose from "../components/ui/Prose.astro";
+
+/**
+ * The home page: a profile rather than an entry page, so it uses `BaseLayout`
+ * directly and declares `ProfilePage` structured data with the person as its
+ * `mainEntity`. Every section is opt-in through the entry's own frontmatter flags,
+ * resolved with `enabled` so `dev:all` can force them on.
+ */
+interface Props {
+  entry: CollectionEntry<"pages">;
+  locale: Locale;
+  path: string;
+}
+
+const { entry, locale, path } = Astro.props;
+const home = entry.data;
+const { Content } = await render(entry);
+const profileImage = resolveAsset(profileImages, home.profile?.image);
+if (home.profile && !profileImage) {
+  throw new Error(`Unknown profile image: ${home.profile.image}`);
+}
+const research = enabled(home.research_summary?.enabled)
+  ? (await getCollection("pages", (item) => item.data.locale === locale && item.data.pageId === "research" && visible(item)))[0]
+  : undefined;
+// Resolved rather than tested inline so the template keeps the narrowed
+// `announcements` object: a helper call in the condition would not narrow it.
+const announcements = enabled(home.announcements?.enabled) ? (home.announcements ?? { enabled: true, scrollable: false, limit: null }) : undefined;
+---
+
+<BaseLayout locale={locale} path={path} noindex={home.noindex} title="Wenjie Xu" description={home.description} schemaType="ProfilePage">
+  <PageTitle title="Wenjie Xu" description={home.subtitle} locale={locale} />
+  <article class="intro">
+    <Prose>{Content && <Content />}</Prose>
+    {profileImage && (
+      <figure class="profile">
+        <Image
+          src={profileImage}
+          alt="Wenjie Xu"
+          width={260}
+          widths={[260, 520]}
+          sizes="260px"
+          loading="eager"
+          class:list={[{ circular: home.profile?.image_circular, "is-circle": home.profile?.image_circular }]}
+        />
+        {home.profile?.more_info && <figcaption set:html={home.profile.more_info} />}
+      </figure>
+    )}
+  </article>
+  {research && (
+    <LinkedSection title={strings(locale).research_summary} href={localeUrl(locale, "/research/")}>
+      <ResearchSummary entry={research} />
+    </LinkedSection>
+  )}
+  {announcements && (
+    <LinkedSection title={strings(locale).news} href={localeUrl(locale, "/news/")}>
+      <NewsList locale={locale} limit={announcements.limit} scrollable={announcements.scrollable} />
+    </LinkedSection>
+  )}
+  {enabled(home.social) && <SocialLinks locale={locale} />}
+</BaseLayout>
+
+<style>
+  .intro {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .profile {
+    margin: 0;
+    text-align: center;
+  }
+
+  /* `width: 100%` alone lets the portrait span the whole column once the intro
+     stacks into one column below 768px — it rendered 668px wide inside a 370px
+     viewport. The cap matches the width the image is requested at, so the
+     browser never scales a 260px source up. */
+  .profile :global(img) {
+    display: block;
+    width: 100%;
+    max-width: 260px;
+    height: auto;
+    margin-inline: auto;
+  }
+
+  .profile :global(.circular) {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    box-shadow: var(--shadow);
+  }
+
+  .profile figcaption {
+    margin-top: 0.8rem;
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  /* Beside the bio once there is room for two columns. */
+  @media (min-width: 768px) {
+    .intro {
+      grid-template-columns: minmax(0, 1fr) 30%;
+      align-items: start;
+    }
+  }
+</style>

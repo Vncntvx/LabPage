@@ -1,0 +1,60 @@
+---
+import { formatCount, type PluralForms } from "../lib/count";
+import type { Locale } from "../lib/i18n";
+
+interface Props {
+  title: string | number;
+  locale: Locale;
+  count: number;
+  /** Plural forms for the count, e.g. `{count} publication` / `{count} publications`. */
+  countForms: PluralForms;
+  id?: string;
+}
+
+const { title, locale, count, countForms, id } = Astro.props;
+---
+
+<header class="section-group-header">
+  <h2 class="section-group-title" id={id}>
+    {title}
+  </h2>
+  <span class="section-group-meta" data-section-count data-count-one={countForms.one} data-count-other={countForms.other}>
+    {formatCount(locale, countForms, count)}
+  </span>
+</header>
+
+<style>
+  .section-group-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin: 2.75rem 0 1.25rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.6rem;
+  }
+
+  .section-group-title {
+    margin: 0;
+    color: var(--muted);
+    font-family: var(--serif);
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-tight);
+    text-align: left;
+  }
+
+  .section-group-meta {
+    color: var(--muted);
+    font-family: var(--sans);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-regular);
+    white-space: nowrap;
+  }
+
+  @media (max-width: 600px) {
+    .section-group-title {
+      font-size: 1.85rem;
+    }
+  }
+</style>

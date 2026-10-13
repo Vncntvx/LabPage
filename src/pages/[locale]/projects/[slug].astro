@@ -1,0 +1,10 @@
+---
+import { collectionShapeStaticPaths } from "../../../lib/route-paths";
+import { prefixedLocales } from "../../../lib/locale";
+import ProjectDetailView from "../../../views/ProjectDetailView.astro";
+
+export const getStaticPaths = collectionShapeStaticPaths("projects", prefixedLocales);
+const { entry, locale, path } = Astro.props;
+---
+
+<ProjectDetailView entry={entry} locale={locale} path={path} />

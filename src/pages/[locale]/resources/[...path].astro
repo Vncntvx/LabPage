@@ -1,0 +1,10 @@
+---
+import { pageShapeStaticPaths } from "../../../lib/route-paths";
+import { prefixedLocales } from "../../../lib/locale";
+import ResourcesView from "../../../views/ResourcesView.astro";
+
+export const getStaticPaths = pageShapeStaticPaths("resources", prefixedLocales);
+const { entry, locale, path } = Astro.props;
+---
+
+<ResourcesView entry={entry} locale={locale} path={path} />

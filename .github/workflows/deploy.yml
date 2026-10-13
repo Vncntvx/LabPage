@@ -1,0 +1,181 @@
+name: Deploy
+
+# After CI succeeds on main, build the tested commit, publish the static output
+# to gh-pages, and let the server fetch that branch into its document root.
+# Manual runs use the selected workflow commit. The server needs no artifact
+# upload or release directory.
+#
+# Formatting, type, content, and artifact checks are handled locally and by CI.
+# Automatic deployment only publishes a commit that CI accepted; manual runs
+# remain available for deliberate redeployments and rollbacks.
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    if: >-
+      ${{
+        github.event_name == 'workflow_dispatch' ||
+        (
+          github.event.workflow_run.conclusion == 'success' &&
+          github.event.workflow_run.event == 'push'
+        )
+      }}
+    runs-on: ubuntu-latest
+    environment: production
+    concurrency:
+      # One deploy at a time. A newer push cancels an in-flight deploy rather
+      # than letting two checkouts race for the same document root.
+      group: production
+      cancel-in-progress: true
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}
+
+      # setup-bun reads the version from package.json.
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Cache Bun's package cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lock') }}
+          restore-keys: ${{ runner.os }}-bun-
+
+      - name: Install dependencies
+        run: bun ci
+
+      - name: Build static site
+        env:
+          BUILD_COMMIT: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}
+        run: bun run build
+
+      - name: Verify built output
+        run: bun run verify:dist
+
+      # The size budgets gate the publish, not just CI: an oversized build should
+      # not reach the server even if CI was skipped for a manual redeploy.
+      - name: Check output budgets
+        run: bun run verify:budgets
+
+      # Publish the complete tree, including build.json and MANIFEST.sha256.
+      - name: Publish dist to gh-pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: dist
+          branch: gh-pages
+          clean: true
+          commit-message: "Deploy ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}"
+
+      - name: Pull gh-pages into the document root
+        uses: appleboy/ssh-action@v1
+        env:
+          EXPECTED_COMMIT: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
+          fingerprint: ${{ secrets.SSH_FINGERPRINT }}
+          envs: EXPECTED_COMMIT
+          script: |
+            # The account's login shell is zsh; keep this script POSIX sh.
+            set -eu
+
+            SITE_ROOT=/opt/1panel/www/sites/lab.wenjiexu.site
+            INDEX_DIR="$SITE_ROOT/index"
+            RELEASE_ROOT="$SITE_ROOT/releases"
+            WORK_DIR="$SITE_ROOT/LabPage"
+            REPOSITORY=https://github.com/Vncntvx/LabPage
+
+            mkdir -p "$SITE_ROOT" "$RELEASE_ROOT"
+
+            # Keep a shallow repository for fetching the published branch.
+            if [ ! -d "$WORK_DIR/.git" ]; then
+              rm -rf "$WORK_DIR"
+              git init --quiet "$WORK_DIR"
+            fi
+
+            # Try mirrors first because github.com can be unreliable from this
+            # host, then fall back to the canonical repository.
+            source=
+            for candidate in \
+              "https://gh-proxy.org/$REPOSITORY" \
+              "https://v6.gh-proxy.org/$REPOSITORY" \
+              "https://cdn.gh-proxy.org/$REPOSITORY" \
+              "https://ghfast.top/$REPOSITORY" \
+              "https://ghproxy.net/$REPOSITORY" \
+              "$REPOSITORY"
+            do
+              echo "fetching gh-pages from $candidate"
+              if git -C "$WORK_DIR" fetch --quiet --depth=1 --no-tags "$candidate" gh-pages; then
+                source=$candidate
+                break
+              fi
+              echo "::warning::could not fetch from $candidate, trying the next source"
+            done
+            [ -n "$source" ] || { echo "::error::gh-pages is unreachable from every source"; exit 1; }
+
+            RELEASE_DIR="$RELEASE_ROOT/$EXPECTED_COMMIT"
+            rm -rf "$RELEASE_DIR"
+            mkdir -p "$RELEASE_DIR"
+            git --git-dir="$WORK_DIR/.git" --work-tree="$RELEASE_DIR" read-tree --empty
+            git --git-dir="$WORK_DIR/.git" --work-tree="$RELEASE_DIR" checkout -f FETCH_HEAD -- .
+
+            # Verify the complete release before touching the live document root.
+            ( cd "$RELEASE_DIR" && sha256sum -c --quiet MANIFEST.sha256 )
+            grep -q "\"commit\": \"$EXPECTED_COMMIT\"" "$RELEASE_DIR/build.json"
+
+            # Preserve the panel-managed directory inside the staged release, then
+            # switch both directories with same-filesystem renames.
+            if [ -d "$INDEX_DIR/.well-known" ]; then
+              cp -a "$INDEX_DIR/.well-known" "$RELEASE_DIR/.well-known"
+            fi
+            OLD_DIR="$RELEASE_ROOT/previous"
+            rm -rf "$OLD_DIR"
+            if [ -d "$INDEX_DIR" ]; then mv "$INDEX_DIR" "$OLD_DIR"; fi
+            mv "$RELEASE_DIR" "$INDEX_DIR"
+
+            # OpenResty reads the site as uid 1000 (the panel's own user).
+            chown -R 1000:1000 "$INDEX_DIR"
+            rm -rf "$OLD_DIR"
+
+            echo "deployed $EXPECTED_COMMIT to $INDEX_DIR"
+
+      # Confirm that the public site serves this deployment and its key routes.
+      - name: Check the live site
+        env:
+          SITE_URL: https://lab.wenjiexu.site
+          EXPECTED_COMMIT: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}
+        run: |
+          for attempt in $(seq 1 15); do
+            served=$(curl -fsS --max-time 10 "$SITE_URL/build.json" 2>/dev/null || true)
+            if [ -n "$served" ] && grep -q "$EXPECTED_COMMIT" <<<"$served"; then
+              break
+            fi
+            echo "attempt $attempt: $SITE_URL/build.json does not report $EXPECTED_COMMIT yet"
+            sleep 4
+          done
+
+          served=$(curl -fsS --max-time 10 "$SITE_URL/build.json" 2>/dev/null || true)
+          grep -q "$EXPECTED_COMMIT" <<<"$served" ||
+            { echo "::error::$SITE_URL/build.json reports $(tr -d '\n ' <<<"$served"), not $EXPECTED_COMMIT"; exit 1; }
+
+          for route in / /zh-CN/ /sitemap-index.xml /feed.xml /robots.txt; do
+            code=$(curl -o /dev/null -sS --max-time 10 -w '%{http_code}' "$SITE_URL$route" 2>/dev/null || echo 000)
+            [ "$code" = 200 ] || { echo "::error::$SITE_URL$route returned $code"; exit 1; }
+            echo "  $code $route"
+          done
+
+          echo "live: $served"

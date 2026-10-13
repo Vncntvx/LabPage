@@ -1,0 +1,7 @@
+# Generated output and dependencies
+node_modules/
+dist/
+.astro/
+
+# Generated lockfile (managed by Bun)
+bun.lock

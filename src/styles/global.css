@@ -1,0 +1,581 @@
+/* Design tokens, document defaults, and the three primitives that more than one
+   component renders. Everything else lives in the owning component's <style>.
+   A selector belongs here only when it styles an element Astro's scoping cannot
+   reach: the document itself, rendered Markdown, or a primitive shared across
+   components. */
+:root {
+  /* `light-dark()` resolves against the used color-scheme, so each token carries both
+     themes in one declaration. The `data-theme` overrides below pin the scheme; without
+     them (JS disabled) the system preference wins. */
+  color-scheme: light dark;
+  --page-bg: light-dark(#fff, #1c1c1d);
+  --surface: light-dark(#f7f8fa, #25282c);
+  --surface-strong: light-dark(#eef1f4, #30343a);
+  --text: light-dark(#1c1c1d, #f2f4f7);
+  --muted: light-dark(#68707a, #aeb6c0);
+  --border: light-dark(#dfe3e8, #40464e);
+  --accent: light-dark(#1d4ed8, #60a5fa);
+  --accent-strong: light-dark(#1e3a8a, #93c5fd);
+  --accent-soft: light-dark(rgb(29 78 216 / 10%), rgb(96 165 250 / 18%));
+  --research-accent: light-dark(#5f6f52, #cfe3a8);
+  --research-on-accent: light-dark(#fff, #1f2a17);
+  --shadow-sm: 0 1px 3px light-dark(rgb(28 28 29 / 8%), rgb(0 0 0 / 24%));
+  --shadow: 0 2px 8px light-dark(rgb(28 28 29 / 8%), rgb(0 0 0 / 24%));
+  --shadow-hover: 0 8px 22px light-dark(rgb(28 28 29 / 14%), rgb(0 0 0 / 36%));
+  --shadow-modal: 0 24px 80px rgb(0 0 0 / 28%);
+  --scrim: rgb(18 20 24 / 52%);
+  --scrim-strong: rgb(0 0 0 / 72%);
+  /* A translucent panel surface: the header's reading-progress track and the
+     lightbox's close button both float over content and need the page colour
+     rather than a fixed tint, so they blend with whatever sits beneath. */
+  --scrim-surface: color-mix(in srgb, var(--page-bg) 88%, transparent);
+
+  /* Geometry, layering and motion scales.
+
+     The radius steps are sized against the elements that use them, not chosen
+     as a free-floating sequence: a continuous-curvature corner reads as
+     "correct" at roughly 20–25% of the element's edge, so a fixed step that
+     suits a 200px panel would round a 32px chip into a lozenge. Each step below
+     is annotated with the element size it is tuned for. */
+  --radius-xs: 4px; /* badges and inline chips, ~24px tall */
+  --radius-sm: 8px; /* pills, inputs, table cells, ~32px */
+  --radius-md: 10px; /* buttons and square icon controls, ~40px */
+  --radius-lg: 14px; /* cards, dialogs, tiles, ~56px */
+  --radius-xl: 24px; /* large panels, ~120px */
+  --radius-2xl: 32px; /* feature panels, ~200px */
+  --radius-pill: 50%;
+
+  --z-base: 1;
+  --z-footer: 5;
+  --z-header: 10;
+  --z-popover: 10;
+  --z-menu: 20;
+  --z-dropdown: 25;
+  --z-skip: 30;
+
+  --dur-fast: 120ms;
+  --dur-base: 150ms;
+  --dur-medium: 180ms;
+  --dur-relaxed: 200ms;
+  --dur-slow: 220ms;
+  --dur-slower: 250ms;
+
+  /* Typography Stacks */
+  --serif: "Newsreader", "Source Serif 4", "Source Serif Pro", "Charter", "Georgia", "Songti SC", "SimSun", "Noto Serif CJK SC", serif;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+  --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+
+  /* Typographic Scale (Modular Type Scale based on 16px) */
+  --font-size-2xs: 0.75rem; /* 12px: footnotes, copyright, micro labels */
+  --font-size-xs: 0.8125rem; /* 13px: badges, tags, secondary buttons */
+  --font-size-sm: 0.875rem; /* 14px: metadata, subtitles, nav links, counters */
+  --font-size-base: 1rem; /* 16px: standard body text, list items */
+  --font-size-md: 1.0625rem; /* 17px: lead paragraphs, callouts */
+  --font-size-lg: 1.125rem; /* 18px: card titles, emphasized subheadings, site-name */
+  --font-size-xl: 1.25rem; /* 20px: h4, component titles */
+  --font-size-2xl: 1.5rem; /* 24px: h3, secondary headings */
+  --font-size-3xl: 2.25rem; /* 36px: h2, section group titles */
+  --font-size-4xl: 3rem; /* 48px: h1, page titles */
+
+  /* Font Weights */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Line Heights */
+  --line-height-tight: 1.2;
+  --line-height-snug: 1.35;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.65;
+
+  font-family: var(--sans);
+  line-height: var(--line-height-relaxed);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+:root[data-theme="light"] {
+  color-scheme: only light;
+}
+
+/* ── Continuous-curvature corners ───────────────────────────────────────────
+   A plain `border-radius` arc is a circular segment, so it meets its straight
+   edge with a sudden change of direction — the "corner" you can see. A
+   superellipse (what `squircle` draws) has curvature that varies continuously,
+   which is what Apple's controls use.
+
+   `corner-shape` does NOT inherit, so `:root` alone would leave every
+   descendant on the initial `round`; the descendant selector is what actually
+   applies it. It has no effect where `border-radius` resolves to 0, so the
+   square-cornered elements are unaffected and need no opt-out.
+
+   A 50% radius is the exception: it means "a circle", and squircle flattens it
+   into a rounded square — measurably, about 55px of deviation on a 300px
+   portrait. An element whose radius is 50% therefore carries `.is-circle` and
+   opts back out below. The opt-out must out-specify `:root *`, which is why it
+   repeats the `:root` prefix instead of using `:where()`.
+
+   Unsupported in Firefox and Safari as of 2026: those engines ignore the
+   declaration outright and keep the plain `border-radius`, so this is purely
+   additive and needs no fallback. */
+@supports (corner-shape: squircle) {
+  :root,
+  :root * {
+    corner-shape: squircle;
+  }
+
+  :root .is-circle {
+    corner-shape: round;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: only dark;
+}
+
+:root[data-theme="dark"] .astro-code,
+:root[data-theme="dark"] .astro-code span {
+  color: var(--shiki-dark) !important;
+  background-color: var(--shiki-dark-bg) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) .astro-code,
+  :root:not([data-theme]) .astro-code span {
+    color: var(--shiki-dark) !important;
+    background-color: var(--shiki-dark-bg) !important;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+html {
+  scroll-padding-top: 5rem;
+}
+
+body {
+  min-width: 320px;
+  margin: 0;
+  background: var(--page-bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-relaxed);
+  letter-spacing: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--accent);
+  text-underline-offset: 0.18em;
+  transition:
+    color var(--dur-base) ease,
+    border-color var(--dur-base) ease,
+    background-color var(--dur-base) ease,
+    transform var(--dur-base) ease;
+}
+
+a:hover {
+  color: var(--accent-strong);
+  text-decoration-thickness: 2px;
+}
+
+button,
+select,
+input {
+  color: inherit;
+  font: inherit;
+}
+
+button,
+select,
+summary {
+  cursor: pointer;
+}
+
+/* These defaults are intentionally broad; every component that renders a control
+   resets the parts it does not want in its own scoped block, where specificity is
+   guaranteed to be higher than this element selector. */
+button,
+select,
+input {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--page-bg);
+  padding: 0.45rem 0.65rem;
+}
+
+button:hover,
+select:hover,
+input:hover {
+  border-color: var(--accent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.page-shell {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.container {
+  width: min(calc(100% - 2rem), 1000px);
+  margin-inline: auto;
+}
+
+main {
+  flex: 1;
+  padding-block: 2.25rem 2.5rem;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  color: var(--text);
+  font-family: var(--serif);
+  font-weight: var(--font-weight-semibold);
+}
+
+h1 {
+  margin: 0 0 1rem;
+  font-size: var(--font-size-4xl);
+  line-height: var(--line-height-tight);
+}
+
+h2 {
+  margin: 0 0 1rem;
+  font-size: var(--font-size-3xl);
+  line-height: var(--line-height-tight);
+}
+
+h2 a {
+  color: inherit;
+  text-decoration: none;
+}
+
+h3 {
+  margin: 1.5rem 0 0.45rem;
+  font-size: var(--font-size-2xl);
+  line-height: var(--line-height-snug);
+}
+
+h4 {
+  margin: 1.25rem 0 0.35rem;
+  font-size: var(--font-size-xl);
+  line-height: var(--line-height-snug);
+}
+
+p {
+  margin-block: 0 1rem;
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-relaxed);
+  text-align: justify;
+  text-justify: inter-ideograph;
+}
+
+/* Rendered Markdown. Scoped styles cannot reach these nodes — Astro emits them
+   from the content collection, not from a component template. */
+.prose {
+  max-width: 76ch;
+}
+
+.prose > :first-child {
+  margin-top: 0;
+}
+
+.prose li {
+  margin-bottom: 0.35rem;
+}
+
+.prose img {
+  max-width: 100%;
+  height: auto;
+}
+
+.prose code,
+code {
+  font-family: var(--mono);
+  font-size: 0.9em;
+}
+
+.prose pre,
+pre {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  padding: 1rem;
+}
+
+.prose table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  margin-block: 1.5rem;
+}
+
+.prose th,
+.prose td {
+  border: 1px solid var(--border);
+  padding: 0.5rem 0.7rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.prose th {
+  background: var(--surface);
+}
+
+.prose blockquote {
+  margin-inline: 0;
+  border-left: 3px solid var(--accent);
+  padding-left: 1rem;
+  color: var(--muted);
+}
+
+.skip-link {
+  position: absolute;
+  top: -5rem;
+  left: 1rem;
+  z-index: var(--z-menu);
+  background: var(--text);
+  color: var(--page-bg);
+  padding: 0.65rem 0.9rem;
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+  white-space: nowrap;
+}
+
+/* ThemeInit adds this class to <html> for one frame so every element can
+   transition to its new colours at once. It crosses component boundaries by
+   design, so it cannot be scoped to any one of them. */
+html.theme-transition,
+html.theme-transition body,
+html.theme-transition .site-header,
+html.theme-transition main,
+html.theme-transition .site-footer,
+html.theme-transition dialog,
+html.theme-transition input,
+html.theme-transition button,
+html.theme-transition a {
+  transition:
+    background-color var(--dur-slower) ease,
+    color var(--dur-slower) ease,
+    border-color var(--dur-slower) ease,
+    box-shadow var(--dur-slower) ease;
+}
+
+/* ── Shared primitives ───────────────────────────────────────────────────────
+   Each is rendered by more than one component, so the styling cannot live in any
+   one of their scoped blocks. Components add only their own deltas.
+
+   The control tiers the site recognises, and where each one lives:
+
+     square icon control   `.icon-button` here — 2.25rem, borderless. Used by the
+                            header's search, language and theme controls.
+     outlined pill         `ui/ChipButton` — its `size` / `tone` / `shape` /
+                            `fill` props cover the badge, copy button and
+                            section-pill variants, which used to restate it.
+     bordered hover card   `ui/Card` — its metrics are custom properties, so a
+                            caller with different prose can adopt it.
+     dropdown panel        `.menu-panel` here + `ui/MenuPanel` for the markup.
+     stroked icon          `.icon` here + `ui/Icon` for the glyph set and sizes.
+
+   Anything outside that list is a one-off and belongs in its component. */
+
+/* A square, borderless icon-only control: the header's search button, the
+   language toggle and the theme toggle. The header's mobile layout rewrites it
+   into a full-width row, so its components keep a `max-width: 767px` block —
+   the same edge the header itself switches at. */
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  flex: 0 0 auto;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  padding: 0;
+  color: var(--text);
+  line-height: 1;
+  cursor: pointer;
+  transition: color var(--dur-base) ease;
+}
+
+.icon-button:hover {
+  color: var(--accent);
+  background: transparent;
+}
+
+.icon-button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--accent-soft);
+}
+
+/* The label inside an icon button, hidden on desktop and revealed as text by the
+   header's mobile layout. */
+.icon-button-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* A floating panel anchored below a toggle. The header's dropdown menus and the
+   language switcher's menu are the same panel at opposite edges, so the anchor
+   point is the caller's only delta. */
+.menu-panel {
+  position: absolute;
+  top: calc(100% + 0.35rem);
+  margin: 0;
+  padding: 0.35rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--page-bg);
+  box-shadow: var(--shadow-hover);
+  list-style: none;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-6px) scale(0.98);
+  transition:
+    opacity var(--dur-medium) ease,
+    transform var(--dur-medium) ease;
+  visibility: hidden;
+}
+
+/* The little arrow notch pointing at the toggle above. */
+.menu-panel::before {
+  position: absolute;
+  top: -6px;
+  width: 10px;
+  height: 10px;
+  border-top: 1px solid var(--border);
+  border-left: 1px solid var(--border);
+  background: var(--page-bg);
+  content: "";
+  transform: rotate(45deg);
+}
+
+.menu-panel li + li {
+  border-top: 1px solid transparent;
+  border-image: linear-gradient(90deg, transparent, var(--border), transparent) 1;
+}
+
+.menu-panel li a {
+  display: block;
+  border-radius: var(--radius-md);
+  padding: 0.5rem 0.6rem;
+  color: var(--text);
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    color var(--dur-medium) ease,
+    background-color var(--dur-medium) ease,
+    transform var(--dur-fast) ease;
+}
+
+.menu-panel li a:hover {
+  background: var(--surface);
+  color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.menu-panel li a[aria-current] {
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: var(--font-weight-semibold);
+}
+
+/* An open panel is driven by the owning component writing `data-open` on its
+   wrapper, so one rule serves every caller. */
+[data-open="true"] > .menu-panel {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+  visibility: visible;
+}
+
+/* Stroked line icons. Filled brand marks opt out via `.icon--filled`. */
+.icon {
+  display: block;
+  width: 1.15rem;
+  height: 1.15rem;
+  flex-shrink: 0;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+  transform-origin: center;
+  transition:
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    color var(--dur-base) ease;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* ── Breakpoints ────────────────────────────────────────────────────────────
+   CSS cannot read a custom property inside `@media`, so both edges are written
+   literally. There are exactly two, and they mean different things:
+
+     768px — the navigation edge. The header swaps between its desktop row and
+             its mobile overlay here, and every control inside it must switch on
+             the same edge or a control can be a full-width row inside a
+             shrink-to-fit row. Written as a pair: `min-width: 768px` and
+             `max-width: 767px`, never 768px.
+
+     600px — the compact-phone edge. It scales the h1, narrows the container and
+             tightens vertical rhythm. Nothing here is about navigation, so it
+             stays independent of the 768px edge. */
+
+@media (max-width: 600px) {
+  h1 {
+    font-size: 2.25rem;
+  }
+
+  .container {
+    width: min(calc(100% - 1.25rem), 930px);
+  }
+
+  main {
+    padding-block: 2rem 2.5rem;
+  }
+}

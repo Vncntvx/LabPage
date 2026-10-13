@@ -1,0 +1,26 @@
+---
+import { render, type CollectionEntry } from "astro:content";
+import type { Locale } from "../lib/i18n";
+import EntryLayout from "../layouts/EntryLayout.astro";
+import Prose from "../components/ui/Prose.astro";
+
+/**
+ * A single announcement. It reuses the prose body deliberately: a news entry is
+ * its own content, and `EntryLayout` already switches the heading to the
+ * publication date and the structured data to `Article`.
+ */
+interface Props {
+  entry: CollectionEntry<"news">;
+  locale: Locale;
+  path: string;
+}
+
+const { entry, locale, path } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<EntryLayout entry={entry} locale={locale} path={path}>
+  <Prose>
+    <Content />
+  </Prose>
+</EntryLayout>

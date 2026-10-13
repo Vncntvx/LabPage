@@ -1,0 +1,19 @@
+---
+import type { CollectionEntry } from "astro:content";
+import type { Locale } from "../lib/i18n";
+import EntryLayout from "../layouts/EntryLayout.astro";
+import CV from "../components/CV.astro";
+
+/** The CV page. The entry's `pdf` points at the hosted document. */
+interface Props {
+  entry: CollectionEntry<"pages">;
+  locale: Locale;
+  path: string;
+}
+
+const { entry, locale, path } = Astro.props;
+---
+
+<EntryLayout entry={entry} locale={locale} path={path}>
+  <CV locale={locale} pdf={entry.data.pdf} />
+</EntryLayout>

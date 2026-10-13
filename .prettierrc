@@ -1,0 +1,4 @@
+plugins: ["prettier-plugin-astro"]
+printWidth: 150
+trailingComma: "es5"
+bracketSameLine: true

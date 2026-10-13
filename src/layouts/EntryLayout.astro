@@ -1,0 +1,41 @@
+---
+import type { CollectionEntry } from "astro:content";
+import type { Locale } from "../lib/i18n";
+import BaseLayout from "./BaseLayout.astro";
+import PageTitle from "../components/ui/PageTitle.astro";
+
+/**
+ * The shell every routed entry page shares: meta head from the entry, then the
+ * heading block, then the shape's own body as the default slot.
+ *
+ * This lives in one file because the rules it encodes must not be re-decided by
+ * each shape: a news entry is an `Article` carrying a published date and shows
+ * that date in place of repeating its description under the heading, while every
+ * other collection shows its description.
+ *
+ * It imports exactly `BaseLayout` and `PageTitle`, so it adds no stylesheet of
+ * its own to any shape's CSS closure.
+ */
+interface Props {
+  entry: CollectionEntry<"pages" | "news" | "projects" | "teachings">;
+  locale: Locale;
+  path: string;
+}
+
+const { entry, locale, path } = Astro.props;
+const isNews = entry.collection === "news";
+const title = entry.data.title;
+const published = isNews ? (entry.data as CollectionEntry<"news">["data"]).date : undefined;
+---
+
+<BaseLayout
+  locale={locale}
+  path={path}
+  noindex={"noindex" in entry.data ? entry.data.noindex : false}
+  title={title}
+  description={entry.data.description}
+  schemaType={isNews ? "Article" : "WebPage"}
+  datePublished={published?.toISOString()}>
+  <PageTitle title={title} description={isNews ? undefined : entry.data.description} time={published} locale={locale} />
+  <slot />
+</BaseLayout>

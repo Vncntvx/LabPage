@@ -1,0 +1,181 @@
+---
+import { getEntry } from "astro:content";
+import { createMarkdownProcessor } from "@astrojs/markdown-remark";
+import { strings, type Locale } from "../lib/i18n";
+import { resolveRemoteAssetUrl } from "../lib/remote-assets";
+import LinkedSection from "./ui/LinkedSection.astro";
+import ChipButton from "./ui/ChipButton.astro";
+interface Props {
+  locale: Locale;
+  pdf?: string;
+}
+const { locale, pdf } = Astro.props;
+const entry = await getEntry("cv", locale);
+if (!entry) throw Error(`Missing CV: ${locale}`);
+const cv = entry.data;
+const socialUrl = (network: string, username: string) => {
+  const normalized = network.toLowerCase();
+  if (normalized === "orcid") return `https://orcid.org/${username}`;
+  if (normalized === "github") return `https://github.com/${username}`;
+  return username.startsWith("http") ? username : `https://${username}`;
+};
+const markdown = await createMarkdownProcessor();
+const sections = await Promise.all(
+  Object.entries(cv.sections).map(async ([title, items], index) => ({
+    title,
+    id: `cv-section-${index}`,
+    items: await Promise.all(
+      items.map(async (item) => ({
+        ...item,
+        html: (await markdown.render(item.bullet ?? item.number ?? "")).code,
+        highlightsHtml: await Promise.all((item.highlights ?? []).map(async (text) => (await markdown.render(text)).code)),
+      }))
+    ),
+  }))
+);
+---
+
+<div class="cv-contact">
+  <h2>{cv.name}</h2>
+  <p>
+    {cv.location} · <a href={`mailto:${cv.email}`}>{cv.email}</a> · <a href={`tel:${cv.phone.replace(/\s/g, "")}`}>{cv.phone}</a>
+  </p>
+  {cv.social_networks.length > 0 && (
+    <ul class="cv-socials" aria-label={strings(locale).cv.social_networks}>
+      {cv.social_networks.map((social) => (
+        <li>
+          <a href={socialUrl(social.network, social.username)} target="_blank" rel="noreferrer">
+            {social.network}
+          </a>
+        </li>
+      ))}
+    </ul>
+  )}
+  {pdf && (
+    <a href={resolveRemoteAssetUrl(pdf)} download>
+      PDF
+    </a>
+  )}
+</div>
+<nav class="cv-toc" aria-label={strings(locale).cv.table_of_contents}>
+  <ul>
+    {sections.map((section) => (
+      <li>
+        <ChipButton href={`#${section.id}`} shape="pill" fill="surface" class="cv-toc-chip">
+          {section.title}
+        </ChipButton>
+      </li>
+    ))}
+  </ul>
+</nav>
+{sections.map((section) => (
+  <LinkedSection title={section.title} id={section.id}>
+    <div class="cv-entries">
+      {section.items.map((item) => (
+        <article class="cv-entry prose">
+          {item.institution && (
+            <>
+              <h3>{item.institution}</h3>
+              <p>
+                {item.degree} · {item.area}
+              </p>
+              <p class="muted">
+                {item.start_date} – {item.end_date} · {item.location}
+              </p>
+            </>
+          )}
+          {item.html && <div set:html={item.html} />}
+          {item.highlightsHtml.length > 0 && (
+            <ul>
+              {item.highlightsHtml.map((html) => (
+                <li set:html={html} />
+              ))}
+            </ul>
+          )}
+        </article>
+      ))}
+    </div>
+  </LinkedSection>
+))}
+
+<style>
+  .cv-contact {
+    border-left: 3px solid var(--accent);
+    background: var(--surface);
+    padding: 1rem 1.15rem;
+  }
+
+  .cv-contact h2 {
+    margin: 0 0 0.5rem;
+  }
+
+  .cv-socials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem 0.9rem;
+    margin: 0.75rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .cv-socials a {
+    font-size: 0.95rem;
+  }
+
+  .cv-toc ul {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 0.5rem;
+    margin-block: 0.75rem 1.75rem;
+    padding: 0.25rem 0.25rem 0.65rem;
+    list-style: none;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .cv-toc ul::-webkit-scrollbar {
+    display: none;
+  }
+
+  .cv-toc li {
+    flex-shrink: 0;
+  }
+
+  /* The pill outline comes from `ChipButton` (`shape="pill" fill="surface"`);
+     only the roomier padding and the hover lift are the TOC's own. The
+     `--pill-height` matches the padding and line box so the capsule ends are
+     fully rounded rather than a 50% lozenge. */
+  .cv-toc :global(.cv-toc-chip) {
+    --pill-height: 1.95rem;
+    min-height: 0;
+    padding: 0.35rem 0.85rem;
+  }
+
+  .cv-toc :global(.cv-toc-chip:hover),
+  .cv-toc :global(.cv-toc-chip:focus-visible) {
+    box-shadow: var(--shadow-sm);
+  }
+
+  .cv-entry {
+    border-bottom: 1px solid var(--border);
+    padding-block: 0.7rem;
+  }
+
+  .cv-entry h3 {
+    margin-block: 0 0.35rem;
+  }
+
+  .muted {
+    color: var(--muted);
+  }
+
+  /* Wide enough for the whole set of section names, so the pills stop scrolling. */
+  @media (min-width: 768px) {
+    .cv-toc ul {
+      flex-wrap: wrap;
+      overflow-x: visible;
+      padding-bottom: 0.25rem;
+    }
+  }
+</style>

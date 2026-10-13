@@ -1,0 +1,40 @@
+---
+import { render, type CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
+import { reachablePermalinks, resolvedChildren } from "../lib/dev-mode";
+import { localeUrl, type Locale } from "../lib/i18n";
+import EntryLayout from "../layouts/EntryLayout.astro";
+import Prose from "../components/ui/Prose.astro";
+
+/**
+ * The dropdown container's own page: its body, then one link per child.
+ *
+ * The page retires entirely once every child points at a hidden page
+ * (`renderable` in `src/lib/dev-mode.ts`), so reaching this view means at least
+ * one child resolves.
+ */
+interface Props {
+  entry: CollectionEntry<"pages">;
+  locale: Locale;
+  path: string;
+}
+
+const { entry, locale, path } = Astro.props;
+const { Content } = await render(entry);
+const pages = await getCollection("pages");
+const reachable = reachablePermalinks(pages, locale);
+const children = resolvedChildren(entry, reachable);
+---
+
+<EntryLayout entry={entry} locale={locale} path={path}>
+  <Prose>
+    <Content />
+    <ul>
+      {children.map((child) => (
+        <li>
+          <a href={localeUrl(locale, child.permalink)}>{child.title}</a>
+        </li>
+      ))}
+    </ul>
+  </Prose>
+</EntryLayout>

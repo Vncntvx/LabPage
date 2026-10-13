@@ -1,0 +1,528 @@
+---
+import { strings, type Locale } from "../lib/i18n";
+import EmptyState from "./EmptyState.astro";
+import Icon from "./ui/Icon.astro";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const ui = strings(locale).search;
+---
+
+<dialog class="search-dialog" data-search-dialog data-locale={locale} aria-labelledby="search-title">
+  <div class="search-dialog-inner">
+    <header class="search-dialog-header">
+      <h2 id="search-title" data-search-placeholder>
+        {ui.placeholder}
+      </h2>
+      <button class="dialog-close" type="button" data-search-close aria-label={strings(locale).search.footer.close}>
+        <Icon name="close" size="lg" stroke />
+      </button>
+    </header>
+    <label class="search-input-label">
+      <span class="sr-only" data-search-placeholder>
+        {ui.placeholder}
+      </span>
+      <Icon name="search" size="lg" class="search-input-icon" />
+      <input
+        type="search"
+        data-site-search-input
+        autocomplete="off"
+        placeholder={ui.placeholder}
+        role="combobox"
+        aria-controls="search-results"
+        aria-expanded="false"
+        aria-autocomplete="list"
+      />
+      <kbd>Esc</kbd>
+    </label>
+    <p
+      class="search-result-status"
+      data-search-status
+      data-count-one={ui.result_count.one}
+      data-count-other={ui.result_count.other}
+      data-count-locale={locale}
+      data-load-loading={ui.loading}
+      data-load-failed={ui.load_failed}
+      aria-live="polite"></p>
+    <div class="search-results-shell">
+      <ul id="search-results" class="search-results" data-search-results role="listbox" aria-label={ui.placeholder} data-search-placeholder-aria></ul>
+      <EmptyState data-search-empty data-search-empty-message hidden message={ui.empty} />
+    </div>
+    <footer class="search-dialog-footer" aria-label={ui.placeholder} data-search-placeholder-aria>
+      <span>
+        <kbd>↵</kbd>
+        <span data-search-select>{ui.footer.select}</span>
+      </span>
+      <span>
+        <kbd>↑</kbd>
+        <kbd>↓</kbd>
+        <span data-search-navigate>{ui.footer.navigate}</span>
+      </span>
+      <span>
+        <kbd>Esc</kbd>
+        <span data-search-close-label>{ui.footer.close}</span>
+      </span>
+    </footer>
+  </div>
+</dialog>
+<script>
+  import type { SearchEntry } from "../lib/search-index";
+  import { formatCount } from "../lib/count";
+  import { matchesTerms, normalizeHaystack, termsOf } from "../lib/search-query";
+
+  const dialog = document.querySelector<HTMLDialogElement>("[data-search-dialog]");
+  const input = document.querySelector<HTMLInputElement>("[data-site-search-input]");
+  const results = document.querySelector<HTMLUListElement>("[data-search-results]");
+  const empty = document.querySelector<HTMLElement>("[data-search-empty]");
+  const status = document.querySelector<HTMLElement>("[data-search-status]");
+  /**
+   * Read at fetch time, not captured once at load: the 404 page rewrites this
+   * attribute when a server serves it for a locale it was not built for, and that
+   * rewrite lands after this script has run. A value captured here would pin the
+   * index to the build's locale and search the wrong language.
+   */
+  const currentLocale = () => dialog?.dataset.locale ?? "en";
+  /**
+   * Every control that opens the dialog, not just the header's: the 404 page
+   * offers its own search button, and binding one element would leave the other
+   * inert. `close()` returns focus to whichever was clicked.
+   */
+  const searchButtons = [...document.querySelectorAll<HTMLButtonElement>("[data-search-open]")];
+  /** Which of them opened the dialog, so `close()` can restore focus to it. */
+  let lastOpenedBy: HTMLButtonElement | undefined;
+  const navigation = document.querySelector<HTMLDetailsElement>(".navigation");
+  let entries: SearchEntry[] = [];
+  // Normalized once when the index loads: the entry titles and descriptions
+  // never change, so re-normalizing them on every keystroke is pure waste.
+  let haystacks: string[] = [];
+  let loaded = false;
+  let loading: Promise<void> | undefined;
+  let matches: SearchEntry[] = [];
+  let activeIndex = 0;
+
+  const escapeHtml = (value: string) => {
+    const entities: Record<string, string> = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" };
+    return value.replace(/[&<>\"]/g, (character) => entities[character] ?? character);
+  };
+
+  const setActive = (index: number, scroll = true) => {
+    if (!results) return;
+    const items = [...results.querySelectorAll<HTMLElement>("[data-search-result]")];
+    if (items.length === 0) return;
+    activeIndex = (index + items.length) % items.length;
+    items.forEach((item, itemIndex) => {
+      const active = itemIndex === activeIndex;
+      item.classList.toggle("is-active", active);
+      item.setAttribute("aria-selected", String(active));
+      if (active && scroll) item.scrollIntoView({ block: "nearest" });
+    });
+    const activeItem = items[activeIndex];
+    if (activeItem && input) input.setAttribute("aria-activedescendant", activeItem.id);
+  };
+
+  const render = (resetActive = true) => {
+    if (!results || !input || !status || !empty) return;
+    const terms = termsOf(input.value);
+    matches = entries.filter((_entry, index) => matchesTerms(terms, haystacks[index] ?? ""));
+    results.innerHTML = matches
+      .slice(0, 40)
+      .map(
+        (entry, index) =>
+          `<li id="search-result-${index}" data-search-result role="option" aria-selected="false"><a href="${escapeHtml(entry.url)}" data-search-link data-search-result-index="${index}"><strong>${escapeHtml(entry.title)}</strong>${entry.description ? `<small>${escapeHtml(entry.description)}</small>` : ""}</a></li>`
+      )
+      .join("");
+    const countForms = { one: status.dataset.countOne ?? "", other: status.dataset.countOther ?? "" };
+    status.textContent = formatCount(status.dataset.countLocale ?? currentLocale(), countForms, matches.length);
+    empty.hidden = matches.length > 0;
+    activeIndex = 0;
+    if (resetActive && matches.length > 0) setActive(0, false);
+  };
+
+  const loadIndex = async () => {
+    if (loaded) return;
+    loading ??= fetch(`/search-index-${currentLocale()}.json`)
+      .then((response) => {
+        if (!response.ok) throw new Error(`Search index request failed: ${response.status}`);
+        return response.json() as Promise<SearchEntry[]>;
+      })
+      .then((data) => {
+        entries = data;
+        haystacks = data.map((entry) => normalizeHaystack(`${entry.title} ${entry.description}`));
+        loaded = true;
+      })
+      .finally(() => {
+        loading = undefined;
+      });
+    await loading;
+  };
+  const open = () => {
+    if (!dialog) return;
+    if (navigation && !matchMedia("(min-width: 768px)").matches) navigation.open = false;
+    if (!dialog.open) dialog.showModal();
+    if (input) {
+      input.value = "";
+      input.setAttribute("aria-expanded", "true");
+      input.removeAttribute("aria-activedescendant");
+    }
+    if (status) {
+      status.textContent = status.dataset.loadLoading ?? "";
+      status.setAttribute("aria-busy", "true");
+    }
+    requestAnimationFrame(async () => {
+      input?.focus();
+      try {
+        await loadIndex();
+        render();
+        status?.setAttribute("aria-busy", "false");
+      } catch {
+        if (status) status.textContent = status.dataset.loadFailed ?? "Search index could not be loaded.";
+        status?.setAttribute("aria-busy", "false");
+      }
+    });
+  };
+  const close = () => {
+    dialog?.close();
+    input?.setAttribute("aria-expanded", "false");
+    input?.removeAttribute("aria-activedescendant");
+    lastOpenedBy?.focus();
+  };
+  for (const button of searchButtons) {
+    button.addEventListener("click", (event) => {
+      event.preventDefault();
+      lastOpenedBy = button;
+      open();
+    });
+  }
+  input?.addEventListener("input", () => render());
+  input?.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      setActive(activeIndex + 1);
+    } else if (event.key === "ArrowUp") {
+      event.preventDefault();
+      setActive(activeIndex - 1);
+    } else if (event.key === "Enter" && matches[activeIndex]) {
+      event.preventDefault();
+      window.location.assign(matches[activeIndex].url);
+    }
+  });
+  document.querySelector<HTMLButtonElement>("[data-search-close]")?.addEventListener("click", close);
+  results?.addEventListener("mousemove", (event) => {
+    const item = (event.target as HTMLElement).closest<HTMLElement>("[data-search-result]");
+    const index = item ? Number(item.querySelector<HTMLAnchorElement>("[data-search-link]")?.dataset.searchResultIndex) : -1;
+    if (index >= 0) setActive(index, false);
+  });
+  dialog?.addEventListener("click", (event) => {
+    if (event.target === dialog) close();
+  });
+  document.addEventListener("keydown", (event) => {
+    if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
+      event.preventDefault();
+      open();
+    }
+    if (event.key === "Escape" && dialog?.open) close();
+  });
+</script>
+
+<style>
+  .search-dialog {
+    width: min(42rem, calc(100% - 2rem));
+    height: min(32rem, calc(100dvh - 4rem));
+    max-height: calc(100dvh - 4rem);
+    margin: auto;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-2xl);
+    background: var(--page-bg);
+    color: var(--text);
+    box-shadow: var(--shadow-modal);
+    padding: 0;
+    overflow: hidden;
+    animation: search-dialog-in var(--dur-medium) ease-out both;
+  }
+
+  .search-dialog::backdrop {
+    background: var(--scrim);
+    backdrop-filter: blur(9px) saturate(115%);
+  }
+
+  .search-dialog-inner {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+  }
+
+  .search-dialog-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.15rem 1.35rem 0.75rem;
+  }
+
+  .search-dialog-header h2 {
+    margin: 0;
+    font-family: var(--serif);
+    font-size: 1.55rem;
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-tight);
+  }
+
+  .search-input-label {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 3.6rem;
+    margin: 0 1.35rem;
+    border: 2px solid var(--border);
+    border-radius: var(--radius-xl);
+    padding: 0 1rem;
+    color: var(--muted);
+    transition:
+      border-color var(--dur-base) ease,
+      box-shadow var(--dur-base) ease;
+  }
+
+  .search-input-label:focus-within {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+
+  .search-input-label input {
+    min-width: 0;
+    flex: 1;
+    border: 0;
+    border-radius: 0;
+    padding: 0.65rem 0;
+    background: transparent;
+    color: var(--text);
+    font-size: 1.05rem;
+    outline: 0;
+  }
+
+  .search-input-label input::placeholder {
+    color: var(--muted);
+    opacity: 0.85;
+  }
+
+  /* The size comes from `Icon size="lg"`; only the flex behaviour is local. */
+  .search-input-icon {
+    flex: 0 0 auto;
+  }
+
+  .search-input-label kbd {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+    padding: 0.25rem 0.55rem;
+    color: var(--muted);
+    font-size: 0.8rem;
+  }
+
+  .search-result-status {
+    margin: 0.75rem 1.35rem 0.45rem;
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  .search-results-shell {
+    min-height: 0;
+    flex: 1;
+    overflow-y: auto;
+    margin: 0 0.7rem 0 1.35rem;
+    padding: 0 0.9rem 0 0;
+    scrollbar-color: var(--muted) transparent;
+  }
+
+  .search-results {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* The rows are built from an HTML string in the script below, so they carry no
+     scope attribute and must be matched globally. */
+  .search-results :global(li) {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .search-results :global(a) {
+    display: flex;
+    min-height: 3.65rem;
+    flex-direction: column;
+    justify-content: center;
+    border-left: 3px solid transparent;
+    padding: 0.75rem 0.8rem;
+    color: var(--text);
+    text-decoration: none;
+    transition:
+      background-color var(--dur-fast) ease,
+      border-color var(--dur-fast) ease,
+      color var(--dur-fast) ease;
+  }
+
+  /* `is-active` is set on the `<li>` by the keyboard navigation. */
+  .search-results :global(li.is-active a),
+  .search-results :global(a:hover) {
+    border-left-color: var(--accent);
+    background: var(--surface);
+    color: var(--text);
+  }
+
+  .search-results :global(strong),
+  .search-results :global(small) {
+    display: block;
+  }
+
+  .search-results :global(strong) {
+    font-size: 1rem;
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .search-results :global(small) {
+    margin-top: 0.25rem;
+    overflow: hidden;
+    color: var(--muted);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .search-dialog-footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    align-items: center;
+    border-top: 1px solid var(--border);
+    margin-top: 0.6rem;
+    padding: 0.6rem 1.35rem;
+    color: var(--muted);
+    font-size: 0.82rem;
+  }
+
+  .search-dialog-footer span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .search-dialog-footer kbd {
+    min-width: 1.55rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xs);
+    background: var(--surface);
+    padding: 0.12rem 0.3rem;
+    color: var(--muted);
+    font-size: var(--font-size-2xs);
+    text-align: center;
+  }
+
+  /* A 43px square close control: `--radius-md` matches it, where `--radius-lg`
+     is sized for cards and dialogs. */
+  .dialog-close {
+    display: grid;
+    width: 2.7rem;
+    height: 2.7rem;
+    flex: 0 0 auto;
+    place-items: center;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: transparent;
+    padding: 0;
+    color: var(--text);
+  }
+
+  .dialog-close:hover {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+
+  @keyframes search-dialog-in {
+    from {
+      opacity: 0;
+      transform: translateY(0.7rem) scale(0.985);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .search-dialog {
+      animation: none;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .search-dialog {
+      width: calc(100% - 2rem);
+      height: min(30rem, calc(100dvh - 4rem));
+      max-height: calc(100dvh - 4rem);
+      border-radius: var(--radius-xl);
+    }
+
+    .search-dialog-header {
+      padding: 1rem 1rem 0.7rem;
+    }
+
+    .search-dialog-header h2 {
+      font-size: 1.35rem;
+    }
+
+    .search-input-label {
+      min-height: 3.15rem;
+      margin: 0 1rem;
+      padding-inline: 0.8rem;
+    }
+
+    .search-input-label input {
+      font-size: 1rem;
+    }
+
+    .search-result-status {
+      margin: 0.65rem 1rem 0.4rem;
+    }
+
+    .search-results-shell {
+      margin-left: 1rem;
+    }
+
+    .search-results :global(a) {
+      min-height: 3.25rem;
+      padding-block: 0.55rem;
+    }
+
+    .search-results :global(strong) {
+      font-size: 0.95rem;
+    }
+
+    .search-results :global(small) {
+      font-size: 0.82rem;
+    }
+
+    /* The keyboard hints describe physical keys; a touch device has none. */
+    .search-dialog-footer {
+      display: none;
+    }
+
+    .dialog-close {
+      width: 2.45rem;
+      height: 2.45rem;
+    }
+  }
+
+  @media (max-width: 380px), (max-height: 640px) {
+    .search-dialog {
+      height: min(27rem, calc(100dvh - 3rem));
+      max-height: calc(100dvh - 3rem);
+    }
+
+    .search-dialog-footer span:last-child {
+      display: none;
+    }
+  }
+</style>

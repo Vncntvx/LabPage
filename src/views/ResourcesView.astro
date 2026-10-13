@@ -1,0 +1,25 @@
+---
+import { getCollection, render, type CollectionEntry } from "astro:content";
+import { visible } from "../lib/dev-mode";
+import type { Locale } from "../lib/i18n";
+import EntryLayout from "../layouts/EntryLayout.astro";
+import ResourcesList from "../components/ResourcesList.astro";
+import Prose from "../components/ui/Prose.astro";
+
+interface Props {
+  entry: CollectionEntry<"pages">;
+  locale: Locale;
+  path: string;
+}
+
+const { entry, locale, path } = Astro.props;
+const { Content } = await render(entry);
+const resources = await getCollection("resources", (item) => item.data.locale === locale && visible(item));
+---
+
+<EntryLayout entry={entry} locale={locale} path={path}>
+  <Prose>
+    <Content />
+  </Prose>
+  <ResourcesList locale={locale} resources={resources} />
+</EntryLayout>

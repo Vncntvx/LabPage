@@ -1,0 +1,100 @@
+---
+import { type MetaPair } from "../../lib/courses";
+
+/**
+ * A definition list of label/value pairs. A course's location, time and
+ * instructor render here from both the course cards and the course detail page,
+ * which build them through `courseMetaPairs`.
+ *
+ * `compact` is the inline label column that sits inside a card; `detail` is the
+ * two-column callout with an accent rail that heads the detail page.
+ *
+ * Callers pass only the pairs they have: a course without an instructor renders
+ * two rows, not three with a blank.
+ */
+export type { MetaPair };
+
+interface Props {
+  pairs: MetaPair[];
+  variant?: "compact" | "detail";
+  class?: string;
+}
+
+const { pairs, variant = "compact", class: className } = Astro.props;
+---
+
+<dl class:list={["meta-list", `meta-list--${variant}`, className]}>
+  {pairs.map(({ label, value }) => (
+    <div>
+      <dt>{label}</dt>
+      <dd>{value}</dd>
+    </div>
+  ))}
+</dl>
+
+<style>
+  .meta-list {
+    display: grid;
+    margin: 0;
+  }
+
+  .meta-list dt {
+    color: var(--muted);
+  }
+
+  /* Long values are URLs and room names; break anywhere rather than overflow. */
+  .meta-list dd {
+    min-width: 0;
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+
+  /* ── compact: a label column beside each value, inside a card ── */
+  .meta-list--compact {
+    gap: 0.55rem;
+  }
+
+  .meta-list--compact > div {
+    display: grid;
+    grid-template-columns: 5.2rem minmax(0, 1fr);
+    gap: 0.55rem;
+  }
+
+  .meta-list--compact dt {
+    font-size: 0.76rem;
+  }
+
+  .meta-list--compact dd {
+    font-size: 0.82rem;
+  }
+
+  /* ── detail: two columns of stacked pairs behind an accent rail ── */
+  .meta-list--detail {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.85rem;
+    margin: 1.75rem 0 2.5rem;
+  }
+
+  .meta-list--detail > div {
+    display: grid;
+    gap: 0.18rem;
+    border-left: 2px solid var(--accent-soft);
+    padding-left: 0.8rem;
+  }
+
+  .meta-list--detail dt {
+    font-size: 0.78rem;
+  }
+
+  .meta-list--detail dd {
+    font-size: 0.95rem;
+    font-weight: var(--font-weight-medium);
+  }
+
+  @media (max-width: 600px) {
+    .meta-list--detail {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+  }
+</style>

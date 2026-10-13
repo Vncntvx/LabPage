@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # The Bun version is not named here: setup-bun reads the `packageManager`
+      # field in package.json, so the pin lives in one place.
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Cache Bun's package cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lock') }}
+          restore-keys: ${{ runner.os }}-bun-
+
+      # Fails when package.json and bun.lock disagree, so a stale lockfile cannot
+      # silently resolve to a different tree than the one tested locally.
+      - name: Install dependencies
+        run: bun ci
+
+      - name: Check code formatting
+        run: bun run format:check:astro
+
+      - name: Check types, i18n and content schemas
+        run: bun run check
+
+      - name: Build static site
+        run: bun run build
+
+      # Asserts what the build actually emitted (meta tags, sitemap alternates,
+      # feed items, checksum manifest, and which stylesheets each page links).
+      # `astro check` cannot see any of it.
+      - name: Verify built output
+        run: bun run verify:dist
+
+      # Size budgets over the built output, so a regression that only shows up in
+      # bytes fails here rather than in production. See scripts/page-budgets.mjs.
+      - name: Check output budgets
+        run: bun run verify:budgets

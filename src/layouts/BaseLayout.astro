@@ -1,0 +1,151 @@
+---
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import ThemeInit from "../components/ThemeInit.astro";
+import social from "../data/socials.json";
+import { feedUrl } from "../lib/feed";
+import { defaultLocale, labels, htmlLang, locales, localeUrl, ogImagePath, ogLocale, strings, type Locale } from "../lib/i18n";
+import "../styles/global.css";
+
+/** Site name, used as the `<title>` suffix and the structured-data fallback. */
+const siteName = "Wenjie Xu";
+
+// Every canonical, hreflang, share and feed URL below is absolute, so a missing
+// `site` cannot be patched locally: fail the build instead of emitting relative
+// or broken URLs.
+if (!Astro.site) throw new Error("`site` is not set in astro.config.mjs, so absolute URLs cannot be built.");
+const site = Astro.site;
+
+interface Props {
+  /**
+   * Bare page title, without the site suffix. The layout appends the suffix for
+   * `<title>` and the social tags; structured data always uses the bare value, so
+   * `name` / `headline` never carry the branding.
+   */
+  title?: string;
+  /** Required and expected non-empty: every indexable page needs a real summary. */
+  description: string;
+  locale: Locale;
+  path?: string;
+  noindex?: boolean;
+  /** Drives the JSON-LD `@type`; the home page is a profile, news entries are articles. */
+  schemaType?: "ProfilePage" | "Article" | "WebPage";
+  datePublished?: string;
+  /**
+   * Path the language switcher links to in the other locale. Defaults to `path`,
+   * which is right for real pages. Status pages override it: a 404 has no
+   * counterpart, so its switcher links to each locale's home instead of a
+   * same-path URL that does not exist.
+   */
+  switchPath?: string;
+}
+const {
+  title = siteName,
+  description,
+  locale,
+  path = Astro.url.pathname,
+  noindex = false,
+  schemaType = "WebPage",
+  datePublished,
+  switchPath = path,
+} = Astro.props;
+const documentTitle = title === siteName ? title : `${title} | ${siteName}`;
+const canonical = new URL(localeUrl(locale, path), site);
+const shareImage = new URL(ogImagePath(locale), site).href;
+const feed = { url: feedUrl(locale, site), title: strings(locale).feed.title };
+const person = {
+  "@type": "Person",
+  name: "Wenjie Xu",
+  url: new URL(localeUrl(locale), Astro.site).href,
+  sameAs: [
+    `https://github.com/${social.github_username}`,
+    `https://orcid.org/${social.orcid_id}`,
+    `https://scholar.google.com/citations?user=${social.scholar_userid}`,
+    social.research_gate_profile,
+  ],
+};
+const structuredData: Record<string, unknown> = {
+  "@context": "https://schema.org",
+  "@type": schemaType,
+  name: title,
+  description,
+  url: canonical.href,
+  inLanguage: htmlLang(locale),
+  image: shareImage,
+};
+if (schemaType === "ProfilePage") {
+  structuredData.mainEntity = person;
+} else if (schemaType === "Article") {
+  structuredData.headline = title;
+  structuredData.author = person;
+  if (datePublished) {
+    structuredData.datePublished = datePublished;
+    structuredData.dateModified = datePublished;
+  }
+} else {
+  structuredData.author = person;
+}
+---
+
+<!doctype html>
+<html lang={htmlLang(locale)} id="top">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} data-meta-description />
+    <meta name="author" content="Wenjie Xu" />
+    {noindex ? (
+      <meta name="robots" content="noindex" />
+    ) : (
+      <>
+        <link rel="canonical" href={canonical} />
+        {locales.map((item) => (
+          <link rel="alternate" hreflang={item.lang} href={new URL(localeUrl(item.code, path), Astro.site)} />
+        ))}
+        <link rel="alternate" hreflang="x-default" href={new URL(localeUrl(defaultLocale, path), Astro.site)} />
+      </>
+    )}
+    <link rel="alternate" type="application/rss+xml" title={feed.title} href={feed.url} data-feed-title />
+    <link rel="icon" href="/assets/img/favicon.ico" />
+    <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png" />
+    <meta property="og:title" content={documentTitle} data-og-title />
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:description" content={description} data-og-description />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:type" content={schemaType === "Article" ? "article" : "website"} />
+    <meta property="og:locale" content={ogLocale(locale)} data-og-locale />
+    {locales
+      .filter((item) => item.code !== locale)
+      .map((item) => (
+        <meta property="og:locale:alternate" content={ogLocale(item.code)} data-og-locale-alternate />
+      ))}
+    <meta property="og:image" content={shareImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={strings(locale).share_image_alt} data-og-image-alt />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={documentTitle} data-twitter-title />
+    <meta name="twitter:description" content={description} data-twitter-description />
+    <meta name="twitter:image" content={shareImage} />
+    {!noindex && <script type="application/ld+json" set:html={JSON.stringify(structuredData).replace(/</g, "\\u003c")} />}
+    <title>{documentTitle}</title>
+    <ThemeInit />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content" data-skip-link>
+      {labels(locale).skip}
+    </a>
+    <div class="page-shell">
+      <Header locale={locale} path={path} switchPath={switchPath} />
+      <main id="main-content" class="container" tabindex="-1">
+        <slot />
+      </main>
+      <Footer locale={locale} />
+    </div>
+    {/* A slot for shell-affecting page scripts. It declares ownership — this
+        runs after the whole shell — rather than ordering: a component's script
+        is always `type="module"`, hence deferred, wherever it sits. */}
+    <slot name="page-end" />
+  </body>
+</html>

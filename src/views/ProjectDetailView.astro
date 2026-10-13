@@ -1,0 +1,24 @@
+---
+import { render, type CollectionEntry } from "astro:content";
+import { enabled } from "../lib/dev-mode";
+import type { Locale } from "../lib/i18n";
+import EntryLayout from "../layouts/EntryLayout.astro";
+import Comments from "../components/Comments.astro";
+import Prose from "../components/ui/Prose.astro";
+
+interface Props {
+  entry: CollectionEntry<"projects">;
+  locale: Locale;
+  path: string;
+}
+
+const { entry, locale, path } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<EntryLayout entry={entry} locale={locale} path={path}>
+  <Prose>
+    <Content />
+  </Prose>
+  {enabled(entry.data.giscusComments) && <Comments locale={locale} title={`${entry.data.title} | Wenjie Xu`} />}
+</EntryLayout>

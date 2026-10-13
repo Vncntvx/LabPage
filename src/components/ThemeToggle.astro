@@ -1,0 +1,118 @@
+---
+import { strings, type Locale } from "../lib/i18n";
+import Icon from "./ui/Icon.astro";
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+---
+
+<button
+  class="icon-button theme-control"
+  type="button"
+  data-theme-button
+  hidden
+  aria-label={strings(locale).header.change_theme}
+  title={strings(locale).header.change_theme}>
+  <Icon name="sun" class="theme-icon" data-theme-icon="light" />
+  <Icon name="moon" class="theme-icon" data-theme-icon="dark" />
+  <span class="icon-button-label theme-label" data-control-label>
+    {strings(locale).header.change_theme}
+  </span>
+</button>
+<script>
+  const control = document.querySelector<HTMLButtonElement>("[data-theme-button]");
+  control?.addEventListener("click", () => {
+    control.classList.remove("switching");
+    void control.offsetWidth;
+    control.classList.add("switching");
+    const current = document.documentElement.dataset.theme ?? "light";
+    document.dispatchEvent(new CustomEvent("theme-request", { detail: current === "dark" ? "light" : "dark" }));
+  });
+  if (control) control.hidden = false;
+</script>
+
+<style>
+  /* The square borderless geometry, hover and focus ring come from the shared
+       `.icon-button` primitive; only the positioning this control adds is local. */
+  .theme-control {
+    /* The label is absolutely positioned, so it needs a positioned ancestor. */
+    position: relative;
+  }
+
+  .theme-control:hover :global(.theme-icon) {
+    transform: rotate(30deg);
+  }
+
+  /* Only the icon for the theme currently in effect is shown; which one that is
+       lives on `<html>`, so the root element must stay outside this scope. */
+  .theme-control :global(.theme-icon[data-theme-icon]) {
+    display: none;
+  }
+
+  :global(html[data-theme="light"]) .theme-control :global(.theme-icon[data-theme-icon="light"]),
+  :global(html[data-theme="dark"]) .theme-control :global(.theme-icon[data-theme-icon="dark"]) {
+    display: block;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .theme-control.switching :global(.theme-icon) {
+      animation: theme-spin 0.4s ease;
+    }
+
+    @keyframes theme-spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  }
+
+  /* In the header's mobile layout this is a full-width row beside the language
+     switcher, so it shows its label. The 768px edge is the header's own
+     `min-width: 768px` switch: the control and the container that lays it out
+     have to change shape on the same viewport, or 601–767px renders a
+     full-width row inside a shrink-to-fit row. */
+  @media (max-width: 767px) {
+    .theme-control {
+      gap: 0.45rem;
+      width: 100%;
+      min-height: 44px;
+      justify-content: center;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: var(--surface);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-medium);
+      padding: 0.5rem 0.65rem;
+      cursor: pointer;
+      transition:
+        border-color var(--dur-base) ease,
+        color var(--dur-base) ease,
+        background-color var(--dur-base) ease;
+    }
+
+    .theme-control:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .theme-control:hover :global(.theme-icon) {
+      transform: none;
+    }
+
+    /* The two-class selector outranks the shared `.icon-button-label` reset, so
+         the hidden label becomes the visible row label. */
+    .icon-button-label.theme-label {
+      position: static;
+      width: auto;
+      height: auto;
+      margin: 0;
+      overflow: visible;
+      clip: auto;
+      white-space: normal;
+    }
+  }
+</style>

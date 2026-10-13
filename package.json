@@ -1,0 +1,45 @@
+{
+  "name": "wenjie-xu-lab-page",
+  "private": true,
+  "type": "module",
+  "version": "0.1.0",
+  "packageManager": "bun@1.3.14",
+  "engines": {
+    "bun": ">=1.3.14"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "dev:all": "astro dev --mode dev-all",
+    "build": "astro build && bun scripts/write-style-manifest.mjs && bun scripts/write-build-manifest.mjs",
+    "preview": "astro preview",
+    "check": "bun run check:i18n && bun run check:content && astro check",
+    "check:i18n": "bun scripts/audit-strings.mjs",
+    "check:content": "bun scripts/audit-content.mjs",
+    "og": "bun scripts/generate-og-images.mjs",
+    "verify:dist": "bun scripts/verify-dist.mjs",
+    "verify:budgets": "bun scripts/page-budgets.mjs",
+    "format:astro": "prettier --write src astro.config.mjs tsconfig.json package.json",
+    "format:check:astro": "prettier --check src astro.config.mjs tsconfig.json package.json",
+    "oss:sync": "bun scripts/oss-sync.mjs",
+    "oss:sync:dry": "bun scripts/oss-sync.mjs --dry-run",
+    "oss:pull": "bun scripts/oss-sync.mjs --pull",
+    "astro": "astro"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@types/bun": "~1.3.14",
+    "ali-oss": "^6.23.0",
+    "prettier": "^3.9.10",
+    "prettier-plugin-astro": "^1.1.1",
+    "typescript": "^6.0.3",
+    "yaml": "^2.9.1"
+  },
+  "dependencies": {
+    "@astrojs/markdown-remark": "^7.3.2",
+    "@astrojs/rss": "^4.0.19",
+    "@astrojs/sitemap": "^3.7.4",
+    "@citation-js/core": "^0.9.0",
+    "@citation-js/plugin-bibtex": "^0.9.0",
+    "astro": "^7.3.8"
+  }
+}

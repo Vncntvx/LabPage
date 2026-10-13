@@ -1,0 +1,10 @@
+---
+import { pageShapeStaticPaths } from "../../../lib/route-paths";
+import { prefixedLocales } from "../../../lib/locale";
+import DropdownView from "../../../views/DropdownView.astro";
+
+export const getStaticPaths = pageShapeStaticPaths("dropdown", prefixedLocales);
+const { entry, locale, path } = Astro.props;
+---
+
+<DropdownView entry={entry} locale={locale} path={path} />

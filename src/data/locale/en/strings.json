@@ -1,0 +1,211 @@
+{
+  "bibliography": {
+    "abstract": "Abs",
+    "awarded": "Awarded",
+    "bib": "Bib",
+    "blog": "Blog",
+    "book_prefix": "In",
+    "click_to_view": "click to view",
+    "code": "Code",
+    "doi": "DOI",
+    "html": "HTML",
+    "last_author_prefix": "and",
+    "pdf": "PDF",
+    "poster": "Poster",
+    "slides": "Slides",
+    "supp": "Supp",
+    "video": "Video",
+    "website": "Website",
+    "filter": "Filter publications",
+    "empty": "No matching publications.",
+    "more_authors_label": {
+      "one": "and {count} more author",
+      "other": "and {count} more authors"
+    },
+    "hide_authors": "hide authors",
+    "copy_bibtex": "Copy BibTeX",
+    "copied_bibtex": "Copied",
+    "scholar_citations": "Google Scholar citations",
+    "publication_information": "Publication information",
+    "preview_alt": "Enlarge publication preview",
+    "lightbox_label": "Publication preview",
+    "close_preview": "Close preview",
+    "count": {
+      "one": "{count} publication",
+      "other": "{count} publications"
+    },
+    "copy_failed": "Copy failed"
+  },
+  "categories": {
+    "fun": "fun",
+    "research": "Research",
+    "typst": "Typst",
+    "work": "work"
+  },
+  "contact_note": "Feel free to contact me anytime via email: ",
+  "footer": {
+    "copyright": "All rights reserved",
+    "last_updated": "Last updated"
+  },
+  "research_summary": "Research Summary",
+  "news": "News",
+  "cv": {
+    "table_of_contents": "Table of Contents",
+    "social_networks": "Social networks"
+  },
+  "search": {
+    "dark_theme": {
+      "description": "Change the theme of the site to Dark",
+      "title": "Change theme to dark"
+    },
+    "dropdown": "Dropdown",
+    "email": "Send an email",
+    "footer": {
+      "close": "to close",
+      "navigate": "to navigate",
+      "parent": "move to parent",
+      "select": "to select"
+    },
+    "languages": "Languages",
+    "light_theme": {
+      "description": "Change the theme of the site to Light",
+      "title": "Change theme to light"
+    },
+    "navigation": "Navigation menu",
+    "news": "News",
+    "placeholder": "Type to start searching",
+    "bib_placeholder": "Type to filter",
+    "empty": "No matching results.",
+    "loading": "Loading search index…",
+    "result_count": {
+      "one": "{count} result",
+      "other": "{count} results"
+    },
+    "load_failed": "Search index could not be loaded.",
+    "projects": "Projects",
+    "socials": "Socials",
+    "system_theme": {
+      "description": "Follow the system theme",
+      "title": "Use the system default theme"
+    },
+    "theme": "Theme"
+  },
+  "courses": {
+    "calendar": "Calendar",
+    "calendar_description": "Check upcoming teaching events and office hours.",
+    "courses_count": {
+      "one": "{count} course",
+      "other": "{count} courses"
+    },
+    "date": "Date",
+    "instructor": "Instructor",
+    "location": "Location",
+    "materials": "Materials",
+    "schedule": "Schedule",
+    "term": "Term",
+    "time": "Time",
+    "topic": "Topic",
+    "upcoming": "Upcoming events",
+    "view_course": "View course",
+    "show_calendar": "Show calendar",
+    "sessions": {
+      "one": "{count} session",
+      "other": "{count} sessions"
+    },
+    "week": "Week"
+  },
+  "people": {
+    "current": "Current members",
+    "alumni": "Alumni",
+    "opportunities": "Join the group",
+    "current_count": {
+      "one": "{count} member",
+      "other": "{count} members"
+    },
+    "alumni_count": {
+      "one": "{count} alum",
+      "other": "{count} alumni"
+    },
+    "opportunity_count": {
+      "one": "{count} opportunity",
+      "other": "{count} opportunities"
+    },
+    "research": "Research",
+    "joined": "Joined",
+    "left": "Left",
+    "learn_more": "Profile",
+    "deadline": "Deadline",
+    "apply": "Learn more",
+    "empty": "No entries are available yet.",
+    "empty_opportunities": "No open opportunities are available yet.",
+    "types": {
+      "phd": "PhD student",
+      "postdoc": "Postdoctoral researcher",
+      "research-assistant": "Research assistant",
+      "visitor": "Visiting researcher",
+      "collaboration": "Collaboration"
+    }
+  },
+  "resources": {
+    "software": "Software",
+    "dataset": "Datasets",
+    "facility": "Facilities",
+    "guide": "Guides",
+    "other": "Other resources",
+    "resource_count": {
+      "one": "{count} resource",
+      "other": "{count} resources"
+    },
+    "access": {
+      "public": "Public",
+      "restricted": "Restricted"
+    },
+    "maintainer": "Maintainer",
+    "open": "Open resource",
+    "empty": "No resources are available yet."
+  },
+  "header": {
+    "toggle_navigation": "Toggle navigation",
+    "search": "Search",
+    "change_theme": "Change theme",
+    "reading_progress": "Reading progress"
+  },
+  "projects": {
+    "count": {
+      "one": "{count} project",
+      "other": "{count} projects"
+    },
+    "thumbnail_alt": "project thumbnail",
+    "action": "View project",
+    "repository": "Code repository"
+  },
+  "labels": {
+    "home": "Home",
+    "primary": "Primary navigation",
+    "back": "Back to top",
+    "powered": "Powered by",
+    "language": "Language",
+    "skip": "Skip to content",
+    "wechat": "WeChat QR code",
+    "social_links": "Social links",
+    "copy_unavailable": "Clipboard unavailable"
+  },
+  "not_found": {
+    "code": "404",
+    "title": "Page not found",
+    "description": "Looks like there has been a mistake. Nothing exists here.",
+    "suggestions": "Try one of these",
+    "home": "Home",
+    "search": "Search this site"
+  },
+  "feed": {
+    "title": "Wenjie Xu — News",
+    "description": "Awards and academic milestones from Wenjie Xu."
+  },
+  "share_image_alt": "Wenjie Xu — PhD Candidate, Management Science and Engineering, CASISD · Risk Management",
+  "empty_state": {
+    "news": "No news yet...",
+    "courses": "No courses available yet.",
+    "course_schedule": "No schedule available for this course."
+  }
+}

@@ -1,0 +1,667 @@
+---
+import { getCollection } from "astro:content";
+import { getImage, Image } from "astro:assets";
+import { strings, yearMonthLabel, type Locale } from "../lib/i18n";
+import { formatCount } from "../lib/count";
+import { publicationImages, resolveAsset } from "../lib/assets";
+import { actionLabel, actionTypes, authorName, authorParts, citationCount, isSelf, resourceUrl } from "../lib/publications";
+import social from "../data/socials.json";
+import citations from "../data/citations.json";
+import SectionHeader from "./SectionHeader.astro";
+import EmptyState from "./EmptyState.astro";
+import ChipButton from "./ui/ChipButton.astro";
+import Icon from "./ui/Icon.astro";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const labels = strings(locale).bibliography;
+const searchLabels = strings(locale).search;
+const copyUnavailable = strings(locale).labels.copy_unavailable;
+const items = (await getCollection("publications")).sort(
+  (a, b) => b.data.year - a.data.year || b.data.month - a.data.month || a.data.title.localeCompare(b.data.title)
+);
+const byYear = Map.groupBy(items, ({ data }) => data.year);
+const yearGroups = [...byYear.entries()].sort(([a], [b]) => b - a);
+const newestYear = yearGroups[0]?.[0];
+const imageFor = (preview: string) => resolveAsset(publicationImages, preview);
+const zoomImages = new Map<string, string>();
+await Promise.all(
+  [...new Set(items.map(({ data }) => data.preview).filter(Boolean))].map(async (preview) => {
+    const source = imageFor(preview);
+    if (!source) return;
+    // Pass a constant width rather than reading `source.width`: any property read on an
+    // imported ImageMetadata marks the file as referenced and stops Astro from pruning
+    // the original asset from the build. sharp's `withoutEnlargement` caps the output.
+    const result = await getImage({ src: source, width: 1400, format: "webp" });
+    zoomImages.set(preview, result.src);
+  })
+);
+const paperCitations = citations.papers as Record<string, { citations: number }>;
+const citationsFor = (scholarId: string) => citationCount(paperCitations, scholarId, social.scholar_userid);
+---
+
+<div class="publications" data-publications data-count-locale={locale}>
+  <form class="publication-search" role="search">
+    <label class="sr-only" for={`publication-search-${locale}`}>
+      {labels.filter}
+    </label>
+    <input
+      id={`publication-search-${locale}`}
+      type="search"
+      placeholder={searchLabels.bib_placeholder}
+      spellcheck="false"
+      autocomplete="off"
+      data-publication-input
+    />
+  </form>
+  <p class="publication-count" role="status" aria-live="polite" data-count-one={labels.count.one} data-count-other={labels.count.other}>
+    {formatCount(locale, labels.count, items.length)}
+  </p>
+  <EmptyState hidden data-publication-empty message={labels.empty} />
+
+  {yearGroups.map(([year, yearItems]) => (
+    <section class="publication-group" data-publication-group>
+      <SectionHeader title={year} locale={locale} count={yearItems.length} countForms={labels.count} />
+      <ol class="bibliography">
+        {yearItems.map(({ id, data: publication }, index) => {
+          const allAuthors = publication.authors.map((author) => authorName(author, publication.language));
+          const visibleAuthors = allAuthors.slice(0, 5);
+          const hiddenAuthors = allAuthors.slice(5);
+          const panelBase = `publication-${id}`;
+          const citations = publication.scholarId ? citationsFor(publication.scholarId) : undefined;
+          const preview = publication.preview ? imageFor(publication.preview) : undefined;
+          const zoomSrc = publication.preview ? zoomImages.get(publication.preview) : undefined;
+          const searchText = `${publication.title} ${allAuthors.join(" ")} ${publication.journal} ${publication.year}`;
+          return (
+            <li class="publication-entry" data-publication-entry data-search={searchText}>
+              <div class="publication-row">
+                <div class="publication-preview-column">
+                  {preview && (
+                    <button
+                      class="publication-preview-button"
+                      type="button"
+                      data-publication-preview
+                      data-zoom-src={zoomSrc}
+                      data-preview-alt={`${publication.title} preview`}
+                      aria-label={labels.preview_alt}>
+                      <Image
+                        class="publication-preview"
+                        src={preview}
+                        alt={`${publication.title} preview`}
+                        width={180}
+                        widths={[180, 360]}
+                        sizes="(max-width: 767px) 180px, 180px"
+                        loading={year === newestYear && index < 2 ? "eager" : "lazy"}
+                      />
+                    </button>
+                  )}
+                </div>
+                <div class="publication-content">
+                  <div class="publication-title">{publication.title}</div>
+                  <div class="publication-author">
+                    {visibleAuthors.map((name, authorIndex) => {
+                      const parts = authorParts(name);
+                      return (
+                        <>
+                          {authorIndex > 0 &&
+                            (authorIndex === visibleAuthors.length - 1
+                              ? visibleAuthors.length === 2
+                                ? ` ${labels.last_author_prefix} `
+                                : `, ${labels.last_author_prefix} `
+                              : ", ")}
+                          <span class:list={{ "publication-self": isSelf(parts.name) }}>
+                            {parts.name}
+                            {parts.markers && <sup>{parts.markers}</sup>}
+                          </span>
+                        </>
+                      );
+                    })}
+                    {hiddenAuthors.length > 0 && (
+                      <>
+                        {visibleAuthors.length > 0 && `, ${labels.last_author_prefix} `}
+                        <button
+                          class="publication-more-authors"
+                          type="button"
+                          data-more-authors
+                          aria-expanded="false"
+                          data-collapsed-label={formatCount(locale, labels.more_authors_label, hiddenAuthors.length)}
+                          data-expanded-label={labels.hide_authors}>
+                          {formatCount(locale, labels.more_authors_label, hiddenAuthors.length)}
+                        </button>
+                        <span class="publication-hidden-authors" hidden data-more-authors-list>
+                          {hiddenAuthors.map((name, hiddenIndex) => (
+                            <>
+                              {hiddenIndex > 0 && ", "}
+                              {name}
+                            </>
+                          ))}
+                        </span>
+                      </>
+                    )}
+                    {publication.annotation && (
+                      <span class="publication-annotation-wrap" data-publication-annotation-wrap>
+                        <button
+                          class="publication-annotation"
+                          type="button"
+                          data-publication-annotation
+                          aria-controls={`${panelBase}-annotation`}
+                          aria-describedby={`${panelBase}-annotation`}
+                          aria-expanded="false"
+                          aria-label={labels.publication_information}>
+                          <span aria-hidden="true">!</span>
+                        </button>
+                        <span class="publication-annotation-popover" id={`${panelBase}-annotation`} role="tooltip" aria-hidden="true">
+                          {publication.annotation}
+                        </span>
+                      </span>
+                    )}
+                  </div>
+                  <div class="publication-periodical">
+                    {publication.journal && <em>{publication.journal}</em>}
+                    {publication.journal && ", "}
+                    {yearMonthLabel(publication.year, publication.month, locale)}
+                  </div>
+                  <div class="publication-links">
+                    {publication.abstract && (
+                      <ChipButton data-publication-toggle={`${panelBase}-abstract`} aria-expanded="false">
+                        {labels.abstract}
+                      </ChipButton>
+                    )}
+                    {publication.doi && (
+                      <ChipButton href={`https://doi.org/${publication.doi}`} target="_blank" rel="noreferrer">
+                        {labels.doi}
+                      </ChipButton>
+                    )}
+                    {publication.bibtexShow && (
+                      <ChipButton data-publication-toggle={`${panelBase}-bibtex`} aria-expanded="false">
+                        {labels.bib}
+                      </ChipButton>
+                    )}
+                    {actionTypes.map((type) => {
+                      const value = publication.links[type];
+                      const href = value ? resourceUrl(value, type) : undefined;
+                      return href ? (
+                        <ChipButton href={href} target="_blank" rel="noreferrer">
+                          {actionLabel(type, labels)}
+                        </ChipButton>
+                      ) : null;
+                    })}
+                  </div>
+                  {citations !== undefined && (
+                    <div class="publication-badges">
+                      <ChipButton
+                        href={`https://scholar.google.com/citations?view_op=view_citation&user=${social.scholar_userid}&citation_for_view=${social.scholar_userid}:${publication.scholarId}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        size="sm"
+                        tone="muted"
+                        aria-label={`${labels.scholar_citations}: ${citations}`}>
+                        Scholar · {citations}
+                      </ChipButton>
+                    </div>
+                  )}
+                  {publication.abstract && (
+                    <div class="publication-hidden" id={`${panelBase}-abstract`} data-publication-panel aria-hidden="true" inert>
+                      <p>{publication.abstract}</p>
+                    </div>
+                  )}
+                  {publication.bibtexShow && (
+                    <div class="publication-hidden publication-bibtex" id={`${panelBase}-bibtex`} data-publication-panel aria-hidden="true" inert>
+                      <div class="publication-bibtex-toolbar">
+                        <ChipButton
+                          size="sm"
+                          tone="muted"
+                          data-copy-bibtex
+                          data-copy-label={labels.copy_bibtex}
+                          data-copied-label={labels.copied_bibtex}
+                          data-copy-unavailable={copyUnavailable}
+                          data-copy-failed={labels.copy_failed}
+                          aria-label={labels.copy_bibtex}>
+                          {labels.copy_bibtex}
+                        </ChipButton>
+                        <span class="publication-copy-status sr-only" role="status" aria-live="polite"></span>
+                      </div>
+                      <pre><code>{publication.bibtex}</code></pre>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </li>
+          );
+        })}
+      </ol>
+    </section>
+  ))}
+</div>
+<dialog class="publication-lightbox" data-publication-lightbox aria-label={labels.lightbox_label}>
+  <button class="publication-lightbox-close is-circle" type="button" data-publication-lightbox-close aria-label={labels.close_preview}>
+    <Icon name="close" class="publication-lightbox-close-icon" />
+  </button>
+  <img data-publication-lightbox-image alt="" />
+</dialog>
+
+<script>
+  import { initPublicationList } from "../scripts/publication-list";
+
+  initPublicationList();
+</script>
+
+<style>
+  .publications {
+    margin-top: 2rem;
+  }
+
+  .publication-search {
+    margin: 0 0 1.25rem;
+  }
+
+  .publication-search input {
+    display: block;
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--page-bg);
+    padding: 0.55rem 0.75rem;
+    transition:
+      border-color var(--dur-base) ease,
+      box-shadow var(--dur-base) ease;
+  }
+
+  .publication-search input:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: -1px;
+    border-color: var(--accent);
+  }
+
+  .publication-count {
+    margin: -0.5rem 0 1.25rem;
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  .publication-group {
+    margin-top: 2rem;
+  }
+
+  .publication-group :global(ol.bibliography) {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .publication-entry {
+    margin: 0 0 1rem;
+  }
+
+  .publication-row {
+    display: grid;
+    grid-template-columns: minmax(0, 16.6667%) minmax(0, 66.6667%);
+    gap: 1.25rem;
+    align-items: start;
+  }
+
+  .publication-preview-column {
+    min-width: 0;
+  }
+
+  .publication-preview-button {
+    display: block;
+    width: 100%;
+    border: 0;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    padding: 0;
+    cursor: zoom-in;
+  }
+
+  .publication-preview {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow);
+    object-fit: contain;
+  }
+
+  .publication-content {
+    min-width: 0;
+  }
+
+  .publication-title {
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-snug);
+  }
+
+  .publication-author {
+    margin-top: 0.15rem;
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-relaxed);
+  }
+
+  .publication-author sup {
+    font-size: 0.72em;
+    line-height: 0;
+  }
+
+  .publication-self {
+    border-bottom: 1px solid currentColor;
+    font-style: normal;
+  }
+
+  .publication-more-authors {
+    border: 0;
+    border-bottom: 1px dashed var(--muted);
+    border-radius: 0;
+    background: transparent;
+    padding: 0;
+    color: var(--muted);
+    font-size: inherit;
+  }
+
+  .publication-more-authors:hover {
+    border-color: var(--text);
+    color: var(--text);
+  }
+
+  .publication-hidden-authors {
+    color: var(--muted);
+  }
+
+  .publication-annotation-wrap {
+    position: relative;
+    display: inline-block;
+    margin-left: 0.28rem;
+    vertical-align: 0.08em;
+  }
+
+  .publication-annotation {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1rem;
+    min-height: 1rem;
+    border: 0;
+    border-radius: var(--radius-xs);
+    background: transparent;
+    padding: 0 0.12rem;
+    color: var(--muted);
+    font-size: 0.82em;
+    font-weight: var(--font-weight-bold);
+    line-height: 1;
+    cursor: help;
+    transition:
+      color var(--dur-base) ease,
+      background-color var(--dur-base) ease;
+  }
+
+  .publication-annotation:hover,
+  .publication-annotation:focus-visible,
+  .publication-annotation-wrap.is-open .publication-annotation {
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+
+  .publication-annotation-popover {
+    position: absolute;
+    z-index: var(--z-header);
+    bottom: calc(100% + 0.45rem);
+    left: 50%;
+    width: max-content;
+    max-width: min(18rem, calc(100vw - 2rem));
+    transform: translate(-50%, 0.25rem);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--page-bg);
+    padding: 0.45rem 0.65rem;
+    color: var(--text);
+    box-shadow: var(--shadow-hover);
+    font-size: 0.82rem;
+    font-weight: var(--font-weight-regular);
+    line-height: 1.4;
+    text-align: left;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      opacity var(--dur-base) ease,
+      transform var(--dur-base) ease,
+      visibility var(--dur-base) ease;
+  }
+
+  .publication-annotation-popover::after {
+    position: absolute;
+    bottom: -0.32rem;
+    left: 50%;
+    width: 0.55rem;
+    height: 0.55rem;
+    transform: translateX(-50%) rotate(45deg);
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: var(--page-bg);
+    content: "";
+  }
+
+  .publication-annotation-wrap:hover .publication-annotation-popover,
+  .publication-annotation-wrap:focus-within .publication-annotation-popover,
+  .publication-annotation-wrap.is-open .publication-annotation-popover {
+    transform: translate(-50%, 0);
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .publication-periodical {
+    color: var(--muted);
+    font-family: var(--sans);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-normal);
+  }
+
+  .publication-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.55rem;
+  }
+
+  .publication-badges {
+    margin-top: 0.55rem;
+    padding-bottom: 0.25rem;
+  }
+
+  /* Collapsed by height so the open/close transition remains visible; `inert`
+     removes the hidden panel from keyboard and assistive technology navigation. */
+  .publication-hidden {
+    max-height: 0;
+    overflow: hidden;
+    border: 1px dashed transparent;
+    opacity: 0;
+    text-align: justify;
+    transition:
+      max-height var(--dur-medium) ease,
+      border-color var(--dur-medium) ease,
+      opacity var(--dur-medium) ease;
+  }
+
+  .publication-hidden.is-open {
+    max-height: 100em;
+    border-color: var(--border);
+    opacity: 1;
+  }
+
+  .publication-hidden :global(p),
+  .publication-hidden :global(pre) {
+    margin: 10px;
+    line-height: 1.5;
+  }
+
+  .publication-bibtex-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin: 10px 10px 0;
+  }
+
+  /* The outline comes from `ChipButton` (`size="sm" tone="muted"`); the copy
+     button sits slightly tighter than the default badge padding. */
+  .publication-bibtex-toolbar :global(.chip-button) {
+    padding: 0.2rem 0.65rem;
+    font-size: 0.82rem;
+    line-height: var(--line-height-snug);
+  }
+
+  .publication-copy-status {
+    color: var(--accent);
+    font-size: 0.82rem;
+  }
+
+  .publication-hidden :global(pre) {
+    overflow-x: auto;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    padding: 0;
+    font-family: var(--mono);
+    font-size: 0.86rem;
+    white-space: pre;
+    overflow-wrap: normal;
+  }
+
+  .publication-lightbox {
+    width: fit-content;
+    max-width: min(90vw, 1200px);
+    max-height: 90vh;
+    margin: auto;
+    border: 0;
+    border-radius: var(--radius-sm);
+    background: var(--page-bg);
+    padding: 0.75rem;
+    color: var(--text);
+    box-shadow: var(--shadow-hover);
+    overflow: visible;
+    animation: publication-lightbox-in var(--dur-medium) ease-out both;
+  }
+
+  .publication-lightbox::backdrop {
+    background: var(--scrim-strong);
+    animation: publication-lightbox-backdrop-in var(--dur-medium) ease-out both;
+  }
+
+  .publication-lightbox :global(img) {
+    display: block;
+    max-width: 100%;
+    max-height: calc(90vh - 1.5rem);
+    width: auto;
+    height: auto;
+    margin: auto;
+    object-fit: contain;
+  }
+
+  .publication-lightbox-close {
+    position: absolute;
+    top: 0.35rem;
+    right: 0.35rem;
+    display: grid;
+    width: 2rem;
+    height: 2rem;
+    place-items: center;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    background: var(--scrim-surface);
+    padding: 0;
+    color: var(--text);
+  }
+
+  .publication-lightbox-close-icon {
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+
+  .publication-lightbox-close:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  @keyframes publication-lightbox-in {
+    from {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes publication-lightbox-backdrop-in {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .publication-lightbox,
+    .publication-lightbox::backdrop {
+      animation: none;
+    }
+  }
+
+  /* Narrow rows: the preview moves to the right of the text instead of above
+     it, so a long title still gets a full-width line. */
+  @media (max-width: 600px) {
+    .publication-row {
+      display: flex;
+      flex-direction: row;
+      gap: 0.85rem;
+      align-items: flex-start;
+    }
+
+    .publication-content {
+      flex: 1;
+      min-width: 0;
+      order: 1;
+    }
+
+    .publication-preview-column {
+      flex-shrink: 0;
+      width: 76px;
+      order: 2;
+    }
+
+    /* Only the cursor changes here: the rest of this rule already applies at
+       every width, and re-declaring it is what previously overwrote the
+       zoom-in affordance with a plain pointer. */
+    .publication-preview-button {
+      cursor: pointer;
+    }
+
+    .publication-preview {
+      width: 76px;
+      height: 104px;
+      object-fit: cover;
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border);
+      transition:
+        transform var(--dur-base) ease,
+        border-color var(--dur-base) ease,
+        box-shadow var(--dur-base) ease;
+    }
+
+    .publication-preview-button:hover .publication-preview {
+      transform: translateY(-2px);
+      border-color: var(--accent);
+      box-shadow: var(--shadow-hover);
+    }
+  }
+</style>

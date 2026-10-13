@@ -1,0 +1,62 @@
+---
+/**
+ * A horizontally scrollable wrapper for a wide data table. Wide tables are
+ * unreadable below their natural width, and squeezing the columns instead wraps
+ * dates and names into unreadable stacks, so the table keeps its intrinsic
+ * width and the wrapper scrolls.
+ */
+interface Props {
+  /** Width below which the table starts scrolling rather than squeezing. */
+  minWidth?: string;
+  class?: string;
+}
+
+const { minWidth = "760px", class: className } = Astro.props;
+---
+
+<div class:list={["table-scroll", className]} style={`--table-min-width:${minWidth}`}>
+  <table>
+    <slot />
+  </table>
+</div>
+
+<style>
+  .table-scroll {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+  }
+
+  /* `:global` because the `<table>`, its rows and its cells come from the
+     caller's slot, not from this component's template. */
+  .table-scroll :global(table) {
+    width: 100%;
+    min-width: var(--table-min-width, 760px);
+    border-collapse: collapse;
+    font-size: 0.88rem;
+  }
+
+  .table-scroll :global(th),
+  .table-scroll :global(td) {
+    border-bottom: 1px solid var(--border);
+    padding: 0.6rem 0.7rem;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .table-scroll :global(th) {
+    background: var(--surface);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .table-scroll :global(tr:last-child td) {
+    border-bottom: 0;
+  }
+
+  /* Part of the primitive's typesetting contract rather than any one caller's
+     markup: a `<small>` in a cell is secondary text wherever it appears. */
+  .table-scroll :global(small) {
+    color: var(--muted);
+    overflow-wrap: anywhere;
+  }
+</style>

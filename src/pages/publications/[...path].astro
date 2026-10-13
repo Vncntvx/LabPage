@@ -1,0 +1,10 @@
+---
+import { pageShapeStaticPaths } from "../../lib/route-paths";
+import { defaultLocale } from "../../lib/locale";
+import PublicationsView from "../../views/PublicationsView.astro";
+
+export const getStaticPaths = pageShapeStaticPaths("publications", [defaultLocale]);
+const { entry, locale, path } = Astro.props;
+---
+
+<PublicationsView entry={entry} locale={locale} path={path} />

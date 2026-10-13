@@ -1,0 +1,10 @@
+---
+import { pageShapeStaticPaths } from "../../lib/route-paths";
+import { defaultLocale } from "../../lib/locale";
+import TeachingView from "../../views/TeachingView.astro";
+
+export const getStaticPaths = pageShapeStaticPaths("teaching", [defaultLocale]);
+const { entry, locale, path } = Astro.props;
+---
+
+<TeachingView entry={entry} locale={locale} path={path} />

@@ -1,0 +1,28 @@
+---
+import { getCollection, render, type CollectionEntry } from "astro:content";
+import { visible } from "../lib/dev-mode";
+import type { Locale } from "../lib/i18n";
+import EntryLayout from "../layouts/EntryLayout.astro";
+import PeopleDirectory from "../components/PeopleDirectory.astro";
+import Prose from "../components/ui/Prose.astro";
+
+interface Props {
+  entry: CollectionEntry<"pages">;
+  locale: Locale;
+  path: string;
+}
+
+const { entry, locale, path } = Astro.props;
+const { Content } = await render(entry);
+const [people, opportunities] = await Promise.all([
+  getCollection("people", (item) => item.data.locale === locale && visible(item)),
+  getCollection("opportunities", (item) => item.data.locale === locale && visible(item)),
+]);
+---
+
+<EntryLayout entry={entry} locale={locale} path={path}>
+  <Prose>
+    <Content />
+  </Prose>
+  <PeopleDirectory locale={locale} people={people} opportunities={opportunities} />
+</EntryLayout>

@@ -1,0 +1,18 @@
+{
+  "remoteBaseUrl": "https://wenjie-lab-assets.oss-cn-hangzhou.aliyuncs.com",
+  "rootPrefix": "lab",
+  "directories": [
+    {
+      "name": "publications",
+      "local": "public/assets/pdf",
+      "remote": "assets/pdf",
+      "patterns": [".pdf"]
+    },
+    {
+      "name": "cv",
+      "local": "public/assets/cv",
+      "remote": "assets/cv",
+      "patterns": [".pdf"]
+    }
+  ]
+}

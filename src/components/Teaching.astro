@@ -1,0 +1,255 @@
+---
+import { getCollection } from "astro:content";
+import { visible } from "../lib/dev-mode";
+import { localeUrl, strings, type Locale } from "../lib/i18n";
+import { courseMetaPairs } from "../lib/courses";
+import SectionHeader from "./SectionHeader.astro";
+import EmptyState from "./EmptyState.astro";
+import MetaList from "./ui/MetaList.astro";
+import Icon from "./ui/Icon.astro";
+import Card from "./ui/Card.astro";
+interface Props {
+  locale: Locale;
+  calendar?: {
+    enabled: boolean;
+    url?: string;
+  };
+}
+const { locale, calendar } = Astro.props;
+const courses = (await getCollection("teachings", (entry) => entry.data.locale === locale && visible(entry))).sort(
+  (a, b) => b.data.year - a.data.year
+);
+const labels = strings(locale).courses;
+// `year` is required by the schema, so every course belongs to a year group and
+// none can be dropped by the render below.
+const years = [...new Set(courses.map(({ data }) => data.year))].sort((a, b) => b - a);
+const byYear = Map.groupBy(courses, ({ data }) => data.year);
+---
+
+{courses.length ? (
+  <div class="teaching-catalog">
+    {years.map((year) => {
+      const yearCourses = byYear.get(year) ?? [];
+      return (
+        <section class="teaching-year" aria-labelledby={`teaching-year-${year}`}>
+          <SectionHeader id={`teaching-year-${year}`} title={year} locale={locale} count={yearCourses.length} countForms={labels.courses_count} />
+          <div class="course-list">
+            {yearCourses.map(({ data }) => {
+              const href = localeUrl(locale, `/teachings/${data.course_id}/`);
+              return (
+                <Card class="course-card">
+                  <div class="course-card-heading">
+                    <span class="course-term">{data.term}</span>
+                    <h3>
+                      <a href={href}>{data.title}</a>
+                    </h3>
+                  </div>
+                  <p class="course-description">{data.description}</p>
+                  <MetaList pairs={courseMetaPairs(data, labels)} />
+                  <a class="course-card-action" href={href} slot="actions">
+                    {labels.view_course}
+                    <span aria-hidden="true">→</span>
+                  </a>
+                </Card>
+              );
+            })}
+          </div>
+        </section>
+      );
+    })}
+  </div>
+) : (
+  <EmptyState message={strings(locale).empty_state.courses} />
+)}
+
+{calendar?.enabled && calendar.url && (
+  <section class="calendar-panel" aria-labelledby="calendar-title">
+    <div class="calendar-heading">
+      <div>
+        <p class="eyebrow">{labels.upcoming}</p>
+        <h2 id="calendar-title">{labels.calendar}</h2>
+      </div>
+      <span class="calendar-icon" aria-hidden="true">
+        <Icon name="calendar" size="xl" />
+      </span>
+    </div>
+    <p class="calendar-description">{labels.calendar_description}</p>
+    <details class="calendar-details">
+      <summary>{labels.show_calendar}</summary>
+      {/* Third-party embed: `sandbox` withholds same-origin access, forms and
+        popups, which the calendar view does not need. */}
+      <iframe
+        title={labels.calendar}
+        src={calendar.url}
+        sandbox="allow-scripts allow-same-origin allow-popups"
+        loading="lazy"
+        width="100%"
+        height="600"></iframe>
+    </details>
+  </section>
+)}
+
+<style>
+  .teaching-catalog {
+    margin-top: 2rem;
+  }
+
+  .teaching-year + .teaching-year {
+    margin-top: 3rem;
+  }
+
+  .course-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(285px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  /* The shell — border, radius, shadow, hover lift — comes from `Card`. Only the
+     metrics that differ from the project card are declared here, through the
+     custom properties `Card` reads, because a scoped descendant rule inside
+     `Card` would outrank anything written here. */
+  .course-card {
+    --card-pad-x: 1.15rem;
+    --card-pad-bottom: 0.9rem;
+    --card-p-margin-block: 0.85rem 0 1rem;
+    --card-p-size: 0.92rem;
+  }
+
+  .course-card-heading h3 {
+    margin: 0.35rem 0 0;
+    font-size: 1.15rem;
+    line-height: var(--line-height-snug);
+  }
+
+  .course-card-heading h3 a {
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .course-card-heading h3 a:hover {
+    color: var(--accent);
+  }
+
+  .course-term {
+    color: var(--accent);
+    font-size: var(--font-size-2xs);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* The description's metrics come from `Card`'s custom properties above, so this
+     rule only carries what it does not: the paragraph is the caller's own node
+     and needs no colour, which `Card` already sets. */
+  .course-card-action {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.7rem 1.15rem;
+    color: var(--accent);
+    font-size: 0.88rem;
+    font-weight: var(--font-weight-semibold);
+    text-decoration: none;
+  }
+
+  .course-card-action span {
+    font-size: 1.1rem;
+    transition: transform var(--dur-medium) ease;
+  }
+
+  .course-card-action:hover span {
+    transform: translateX(3px);
+  }
+
+  .calendar-panel {
+    margin-top: 3.25rem;
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+    padding: 1.2rem 1.3rem 1.3rem;
+  }
+
+  .calendar-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .calendar-heading h2 {
+    margin: 0;
+    font-size: 1.35rem;
+  }
+
+  .eyebrow {
+    margin: 0 0 0.2rem;
+    color: var(--accent);
+    font-size: 0.74rem;
+    font-weight: var(--font-weight-bold);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .calendar-icon {
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .calendar-description {
+    margin: 0.5rem 0 1rem;
+    color: var(--muted);
+    font-size: 0.92rem;
+  }
+
+  .calendar-details summary {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.25rem;
+    border: 1px solid var(--accent);
+    border-radius: var(--radius-sm);
+    padding: 0.35rem 0.75rem;
+    color: var(--accent);
+    font-size: 0.88rem;
+    font-weight: var(--font-weight-semibold);
+    list-style: none;
+  }
+
+  .calendar-details summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .calendar-details summary::after {
+    margin-left: 0.55rem;
+    content: "+";
+    font-size: 1.05rem;
+  }
+
+  .calendar-details[open] summary::after {
+    content: "−";
+  }
+
+  .calendar-details iframe {
+    display: block;
+    width: 100%;
+    height: 600px;
+    margin-top: 1rem;
+    border: 1px solid var(--border);
+    background: var(--page-bg);
+  }
+
+  @media (max-width: 600px) {
+    .course-list {
+      grid-template-columns: 1fr;
+    }
+
+    .calendar-panel {
+      padding: 1rem;
+    }
+
+    .calendar-details iframe {
+      height: 420px;
+    }
+  }
+</style>

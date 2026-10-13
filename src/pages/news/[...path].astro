@@ -1,0 +1,10 @@
+---
+import { pageShapeStaticPaths } from "../../lib/route-paths";
+import { defaultLocale } from "../../lib/locale";
+import NewsListView from "../../views/NewsListView.astro";
+
+export const getStaticPaths = pageShapeStaticPaths("news", [defaultLocale]);
+const { entry, locale, path } = Astro.props;
+---
+
+<NewsListView entry={entry} locale={locale} path={path} />

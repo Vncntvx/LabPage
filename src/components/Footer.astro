@@ -1,0 +1,56 @@
+---
+import { lastUpdatedDate } from "../lib/site-meta";
+import { currentYear, labels, strings, dateLabel, type Locale } from "../lib/i18n";
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const year = currentYear();
+
+// "Last updated" reflects the newest content, not the build time. Undefined when
+// both collections are empty, so the line is omitted rather than rendering an
+// invalid `<time>`.
+const lastUpdated = await lastUpdatedDate();
+---
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <span>© 2023–{year} Wenjie Xu</span>
+    <span data-footer-copyright>{strings(locale).footer.copyright}</span>
+    <span>
+      <span data-footer-powered>{labels(locale).powered}</span> <a href="https://astro.build/">Astro</a>
+    </span>
+    {lastUpdated && (
+      <span>
+        <span data-footer-updated>{strings(locale).footer.last_updated}</span>{" "}
+        <time datetime={lastUpdated.toISOString()} data-footer-date>
+          {dateLabel(lastUpdated, locale)}
+        </time>
+      </span>
+    )}
+    <a href="#top" data-footer-back>
+      {labels(locale).back}
+    </a>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--text);
+    padding-block: 0.55rem;
+    color: var(--page-bg);
+    font-family: var(--sans);
+    font-size: var(--font-size-2xs);
+  }
+
+  .footer-inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.15rem 0.65rem;
+  }
+
+  .site-footer a {
+    color: inherit;
+  }
+</style>

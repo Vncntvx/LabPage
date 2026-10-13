@@ -1,0 +1,19 @@
+---
+import type { CollectionEntry } from "astro:content";
+import type { Locale } from "../lib/i18n";
+import EntryLayout from "../layouts/EntryLayout.astro";
+import ProjectList from "../components/ProjectList.astro";
+
+/** The projects index. The entry's `categories` selects which filter chips render. */
+interface Props {
+  entry: CollectionEntry<"pages">;
+  locale: Locale;
+  path: string;
+}
+
+const { entry, locale, path } = Astro.props;
+---
+
+<EntryLayout entry={entry} locale={locale} path={path}>
+  <ProjectList locale={locale} categories={entry.data.categories} />
+</EntryLayout>

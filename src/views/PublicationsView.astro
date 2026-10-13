@@ -1,0 +1,22 @@
+---
+import type { CollectionEntry } from "astro:content";
+import type { Locale } from "../lib/i18n";
+import EntryLayout from "../layouts/EntryLayout.astro";
+import PublicationList from "../components/PublicationList.astro";
+
+/**
+ * The publications index. `PublicationList` reads `src/data/papers.bib` itself,
+ * so this view holds no bibliography logic — the entry supplies only the heading.
+ */
+interface Props {
+  entry: CollectionEntry<"pages">;
+  locale: Locale;
+  path: string;
+}
+
+const { entry, locale, path } = Astro.props;
+---
+
+<EntryLayout entry={entry} locale={locale} path={path}>
+  <PublicationList locale={locale} />
+</EntryLayout>

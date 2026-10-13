@@ -1,0 +1,202 @@
+---
+import social from "../data/socials.json";
+import { labels, strings, type Locale } from "../lib/i18n";
+import { resolveRemoteAssetUrl } from "../lib/remote-assets";
+import { isExternalUrl } from "../lib/url";
+import Icon, { type IconName } from "./ui/Icon.astro";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+interface Link {
+  id: string;
+  title: string;
+  url: string;
+  icon: IconName;
+  /** Brand marks are drawn filled; stroked glyphs share one optical weight. */
+  filled?: boolean;
+}
+
+const links: Link[] = [
+  { id: "cv", title: "CV", url: resolveRemoteAssetUrl(social.cv_pdf) ?? social.cv_pdf, icon: "document" },
+  { id: "rss", title: "RSS", url: "/feed.xml", icon: "rss" },
+  { id: "email", title: "Email", url: `mailto:${social.email}`, icon: "mail" },
+  { id: "github", title: "GitHub", url: `https://github.com/${social.github_username}`, icon: "github", filled: true },
+  { id: "orcid", title: "ORCID", url: `https://orcid.org/${social.orcid_id}`, icon: "orcid", filled: true },
+  { id: "researchgate", title: "ResearchGate", url: social.research_gate_profile, icon: "researchgate", filled: true },
+  {
+    id: "scholar",
+    title: "Google Scholar",
+    url: `https://scholar.google.com/citations?user=${social.scholar_userid}`,
+    icon: "scholar",
+    filled: true,
+  },
+  { id: "wechat", title: "WeChat", url: social.wechat_qr.url, icon: "wechat", filled: true },
+];
+---
+
+<div class="social" id="contact">
+  <ul class="social-list" aria-label={strings(locale).labels.social_links}>
+    {links.map((link) => (
+      <li>
+        {link.id === "wechat" ? (
+          <details class="social-wechat" data-wechat-details>
+            <summary class="social-link" title={link.title} aria-label={link.title}>
+              <Icon name={link.icon} filled={link.filled} size="sm" />
+            </summary>
+            <div class="wechat-dropdown">
+              <img src={social.wechat_qr.url} alt={labels(locale).wechat} width="180" height="180" loading="lazy" />
+              <span>{labels(locale).wechat}</span>
+            </div>
+          </details>
+        ) : (
+          <a
+            class="social-link"
+            href={link.url}
+            title={link.title}
+            aria-label={link.title}
+            target={isExternalUrl(link.url) ? "_blank" : undefined}
+            rel={isExternalUrl(link.url) ? "noreferrer" : undefined}>
+            <Icon name={link.icon} filled={link.filled} size="sm" />
+          </a>
+        )}
+      </li>
+    ))}
+  </ul>
+  <p class="social-contact">
+    {strings(locale).contact_note} <a href={`mailto:${social.email}`}>{social.email}</a>
+  </p>
+</div>
+
+<script>
+  // Close WeChat popover when clicking outside
+  document.addEventListener("click", (event) => {
+    const details = document.querySelector<HTMLDetailsElement>("[data-wechat-details]");
+    if (!details || !details.open) return;
+    if (!details.contains(event.target as Node)) {
+      details.open = false;
+    }
+  });
+</script>
+
+<style>
+  .social {
+    position: relative;
+    margin-top: 2rem;
+    border-top: 1px solid var(--border);
+    padding-top: 1.75rem;
+    text-align: center;
+  }
+
+  .social-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.65rem;
+    margin: 0 0 1.25rem;
+    padding: 0;
+    list-style: none;
+  }
+
+  .social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 1px solid var(--border);
+    /* A 44px square, so `--radius-md` is the matching step; `--radius-lg`
+       belongs to cards and dialogs, and would round this into a lozenge. */
+    border-radius: var(--radius-md);
+    background: var(--page-bg);
+    color: var(--muted);
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    text-decoration: none;
+    transition:
+      transform var(--dur-base) ease,
+      border-color var(--dur-base) ease,
+      color var(--dur-base) ease,
+      background-color var(--dur-base) ease,
+      box-shadow var(--dur-base) ease;
+  }
+
+  .social-link:hover,
+  .social-link:focus-visible,
+  .social-wechat[open] .social-link {
+    transform: translateY(-2px);
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--accent-soft);
+    box-shadow: var(--shadow-hover);
+  }
+
+  .social-wechat {
+    position: relative;
+    display: inline-block;
+  }
+
+  .social-wechat summary {
+    list-style: none;
+  }
+
+  .social-wechat summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .wechat-dropdown {
+    position: absolute;
+    bottom: calc(100% + 0.65rem);
+    left: 50%;
+    z-index: var(--z-popover);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    transform: translateX(-50%);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--page-bg);
+    padding: 0.75rem;
+    box-shadow: var(--shadow-modal);
+    white-space: nowrap;
+  }
+
+  .wechat-dropdown img {
+    display: block;
+    width: 180px;
+    height: 180px;
+    border-radius: var(--radius-md);
+    object-fit: contain;
+  }
+
+  .wechat-dropdown span {
+    color: var(--muted);
+    font-size: 0.78rem;
+    font-weight: var(--font-weight-medium);
+  }
+
+  /* Scoped, so this class selector outranks the global `p { text-align:
+     justify }` on specificity alone and needs no `!important`. */
+  .social-contact {
+    margin: 0 auto;
+    color: var(--muted);
+    font-family: var(--sans);
+    font-size: var(--font-size-sm);
+    text-align: center;
+  }
+
+  .social-contact a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .social-contact a:hover {
+    color: var(--accent-strong);
+  }
+</style>

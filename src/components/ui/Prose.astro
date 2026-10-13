@@ -1,0 +1,31 @@
+---
+/**
+ * The shell around a rendered Markdown body. The element-level rules for
+ * headings, lists, code and tables stay global (`.prose`) because Astro emits
+ * those nodes from the content collection rather than from a template; this
+ * component owns only the wrapper.
+ *
+ * `as` picks the element, because a Markdown body inside a list is not a
+ * standalone document and an `<article>` would misdeclare it. `measure` drops
+ * the global 76ch cap for bodies that span the full column.
+ */
+interface Props {
+  as?: "article" | "div";
+  measure?: "readable" | "full";
+  class?: string;
+}
+
+const { as: Tag = "article", measure = "readable", class: className } = Astro.props;
+---
+
+<Tag class:list={["prose", { "prose--full": measure === "full" }, className]}>
+  <slot />
+</Tag>
+
+<style>
+  /* The global `.prose` caps the measure for reading comfort; a summary that
+     spans the page column opts out. */
+  .prose--full {
+    max-width: none;
+  }
+</style>

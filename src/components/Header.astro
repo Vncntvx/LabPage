@@ -1,0 +1,621 @@
+---
+import { getCollection } from "astro:content";
+import { navLinks } from "../lib/nav";
+import { labels, strings, localeUrl, pathWithoutLocale, type Locale } from "../lib/i18n";
+import LanguageSwitcher from "./LanguageSwitcher.astro";
+import SearchModal from "./SearchModal.astro";
+import ThemeToggle from "./ThemeToggle.astro";
+import Icon from "./ui/Icon.astro";
+import MenuPanel from "./ui/MenuPanel.astro";
+interface Props {
+  locale: Locale;
+  path: string;
+  /** Path the language switcher links to in the other locale; see BaseLayout. */
+  switchPath?: string;
+}
+const { locale, path, switchPath = path } = Astro.props;
+const currentPath = pathWithoutLocale(path);
+const isHome = currentPath === "/";
+const links = navLinks(await getCollection("pages"), locale);
+---
+
+<header class="site-header">
+  <div class:list={["container", "header-inner", { "home-header": isHome }]}>
+    <a class:list={["site-name", { "home-site-name": isHome }]} href={localeUrl(locale)} data-home-link>
+      Wenjie Xu
+    </a>
+    <details class="navigation" open>
+      <summary class="nav-toggle" data-nav-toggle aria-label={strings(locale).header.toggle_navigation}>
+        <span class="sr-only" data-control-label>
+          {strings(locale).header.toggle_navigation}
+        </span>
+        <Icon name="menu" size="sm" stroke class="icon-menu" />
+        <Icon name="close" size="sm" stroke class="icon-close" />
+      </summary>
+      <nav aria-label={labels(locale).primary} data-nav-primary>
+        {links.map((link) => {
+          if (link.isDropdown) {
+            const isChildActive = link.children.some(
+              (child) => currentPath === child.permalink || (child.permalink !== "/" && currentPath.startsWith(child.permalink))
+            );
+            const isSelfActive = currentPath === link.path;
+            const isActive = isChildActive || isSelfActive;
+
+            return (
+              <div class="nav-dropdown" data-nav-dropdown>
+                <button
+                  type="button"
+                  class:list={["nav-dropdown-toggle", { "is-active": isActive }]}
+                  aria-haspopup="menu"
+                  aria-expanded="false"
+                  aria-current={isActive ? "true" : undefined}>
+                  <span data-nav-dropdown-label={link.path}>{link.title}</span>
+                  <Icon name="chevron" class="dropdown-caret" />
+                </button>
+                <MenuPanel align="left">
+                  {link.children.map((child) => (
+                    <li>
+                      <a
+                        href={localeUrl(locale, child.permalink)}
+                        data-nav-route={child.permalink}
+                        aria-current={currentPath === child.permalink ? "page" : undefined}>
+                        {child.title}
+                      </a>
+                    </li>
+                  ))}
+                </MenuPanel>
+              </div>
+            );
+          }
+
+          return (
+            <a href={localeUrl(locale, link.path)} data-nav-route={link.path} aria-current={currentPath === link.path ? "page" : undefined}>
+              {link.title}
+            </a>
+          );
+        })}
+        <button
+          class="icon-button search-button"
+          type="button"
+          data-search-open
+          data-header-search
+          aria-label={strings(locale).header.search}
+          title={strings(locale).header.search}>
+          <Icon name="search" class="search-icon" />
+          <span class="icon-button-label search-label" data-control-label>
+            {strings(locale).header.search}
+          </span>
+        </button>
+        <div class="header-controls">
+          <LanguageSwitcher locale={locale} path={switchPath} />
+          <ThemeToggle locale={locale} />
+        </div>
+      </nav>
+    </details>
+  </div>
+  <progress class="reading-progress" data-reading-progress max="100" value="0" aria-label={strings(locale).header.reading_progress}></progress>{" "}
+  <SearchModal locale={locale} />
+</header>
+<script>
+  const navigation = document.querySelector<HTMLDetailsElement>(".navigation");
+  const desktop = matchMedia("(min-width: 768px)");
+  const syncNavigation = () => {
+    if (navigation) navigation.open = desktop.matches;
+  };
+  syncNavigation();
+  desktop.addEventListener("change", syncNavigation);
+  const progress = document.querySelector<HTMLProgressElement>("[data-reading-progress]");
+  // `scrollHeight` forces a synchronous layout, so it is not read per scroll
+  // event. It is cached and recomputed only when the document's size can have
+  // changed: a resize, or `ResizeObserver` firing as lazy images and fonts
+  // reflow the page (which does not dispatch a `resize`).
+  let scrollableHeight = 0;
+  const measure = () => {
+    scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+    render();
+  };
+  const render = () => {
+    if (!progress) return;
+    progress.value = scrollableHeight > 0 ? (window.scrollY / scrollableHeight) * 100 : 0;
+  };
+  measure();
+  window.addEventListener("scroll", render, { passive: true });
+  window.addEventListener("resize", measure);
+  new ResizeObserver(measure).observe(document.body);
+
+  const dropdowns = document.querySelectorAll<HTMLElement>("[data-nav-dropdown]");
+  const closeDropdown = (dropdown: HTMLElement, { focus = false } = {}) => {
+    if (dropdown.dataset.open !== "true") return false;
+    const toggle = dropdown.querySelector<HTMLButtonElement>(".nav-dropdown-toggle");
+    const menu = dropdown.querySelector<HTMLElement>(".menu-panel");
+    dropdown.dataset.open = "false";
+    toggle?.setAttribute("aria-expanded", "false");
+    if (menu) menu.hidden = true;
+    if (focus) toggle?.focus();
+    return true;
+  };
+  dropdowns.forEach((dropdown) => {
+    const toggle = dropdown.querySelector<HTMLButtonElement>(".nav-dropdown-toggle");
+    const menu = dropdown.querySelector<HTMLElement>(".menu-panel");
+    let timeoutId: number | undefined;
+
+    const setOpen = (open: boolean) => {
+      if (timeoutId) {
+        window.clearTimeout(timeoutId);
+        timeoutId = undefined;
+      }
+      dropdown.dataset.open = open ? "true" : "false";
+      toggle?.setAttribute("aria-expanded", String(open));
+      if (menu) menu.hidden = !open;
+    };
+
+    toggle?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      setOpen(dropdown.dataset.open !== "true");
+    });
+
+    dropdown.addEventListener("mouseenter", () => {
+      if (desktop.matches) setOpen(true);
+    });
+
+    dropdown.addEventListener("mouseleave", () => {
+      if (desktop.matches) {
+        timeoutId = window.setTimeout(() => setOpen(false), 150);
+      }
+    });
+  });
+
+  document.addEventListener("click", (event) => {
+    dropdowns.forEach((dropdown) => {
+      if (event.target instanceof Node && !dropdown.contains(event.target)) closeDropdown(dropdown);
+    });
+    if (!desktop.matches && navigation?.open && event.target instanceof Node && !navigation.contains(event.target)) {
+      navigation.open = false;
+    }
+  });
+
+  window.addEventListener("resize", () => {
+    dropdowns.forEach((dropdown) => closeDropdown(dropdown));
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+    let closedDropdown = false;
+    dropdowns.forEach((dropdown) => {
+      if (closeDropdown(dropdown, { focus: true })) closedDropdown = true;
+    });
+    if (!closedDropdown && !desktop.matches && navigation?.open) {
+      navigation.open = false;
+      navigation.querySelector("summary")?.focus();
+    }
+  });
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header);
+    border-bottom: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    background: var(--scrim-surface);
+    backdrop-filter: blur(12px);
+  }
+
+  .reading-progress {
+    position: absolute;
+    right: 0;
+    bottom: -1px;
+    left: 0;
+    z-index: var(--z-base);
+    display: block;
+    width: 100%;
+    height: 2px;
+    border: 0;
+    appearance: none;
+    background: transparent;
+    color: var(--accent);
+  }
+
+  .reading-progress::-webkit-progress-bar {
+    background: transparent;
+  }
+
+  .reading-progress::-webkit-progress-value {
+    background: var(--accent);
+  }
+
+  .reading-progress::-moz-progress-bar {
+    background: var(--accent);
+  }
+
+  .header-inner {
+    display: flex;
+    min-height: 4.1rem;
+    align-items: center;
+    gap: 1rem;
+    padding-block: 0.55rem;
+  }
+
+  .site-name {
+    margin-right: auto;
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .site-name:hover {
+    color: var(--accent);
+  }
+
+  .header-controls {
+    display: flex;
+    width: max-content;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 0.15rem;
+    margin-left: 0;
+  }
+
+  .navigation {
+    order: 3;
+    width: 100%;
+  }
+
+  .nav-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+    list-style: none;
+    transition:
+      background-color var(--dur-base) ease,
+      border-color var(--dur-base) ease,
+      color var(--dur-base) ease;
+  }
+
+  .nav-toggle::-webkit-details-marker {
+    display: none;
+  }
+
+  .nav-toggle:hover,
+  .nav-toggle:focus-visible {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--accent-soft);
+  }
+
+  .navigation :global(.icon-close) {
+    display: none;
+  }
+
+  .navigation[open] :global(.icon-close) {
+    display: block;
+  }
+
+  .navigation[open] :global(.icon-menu) {
+    display: none;
+  }
+
+  .navigation nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.15rem;
+    padding-top: 0.45rem;
+  }
+
+  .navigation nav > a {
+    padding: 0.45rem 0.7rem;
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-regular);
+    text-decoration: none;
+  }
+
+  .navigation nav a:hover,
+  .navigation nav a[aria-current="page"] {
+    background: transparent;
+    color: var(--accent);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .nav-dropdown {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .nav-dropdown-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    padding: 0.45rem 0.7rem;
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: var(--font-size-sm);
+    line-height: inherit;
+    cursor: pointer;
+    transition: color var(--dur-relaxed) ease;
+  }
+
+  .nav-dropdown-toggle:hover,
+  .nav-dropdown[data-open="true"] .nav-dropdown-toggle,
+  .nav-dropdown-toggle.is-active {
+    color: var(--accent);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .nav-dropdown-toggle:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--accent-soft);
+    border-radius: var(--radius-sm);
+  }
+
+  .dropdown-caret {
+    width: 0.65rem;
+    height: 0.4rem;
+    stroke-width: 1.8;
+  }
+
+  .nav-dropdown[data-open="true"] .dropdown-caret {
+    transform: rotate(180deg);
+  }
+
+  /* The square borderless geometry, hover and focus ring come from the shared
+     `.icon-button` primitive; only the magnifier's hover tilt is local. */
+  .search-button:hover :global(.search-icon) {
+    transform: rotate(-15deg);
+  }
+
+  @media (max-width: 600px) {
+    .header-inner {
+      min-height: 3.55rem;
+      justify-content: space-between;
+    }
+  }
+
+  /* The two controls sit side by side under the search row once the nav
+     collapses. This has to share the 768px edge the controls themselves switch
+     at — while it stayed at 600px, 601–767px laid the full-width rows out in
+     the desktop `width: max-content` flex and left them bunched at the left. */
+  @media (max-width: 767px) {
+    .header-controls {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+      border-top: 1px solid var(--border);
+      padding-top: 0.65rem;
+      width: 100%;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .home-header .home-site-name {
+      display: none;
+    }
+
+    .home-header .navigation {
+      margin-left: auto;
+    }
+
+    .navigation {
+      order: initial;
+      width: auto;
+    }
+
+    .nav-toggle {
+      display: none;
+    }
+
+    .navigation nav {
+      padding-top: 0;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 900px) {
+    .header-inner {
+      gap: 0.5rem;
+    }
+
+    .navigation nav {
+      gap: 0.1rem;
+    }
+
+    .navigation nav > a {
+      padding-inline: 0.45rem;
+      font-size: var(--font-size-xs);
+    }
+  }
+
+  /* Paired with the `min-width: 768px` block above: the mobile overlay and the
+     desktop row must partition the viewport between them with no gap. */
+  @media (max-width: 767px) {
+    .site-name {
+      display: inline-flex;
+      align-items: center;
+      margin-right: auto;
+      color: var(--text);
+      font-family: var(--serif);
+      font-size: 1.15rem;
+      font-weight: var(--font-weight-semibold);
+      text-decoration: none;
+      line-height: 1;
+    }
+
+    .site-name:hover {
+      color: var(--accent);
+    }
+
+    .navigation {
+      order: 0;
+      width: auto;
+      margin-left: auto;
+    }
+
+    .navigation nav {
+      position: absolute;
+      top: calc(100% + 0.5rem);
+      right: 0.65rem;
+      left: 0.65rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      background: var(--page-bg);
+      box-shadow: var(--shadow-modal);
+      padding: 0.65rem;
+      max-height: calc(100dvh - 5rem);
+      overflow-y: auto;
+    }
+
+    .navigation nav > a {
+      display: flex;
+      align-items: center;
+      min-height: 44px;
+      border-radius: var(--radius-md);
+      padding: 0.65rem 0.85rem;
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: var(--font-size-base);
+      font-weight: var(--font-weight-medium);
+      text-decoration: none;
+      transition:
+        background-color var(--dur-base) ease,
+        color var(--dur-base) ease;
+    }
+
+    .navigation nav > a:hover,
+    .navigation nav > a[aria-current="page"] {
+      background: var(--surface);
+      color: var(--accent);
+      font-weight: var(--font-weight-semibold);
+    }
+
+    .nav-dropdown {
+      width: 100%;
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .nav-dropdown-toggle {
+      width: 100%;
+      min-height: 44px;
+      justify-content: space-between;
+      padding: 0.65rem 0.85rem;
+      font-size: var(--font-size-base);
+      font-weight: var(--font-weight-medium);
+      border-radius: var(--radius-md);
+    }
+
+    .nav-dropdown-toggle:hover,
+    .nav-dropdown[data-open="true"] .nav-dropdown-toggle {
+      background: var(--surface);
+    }
+
+    /* The floating panel becomes an indented list, so the notch and the hover
+       affordance that imply a floating layer both go away.
+
+       `position: static` puts the panel back into normal flow, and a static
+       element still occupies its box while merely `visibility: hidden` — which
+       left a ~48px gap between the toggle and the search control below it. A
+       closed panel has to leave the flow entirely. */
+    .nav-dropdown :global(.menu-panel) {
+      display: none;
+      position: static;
+      min-width: 100%;
+      margin-top: 0.25rem;
+      margin-left: 0.5rem;
+      padding: 0.25rem 0.5rem;
+      border: none;
+      border-left: 2px solid var(--accent);
+      border-radius: 0;
+      box-shadow: none;
+      background: transparent;
+      /* Geometry, not state: an inline list has no open/closed transition, so
+         the shared panel rule's slide is cancelled. */
+      transform: none;
+    }
+
+    .nav-dropdown[data-open="true"] :global(.menu-panel) {
+      display: block;
+    }
+
+    .nav-dropdown :global(.menu-panel)::before {
+      display: none;
+    }
+
+    .nav-dropdown :global(.menu-panel) li a {
+      min-height: 40px;
+      display: flex;
+      align-items: center;
+      padding: 0.5rem 0.75rem;
+      font-size: var(--font-size-sm);
+    }
+
+    /* The search control joins the link list as a full-width row. */
+    .search-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      width: 100%;
+      min-height: 44px;
+      margin-top: 0.35rem;
+      padding: 0.65rem 0.85rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: var(--surface);
+      color: var(--muted);
+      font-family: var(--sans);
+      font-size: var(--font-size-sm);
+      text-align: left;
+      cursor: pointer;
+      transition:
+        border-color var(--dur-base) ease,
+        color var(--dur-base) ease,
+        background-color var(--dur-base) ease;
+    }
+
+    .search-button:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .search-button :global(.search-icon) {
+      width: 1.1rem;
+      height: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .search-button:hover :global(.search-icon) {
+      transform: none;
+    }
+
+    /* The hidden label becomes the visible row label. The two-class selector
+       outranks the shared `.icon-button-label` reset. */
+    .icon-button-label.search-label {
+      position: static;
+      width: auto;
+      height: auto;
+      margin: 0;
+      overflow: visible;
+      clip: auto;
+      white-space: normal;
+    }
+  }
+</style>

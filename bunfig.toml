@@ -1,0 +1,28 @@
+# Bun configuration for this repository. Docs: https://bun.com/docs/runtime/bunfig
+
+[run]
+# Run package.json scripts and node_modules/.bin executables on the Bun runtime
+# instead of Node, so no Node installation is required. Bun only aliases `node`
+# to itself by default when Node is absent from PATH; CI images ship Node, so
+# this must be explicit or the gates would silently keep using Node.
+bun = true
+
+[install]
+# Never resolve a package on the fly. By default (`auto = "auto"`) a missing
+# node_modules makes Bun fetch dependencies mid-run at versions resolved from the
+# registry at that moment rather than the ones bun.lock pins — without creating
+# node_modules or reporting anything. This build is verified against
+# MANIFEST.sha256, which assumes the locked tree, so a forgotten `bun install`
+# must fail loudly instead of silently building a different dependency set.
+auto = "disable"
+
+# Fetch from the same mirror the committed bun.lock already resolves to, so a
+# normal `bun install` does not depend on a developer-level registry setting.
+registry = "https://registry.npmmirror.com"
+
+# Refuse versions published in the last 5 days when resolving something new.
+# A freshly published release is the window a hijacked or typosquatted package
+# is most likely to be live and not yet reported. This only filters *new*
+# resolutions; `bun ci` and `bun install` are unaffected because the lockfile
+# already pins exact versions.
+minimumReleaseAge = 432000

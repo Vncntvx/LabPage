@@ -1,0 +1,22 @@
+---
+import type { CollectionEntry } from "astro:content";
+import type { Locale } from "../lib/i18n";
+import EntryLayout from "../layouts/EntryLayout.astro";
+import ResearchSummary from "../components/ResearchSummary.astro";
+
+/**
+ * The research page: the entry's research questions as tabbed panels. Its body
+ * is not rendered — `ResearchSummary` is the page.
+ */
+interface Props {
+  entry: CollectionEntry<"pages">;
+  locale: Locale;
+  path: string;
+}
+
+const { entry, locale, path } = Astro.props;
+---
+
+<EntryLayout entry={entry} locale={locale} path={path}>
+  <ResearchSummary entry={entry} />
+</EntryLayout>

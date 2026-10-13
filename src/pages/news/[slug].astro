@@ -1,0 +1,10 @@
+---
+import { collectionShapeStaticPaths } from "../../lib/route-paths";
+import { defaultLocale } from "../../lib/locale";
+import NewsDetailView from "../../views/NewsDetailView.astro";
+
+export const getStaticPaths = collectionShapeStaticPaths("news", [defaultLocale]);
+const { entry, locale, path } = Astro.props;
+---
+
+<NewsDetailView entry={entry} locale={locale} path={path} />

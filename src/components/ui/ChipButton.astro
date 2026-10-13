@@ -1,0 +1,150 @@
+---
+/**
+ * A compact inline control with an outline: a project's repository link, a
+ * publication's resource links, the CV's section pills, a copy button.
+ *
+ * Renders a `<button>` by default and an `<a>` when `href` is given. `size`,
+ * `tone`, `shape` and `fill` cover the four outline treatments the site used to
+ * declare separately, so a caller picks a variant rather than restating rules.
+ */
+interface Props {
+  href?: string;
+  /** Only meaningful on the `<button>` branch; an `<a>` has no button type. */
+  type?: "button" | "submit";
+  /** Heavier border and weight, for the card's primary action. */
+  primary?: boolean;
+  /** `md` is the default 2rem pill; `sm` is a badge, `lg` a roomy control. */
+  size?: "sm" | "md" | "lg";
+  /** Resting text colour. */
+  tone?: "default" | "muted" | "accent";
+  /** `rect` is the default 4px radius; `pill` is fully rounded. */
+  shape?: "rect" | "pill";
+  /** `transparent` is the default; `surface` fills with the raised surface. */
+  fill?: "transparent" | "surface";
+  class?: string;
+  target?: "_blank" | "_self" | "_parent" | "_top";
+  rel?: string;
+  title?: string;
+  id?: string;
+  "aria-label"?: string;
+  "aria-controls"?: string;
+  "aria-describedby"?: string;
+  "aria-expanded"?: boolean | "true" | "false";
+  [key: `data-${string}`]: string | undefined;
+}
+
+const {
+  href,
+  type = "button",
+  primary = false,
+  size = "md",
+  tone = "default",
+  shape = "rect",
+  fill = "transparent",
+  class: className,
+  ...rest
+} = Astro.props;
+const classNames = [
+  "chip-button",
+  className,
+  {
+    "chip-button--primary": primary,
+    "chip-button--sm": size === "sm",
+    "chip-button--lg": size === "lg",
+    "chip-button--muted": tone === "muted",
+    "chip-button--accent": tone === "accent",
+    "chip-button--pill": shape === "pill",
+    "chip-button--surface": fill === "surface",
+  },
+];
+---
+
+{href ? (
+  <a class:list={classNames} href={href} {...rest}>
+    <slot />
+  </a>
+) : (
+  <button class:list={classNames} type={type} {...rest}>
+    <slot />
+  </button>
+)}
+
+<style>
+  .chip-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    min-height: 2rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    padding: 0.25rem 0.75rem;
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--line-height-snug);
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      color var(--dur-base) ease,
+      border-color var(--dur-base) ease,
+      background-color var(--dur-base) ease;
+  }
+
+  .chip-button:hover,
+  .chip-button:focus-visible,
+  /* A disclosure button stays highlighted while its panel is open. */
+  .chip-button[aria-expanded="true"] {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .chip-button--primary {
+    border-color: var(--text);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  /* The badge tier: a scholar count beside a title, sized to sit in the text
+     flow rather than to be tapped as a control. */
+  .chip-button--sm {
+    min-height: 0;
+    gap: 0;
+    border-radius: var(--radius-xs);
+    padding: 0.15rem 0.45rem;
+    font-size: 0.76rem;
+    line-height: var(--line-height-tight);
+  }
+
+  /* The roomy tier: a disclosure that needs a larger touch target. */
+  .chip-button--lg {
+    min-height: 2.25rem;
+    padding: 0.35rem 0.85rem;
+    font-size: 0.88rem;
+  }
+
+  .chip-button--muted {
+    color: var(--muted);
+  }
+
+  .chip-button--accent {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* A capsule is a *half-height* radius, not a 50% one: `50%` resolves against
+     each corner's own box, so on a wide, short chip (a 91×31px section pill) it
+     produces a lozenge. Half the height gives the fully-rounded ends the shape
+     is named for while keeping the top and bottom parallel. */
+  .chip-button--pill {
+    border-radius: calc(var(--pill-height, 2rem) / 2);
+    white-space: nowrap;
+  }
+
+  .chip-button--surface {
+    background: var(--surface);
+  }
+</style>

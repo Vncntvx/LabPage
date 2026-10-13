@@ -1,0 +1,159 @@
+---
+import { labels, locales, localeUrl, type Locale } from "../lib/i18n";
+import Icon from "./ui/Icon.astro";
+import MenuPanel from "./ui/MenuPanel.astro";
+interface Props {
+  locale: Locale;
+  path: string;
+}
+const { locale, path } = Astro.props;
+---
+
+<div class="language-switcher" data-language-switcher>
+  <button
+    class="icon-button language-toggle"
+    type="button"
+    data-language-toggle
+    aria-label={labels(locale).language}
+    aria-haspopup="menu"
+    aria-expanded="false">
+    <Icon name="globe" class="lang-icon" />
+    <span class="icon-button-label language-label" data-control-label>
+      {locales.find((entry) => entry.code === locale)!.label}
+    </span>
+  </button>
+  <MenuPanel align="right">
+    {locales.map((entry) => (
+      <li>
+        <a href={localeUrl(entry.code, path)} lang={entry.lang} hreflang={entry.lang} aria-current={entry.code === locale ? "true" : undefined}>
+          {entry.label}
+        </a>
+      </li>
+    ))}
+  </MenuPanel>
+</div>
+<script>
+  const switcher = document.querySelector<HTMLElement>("[data-language-switcher]");
+  const toggle = switcher?.querySelector<HTMLButtonElement>(".language-toggle");
+  const menu = switcher?.querySelector<HTMLElement>(".menu-panel");
+  const setOpen = (open: boolean) => {
+    if (!switcher || !toggle || !menu) return;
+    switcher.dataset.open = open ? "true" : "false";
+    toggle.setAttribute("aria-expanded", String(open));
+    menu.hidden = !open;
+  };
+  toggle?.addEventListener("click", () => setOpen(switcher?.dataset.open !== "true"));
+  document.addEventListener("click", (event) => {
+    if (switcher?.dataset.open === "true" && event.target instanceof Node && !switcher.contains(event.target)) setOpen(false);
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && switcher?.dataset.open === "true") {
+      setOpen(false);
+      toggle?.focus();
+    }
+  });
+  window.addEventListener("resize", () => {
+    if (switcher?.dataset.open === "true") setOpen(false);
+  });
+  switcher?.querySelectorAll<HTMLAnchorElement>(".menu-panel a").forEach((link) => {
+    link.addEventListener("click", () => {
+      link.hash = window.location.hash;
+      link.search = window.location.search;
+    });
+  });
+</script>
+
+<style>
+  .language-switcher {
+    position: relative;
+    display: inline-flex;
+    width: 2.25rem;
+    height: 2.25rem;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* The square borderless geometry and the focus ring come from the shared
+     `.icon-button` primitive; only the open state and the globe's hover tilt
+     are local. */
+  .language-switcher[data-open="true"] .language-toggle {
+    color: var(--accent);
+  }
+
+  .language-toggle:hover :global(.lang-icon) {
+    transform: rotate(15deg);
+  }
+
+  /* In the header's mobile layout this is a full-width row, so the control
+     stops being a square icon button and shows its label. The 768px edge is the
+     header's own `min-width: 768px` switch: the control and the container that
+     lays it out have to change shape on the same viewport, or 601–767px renders
+     a full-width row inside a shrink-to-fit row. */
+  @media (max-width: 767px) {
+    .language-switcher {
+      width: 100%;
+      height: auto;
+    }
+
+    .language-toggle {
+      gap: 0.45rem;
+      width: 100%;
+      min-height: 44px;
+      justify-content: center;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: var(--surface);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-medium);
+      padding: 0.5rem 0.65rem;
+      cursor: pointer;
+      transition:
+        border-color var(--dur-base) ease,
+        color var(--dur-base) ease,
+        background-color var(--dur-base) ease;
+    }
+
+    .language-toggle:hover,
+    .language-switcher[data-open="true"] .language-toggle {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    /* The two-class selector outranks the shared `.icon-button-label` reset, so the
+       hidden label becomes the visible row label. */
+    .icon-button-label.language-label {
+      position: static;
+      width: auto;
+      height: auto;
+      margin: 0;
+      overflow: visible;
+      clip: auto;
+      white-space: normal;
+    }
+
+    /* The menu drops downward from a full-width control, so the notch is
+       removed and the transform origin moves to the bottom edge. */
+    .language-switcher :global(.menu-panel) {
+      position: absolute;
+      bottom: calc(100% + 0.35rem);
+      top: auto;
+      left: 0;
+      right: auto;
+      width: 100%;
+      min-width: 120px;
+      border-radius: var(--radius-md);
+      background: var(--page-bg);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-modal);
+      transform-origin: bottom center;
+      z-index: var(--z-popover);
+    }
+
+    .language-switcher :global(.menu-panel)::before {
+      display: none;
+    }
+  }
+</style>

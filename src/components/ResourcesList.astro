@@ -1,0 +1,163 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { strings, type Locale } from "../lib/i18n";
+import ChipButton from "./ui/ChipButton.astro";
+import EmptyState from "./EmptyState.astro";
+import SectionHeader from "./SectionHeader.astro";
+
+interface Props {
+  locale: Locale;
+  resources: CollectionEntry<"resources">[];
+}
+
+const { locale, resources } = Astro.props;
+const labels = strings(locale).resources;
+const types = ["software", "dataset", "facility", "guide", "other"] as const;
+const groups = types
+  .map((type) => ({
+    type,
+    entries: resources
+      .filter(({ data }) => data.type === type)
+      .sort((a, b) => a.data.order - b.data.order || a.data.title.localeCompare(b.data.title)),
+  }))
+  .filter((group) => group.entries.length > 0);
+---
+
+{groups.length ? (
+  <div class="resource-catalog">
+    {groups.map((group) => (
+      <section class="resource-group" aria-labelledby={`resources-${group.type}`}>
+        <SectionHeader
+          id={`resources-${group.type}`}
+          title={labels[group.type]}
+          locale={locale}
+          count={group.entries.length}
+          countForms={labels.resource_count}
+        />
+        <ol class="resource-list">
+          {group.entries.map(({ data }, index) => (
+            <li class="resource-entry">
+              <span class="resource-number" aria-hidden="true">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <div class="resource-main">
+                <div class="resource-heading">
+                  <h3>{data.title}</h3>
+                  <span class:list={["resource-access", { "resource-access--restricted": data.access === "restricted" }]}>
+                    {labels.access[data.access]}
+                  </span>
+                </div>
+                <p>{data.description}</p>
+                {data.maintainer && (
+                  <p class="resource-maintainer">
+                    <strong>{labels.maintainer}:</strong> {data.maintainer}
+                  </p>
+                )}
+              </div>
+              {data.url && data.access === "public" && (
+                <ChipButton href={data.url} target="_blank" rel="noreferrer" size="sm" tone="accent">
+                  {labels.open}
+                </ChipButton>
+              )}
+            </li>
+          ))}
+        </ol>
+      </section>
+    ))}
+  </div>
+) : (
+  <EmptyState message={labels.empty} />
+)}
+
+<style>
+  .resource-group + .resource-group {
+    margin-top: 4rem;
+  }
+
+  .resource-list {
+    margin: 0;
+    border-top: 1px solid var(--border);
+    padding: 0;
+    list-style: none;
+  }
+
+  .resource-entry {
+    display: grid;
+    grid-template-columns: 2.4rem minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 1rem;
+    border-bottom: 1px solid var(--border);
+    padding: 1.1rem 0;
+  }
+
+  .resource-number {
+    align-self: start;
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: var(--font-size-xs);
+    line-height: var(--line-height-snug);
+  }
+
+  .resource-heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem 0.75rem;
+  }
+
+  .resource-heading h3 {
+    margin: 0;
+    font-family: var(--serif);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-snug);
+  }
+
+  .resource-access {
+    border-bottom: 1px solid var(--accent);
+    color: var(--accent);
+    font-size: var(--font-size-2xs);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: 0.04em;
+    line-height: var(--line-height-tight);
+    text-transform: uppercase;
+  }
+
+  .resource-access--restricted {
+    border-bottom-color: var(--border);
+    color: var(--muted);
+  }
+
+  .resource-main > p {
+    margin: 0.45rem 0 0;
+    color: var(--muted);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-normal);
+  }
+
+  .resource-main .resource-maintainer {
+    margin-top: 0.5rem;
+    font-size: var(--font-size-xs);
+  }
+
+  .resource-maintainer strong {
+    color: var(--text);
+    font-weight: var(--font-weight-medium);
+  }
+
+  @media (max-width: 600px) {
+    .resource-group + .resource-group {
+      margin-top: 3rem;
+    }
+
+    .resource-entry {
+      grid-template-columns: 1.8rem minmax(0, 1fr);
+      gap: 0.7rem;
+    }
+
+    .resource-entry > :global(.chip-button) {
+      grid-column: 2;
+      justify-self: start;
+    }
+  }
+</style>

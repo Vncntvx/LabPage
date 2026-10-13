@@ -1,0 +1,31 @@
+# Astro build output
+.astro/
+dist/
+
+# Dependencies and local package-manager state
+node_modules/
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+
+# Operating-system and editor files
+.DS_Store
+.idea/
+.vscode/settings.json
+
+# Local development tools
+.venv/
+.claude/launch.json
+.zcode/
+
+# Visual-regression baseline captured for the style refactor; local only
+.refactor-baseline/
+
+# Large static assets hosted on OSS (PDFs)
+public/assets/pdf/*.pdf
+!public/assets/pdf/.gitkeep
+public/assets/cv/*.pdf
+!public/assets/cv/.gitkeep
+
