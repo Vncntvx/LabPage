@@ -1,0 +1,192 @@
+<!DOCTYPE html><html lang="zh-CN" id="top"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="generator" content="Astro v7.3.8"><meta name="description" content="面向 DeepSeek Harness 的本地 Zotero 插件：智能检索文献库、精读 PDF 全文与笔记、精准溯源原文并导出标准学术引用。"><meta name="author" content="Wenjie Xu"><link rel="canonical" href="https://lab.wenjiexu.site/zh-CN/projects/dsh-zotero/"><link rel="alternate" hreflang="en" href="https://lab.wenjiexu.site/projects/dsh-zotero/"><link rel="alternate" hreflang="zh-CN" href="https://lab.wenjiexu.site/zh-CN/projects/dsh-zotero/"><link rel="alternate" hreflang="x-default" href="https://lab.wenjiexu.site/projects/dsh-zotero/"><link rel="alternate" type="application/rss+xml" title="徐文杰 — 新闻" href="https://lab.wenjiexu.site/zh-CN/feed.xml"><link rel="icon" href="/assets/img/favicon.ico"><link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png"><meta property="og:title" content="dsh-zotero | Wenjie Xu"><meta property="og:site_name" content="Wenjie Xu"><meta property="og:description" content="面向 DeepSeek Harness 的本地 Zotero 插件：智能检索文献库、精读 PDF 全文与笔记、精准溯源原文并导出标准学术引用。"><meta property="og:url" content="https://lab.wenjiexu.site/zh-CN/projects/dsh-zotero/"><meta property="og:type" content="website"><meta property="og:locale" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><meta property="og:image" content="https://lab.wenjiexu.site/assets/img/og-zh-CN.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="dsh-zotero | Wenjie Xu"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="dsh-zotero | Wenjie Xu"><meta name="twitter:description" content="面向 DeepSeek Harness 的本地 Zotero 插件：智能检索文献库、精读 PDF 全文与笔记、精准溯源原文并导出标准学术引用。"><meta name="twitter:image" content="https://lab.wenjiexu.site/assets/img/og-zh-CN.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"dsh-zotero","description":"面向 DeepSeek Harness 的本地 Zotero 插件：智能检索文献库、精读 PDF 全文与笔记、精准溯源原文并导出标准学术引用。","url":"https://lab.wenjiexu.site/zh-CN/projects/dsh-zotero/","inLanguage":"zh-CN","image":"https://lab.wenjiexu.site/assets/img/og-zh-CN.png","author":{"@type":"Person","name":"Wenjie Xu","url":"https://lab.wenjiexu.site/zh-CN/","sameAs":["https://github.com/Vncntvx","https://orcid.org/0000-0002-7778-0450","https://scholar.google.com/citations?user=eWTidmsAAAAJ","https://www.researchgate.net/profile/Wenjie-Xu-19"]}}</script><title>dsh-zotero | Wenjie Xu</title><script>
+  (() => {
+    const root = document.documentElement;
+    const media = matchMedia("(prefers-color-scheme: dark)");
+    let preference = "system";
+    try {
+      const saved = localStorage.getItem("theme");
+      if (["light", "dark", "system"].includes(saved)) preference = saved;
+    } catch {}
+    const apply = () => {
+      const transitioning = root.dataset.theme !== undefined;
+      if (transitioning) {
+        root.classList.add("theme-transition");
+        window.setTimeout(() => root.classList.remove("theme-transition"), 250);
+      }
+      root.dataset.themeSetting = preference;
+      root.dataset.theme = preference === "system" ? (media.matches ? "dark" : "light") : preference;
+      document.dispatchEvent(new Event("theme-change"));
+    };
+    apply();
+    media.addEventListener("change", apply);
+    window.addEventListener("storage", (event) => {
+      if (event.key === "theme") {
+        preference = ["light", "dark"].includes(event.newValue) ? event.newValue : "system";
+        apply();
+      }
+    });
+    document.addEventListener("theme-request", (event) => {
+      const requested = event instanceof CustomEvent ? event.detail : "system";
+      preference = ["light", "dark", "system"].includes(requested) ? requested : "system";
+      try {
+        localStorage.setItem("theme", preference);
+      } catch {}
+      apply();
+    });
+  })();
+</script><link rel="stylesheet" href="/_astro/BaseLayout.DdgeAcCT.css"></head><body><a class="skip-link" href="#main-content">跳转到正文</a><div class="page-shell"><header class="site-header"><div class="container header-inner"><a class="site-name" href="/zh-CN/">Wenjie Xu</a><details class="navigation" open><summary class="nav-toggle" aria-label="切换导航"><span class="sr-only">切换导航</span><svg class="nav-toggle-icon icon-menu" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg><svg class="nav-toggle-icon icon-close" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg></summary><nav aria-label="主导航"><a href="/zh-CN/">关于</a><a href="/zh-CN/publications/">发表</a><a href="/zh-CN/projects/">项目</a><a href="/zh-CN/teaching/">教学</a><div class="nav-dropdown" data-nav-dropdown><button type="button" class="nav-dropdown-toggle" aria-haspopup="menu" aria-expanded="false"><span>更多</span><svg class="dropdown-caret" viewBox="0 0 10 6" aria-hidden="true" focusable="false"><path d="m1 1 4 4 4-4"></path></svg></button><ul class="nav-dropdown-menu" hidden><li><a href="/zh-CN/cv/">简历</a></li></ul></div><button class="search-button" type="button" data-search-open aria-label="搜索" title="搜索"><svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m16 16 5 5"></path></svg><span class="search-label">搜索</span></button><div class="header-controls"><div class="language-switcher" data-language-switcher><button class="language-toggle" type="button" aria-label="语言" aria-haspopup="menu" aria-expanded="false"><svg class="control-icon lang-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3a14 14 0 0 1 0 18"></path><path d="M12 3a14 14 0 0 0 0 18"></path></svg><span class="language-label">中文</span></button><ul class="language-menu" hidden><li><a href="/projects/dsh-zotero/" lang="en" hreflang="en">English</a></li><li><a href="/zh-CN/projects/dsh-zotero/" lang="zh-CN" hreflang="zh-CN" aria-current="true">中文</a></li></ul></div><script type="module">var e=document.querySelector(`[data-language-switcher]`),t=e?.querySelector(`.language-toggle`),n=e?.querySelector(`.language-menu`),r=r=>{e&&t&&n&&(e.dataset.open=r?`true`:`false`,t.setAttribute(`aria-expanded`,String(r)),n.hidden=!r)};t?.addEventListener(`click`,()=>r(e?.dataset.open!==`true`)),document.addEventListener(`click`,t=>{e?.dataset.open===`true`&&t.target instanceof Node&&!e.contains(t.target)&&r(!1)}),document.addEventListener(`keydown`,n=>{n.key===`Escape`&&e?.dataset.open===`true`&&(r(!1),t?.focus())}),window.addEventListener(`resize`,()=>{e?.dataset.open===`true`&&r(!1)}),document.querySelectorAll(`.language-menu a`).forEach(e=>{e.addEventListener(`click`,()=>{e.hash=window.location.hash,e.search=window.location.search})});</script><button class="theme-control" type="button" data-theme-button hidden aria-label="更改主题" title="更改主题"><svg class="control-icon theme-icon" data-theme-icon="light" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"></path></svg><svg class="control-icon theme-icon" data-theme-icon="dark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446A9 9 0 1 1 12 3z"></path></svg><span class="theme-label">更改主题</span></button><script type="module">var e=document.querySelector(`[data-theme-button]`),t=()=>{e&&(e.dataset.themeSetting=document.documentElement.dataset.themeSetting??`system`)};e?.addEventListener(`click`,()=>{e.classList.remove(`switching`),e.offsetWidth,e.classList.add(`switching`);let t=document.documentElement.dataset.theme??`light`;document.dispatchEvent(new CustomEvent(`theme-request`,{detail:t===`dark`?`light`:`dark`}))}),t(),e&&(e.hidden=!1),document.addEventListener(`theme-change`,t);</script></div></nav></details></div><progress class="reading-progress" data-reading-progress max="100" value="0" aria-label="阅读进度"></progress><dialog class="search-dialog" data-search-dialog data-locale="zh-CN" aria-labelledby="search-title"><div class="search-dialog-inner"><header class="search-dialog-header"><h2 id="search-title">输入以开始搜索</h2><button class="dialog-close" type="button" data-search-close aria-label="关闭"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m6 6 12 12M18 6 6 18"></path></svg></button></header><label class="search-input-label"><span class="sr-only">输入以开始搜索</span><svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m16 16 5 5"></path></svg><input type="search" data-site-search-input autocomplete="off" placeholder="输入以开始搜索"><kbd>Esc</kbd></label><p class="search-result-status" data-search-status data-count-one="{count} 个结果" data-count-other="{count} 个结果" data-count-locale="zh-CN" data-load-failed="搜索索引加载失败。" aria-live="polite"></p><div class="search-results-shell"><ul class="search-results" data-search-results role="listbox" aria-label="输入以开始搜索"></ul><p class="empty-state" data-search-empty="true" hidden>没有找到匹配的内容。</p></div><footer class="search-dialog-footer" aria-label="输入以开始搜索"><span><kbd>↵</kbd>选择</span><span><kbd>↑</kbd><kbd>↓</kbd>导航</span><span><kbd>Esc</kbd>关闭</span></footer></div></dialog><script type="module" src="/_astro/SearchModal.astro_astro_type_script_index_0_lang.CgoGCpiw.js"></script></header><script type="module">var e=document.querySelector(`.navigation`),t=matchMedia(`(min-width: 768px)`),n=()=>{e&&(e.open=t.matches)};n(),t.addEventListener(`change`,n);var r=document.querySelector(`[data-reading-progress]`),i=()=>{if(!r)return;let e=document.documentElement.scrollHeight-window.innerHeight;r.value=e>0?window.scrollY/e*100:0};i(),window.addEventListener(`scroll`,i,{passive:!0}),window.addEventListener(`resize`,i);var a=document.querySelectorAll(`[data-nav-dropdown]`),o=(e,{focus:t=!1}={})=>{if(e.dataset.open!==`true`)return!1;let n=e.querySelector(`.nav-dropdown-toggle`),r=e.querySelector(`.nav-dropdown-menu`);return e.dataset.open=`false`,n?.setAttribute(`aria-expanded`,`false`),r&&(r.hidden=!0),t&&n?.focus(),!0};a.forEach(e=>{let n=e.querySelector(`.nav-dropdown-toggle`),r=e.querySelector(`.nav-dropdown-menu`),i,a=t=>{i&&=(window.clearTimeout(i),void 0),e.dataset.open=t?`true`:`false`,n?.setAttribute(`aria-expanded`,String(t)),r&&(r.hidden=!t)};n?.addEventListener(`click`,t=>{t.stopPropagation(),a(e.dataset.open!==`true`)}),e.addEventListener(`mouseenter`,()=>{t.matches&&a(!0)}),e.addEventListener(`mouseleave`,()=>{t.matches&&(i=window.setTimeout(()=>a(!1),150))})}),document.addEventListener(`click`,n=>{a.forEach(e=>{n.target instanceof Node&&!e.contains(n.target)&&o(e)}),!t.matches&&e?.open&&n.target instanceof Node&&!e.contains(n.target)&&(e.open=!1)}),window.addEventListener(`resize`,()=>{a.forEach(e=>o(e))}),document.addEventListener(`keydown`,n=>{if(n.key!==`Escape`)return;let r=!1;a.forEach(e=>{o(e,{focus:!0})&&(r=!0)}),!r&&!t.matches&&e?.open&&(e.open=!1,e.querySelector(`summary`)?.focus())});</script><main id="main-content" class="container" tabindex="-1"><header class="page-title"><h1>dsh-zotero</h1></header><article class="prose"><div align="center">
+<h1 id="dsh-zotero">dsh-zotero</h1>
+<p><img
+src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=500&size=20&pause=2000&color=CC2936&center=true&vCenter=true&width=760&lines=%3E+Search%2C+read%2C+and+cite+papers+from+local+Zotero."
+alt="dsh-zotero"
+/></p>
+<p align="center">
+  <a href="https://www.npmjs.com/package/dsh-zotero"><img src="https://img.shields.io/npm/v/dsh-zotero" alt="npm version" style="max-width:100%;"></a>
+  <a href="https://www.npmjs.com/package/dsh-zotero"><img src="https://img.shields.io/npm/dm/dsh-zotero" alt="npm downloads" style="max-width:100%;"></a>
+  <a href="https://www.npmjs.com/package/dsh-zotero"><img src="https://img.shields.io/npm/l/dsh-zotero" alt="license" style="max-width:100%;"></a>
+  <a href="https://github.com/deepseek-ai/deepseek-harness/releases/tag/dsh-v0.2.1-alpha.2"><img src="https://img.shields.io/badge/dsh-0.2.1--alpha.2-blue" alt="dsh 版本" style="max-width:100%;"></a>
+  <a href="https://awesome-dsh-plugin.com"><img src="https://awesome-dsh-plugin.com/badge.svg" alt="Awesome DSH Plugin"></a>
+</p>
+</div>
+<p>dsh-zotero 是面向 DeepSeek Harness 的本地 Zotero 插件。模型可以直接检索文献库、读取 PDF 全文与笔记、定位原文片段并生成学术引用。</p>
+<p>所有操作均通过 Zotero 本地 API（<code>127.0.0.1:23119</code>）与桌面端交互，读取无需配置 API Key。</p>
+<h2 id="主要功能">主要功能</h2>
+<ul>
+<li><strong>文献检索与发现</strong>：按标题、作者、年份、标签或全文搜索文献，支持限定合集分类或查找最近导入的条目。</li>
+<li><strong>PDF 全文与笔记阅读</strong>：模型可直接读取文献元数据、摘要、用户笔记，并解析本地 PDF 附件全文。</li>
+<li><strong>段落级原文检索</strong>：围绕具体研究问题检索论文全文、批注与笔记，定位相关段落；PDF 批注附带原始页码与直达跳转，便于核验。</li>
+<li><strong>引用生成与导出</strong>：一键生成标准学术引用，支持以 BibTeX、RIS、CSL JSON 或文本参考文献格式复制与下载。</li>
+<li><strong>会话文献标签页（Sources）</strong>：对话中引用的文献会自动同步到会话顶部的「Zotero」专属标签页，可集中查看条目详情、回溯原文片段与打开本地 PDF。</li>
+<li><strong>双向笔记与标签管理</strong>：支持让模型创建读书笔记、添加标签和整理分类；所有写入操作均提供计划审查卡片并需手动确认。</li>
+</ul>
+<h2 id="安装">安装</h2>
+<p>从 npm 安装（推荐）：</p>
+<pre class="astro-code astro-code-themes github-light-default github-dark-default" style="background-color:#ffffff;--shiki-dark-bg:#0d1117;color:#1f2328;--shiki-dark:#e6edf3; overflow-x: auto;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#953800;--shiki-dark:#FFA657">dsh</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> plugin</span><span style="color:#0550AE;--shiki-dark:#79C0FF"> --profile</span><span style="color:#CF222E;--shiki-dark:#FF7B72"> &lt;</span><span style="color:#0A3069;--shiki-dark:#A5D6FF">nam</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">e</span><span style="color:#CF222E;--shiki-dark:#FF7B72">&gt;</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> add</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> dsh-zotero</span></span></code></pre>
+<p>从 GitHub 预构建分支安装：</p>
+<pre class="astro-code astro-code-themes github-light-default github-dark-default" style="background-color:#ffffff;--shiki-dark-bg:#0d1117;color:#1f2328;--shiki-dark:#e6edf3; overflow-x: auto;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#953800;--shiki-dark:#FFA657">dsh</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> plugin</span><span style="color:#0550AE;--shiki-dark:#79C0FF"> --profile</span><span style="color:#CF222E;--shiki-dark:#FF7B72"> &lt;</span><span style="color:#0A3069;--shiki-dark:#A5D6FF">nam</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">e</span><span style="color:#CF222E;--shiki-dark:#FF7B72">&gt;</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> add</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> github:Vncntvx/dsh-zotero#release</span></span></code></pre>
+<p>安装完成后新建会话即可使用。插件在 <strong>设置 → Zotero</strong> 中提供配置表单，支持调整 API 地址、并发限制与检索参数。</p>
+<blockquote>
+<p>提示：从 main 源码分支直接安装需要本地执行构建。pnpm 默认拦截依赖构建，使用 <code>#release</code> 分支可免除构建配置直接安装。</p>
+</blockquote>
+<h2 id="前置条件">前置条件</h2>
+<ol>
+<li>安装并运行 Zotero 7 及以上桌面版（写入功能需 Zotero 10）。</li>
+<li>在 Zotero 中开启本地 API：<strong>设置 → 高级 → 勾选“允许此计算机上的其他应用程序与 Zotero 通信”</strong>。</li>
+</ol>
+<h2 id="使用示例">使用示例</h2>
+<p>Agent 在对话中按需调用工具，检索结果会作为上下文并同步沉淀到 Sources 面板：</p>
+<pre class="astro-code astro-code-themes github-light-default github-dark-default" style="background-color:#ffffff;--shiki-dark-bg:#0d1117;color:#1f2328;--shiki-dark:#e6edf3; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>用户：帮我找 Risk 相关的论文</span></span>
+<span class="line"><span>Agent → zotero_search(query: "Risk", itemTypes: ["journalArticle"])</span></span>
+<span class="line"><span>       返回 5 篇匹配结果，条目同步到会话顶部的 Zotero 标签页</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>用户：第一篇的摘要说了什么？</span></span>
+<span class="line"><span>Agent → zotero_get(ref: "zotero://user/0/item/ABCD1234")</span></span>
+<span class="line"><span>       返回文献元数据与摘要全文</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>用户：这篇里关于方法论的讨论，帮我找出来</span></span>
+<span class="line"><span>Agent → zotero_retrieve(ref: "zotero://user/0/item/ABCD1234", query: "methodology",</span></span>
+<span class="line"><span>                        sources: ["annotation", "fulltext"])</span></span>
+<span class="line"><span>       返回排序段落与来源标注（批注附带原始页码）</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>用户：把这三篇导出为 BibTeX</span></span>
+<span class="line"><span>Agent → zotero_export(refs: ["zotero://user/0/item/ABCD1234",</span></span>
+<span class="line"><span>                             "zotero://user/0/item/EFGH5678",</span></span>
+<span class="line"><span>                             "zotero://user/0/item/IJKL9012"], format: "bibtex")</span></span>
+<span class="line"><span>       生成 BibTeX 条目，支持在界面中复制或下载</span></span></code></pre>
+<h2 id="工具一览">工具一览</h2>
+<p>插件提供 8 个读取工具与 8 个写入工具。写入工具默认关闭，可在配置中开启 <code>writeEnabled</code>。</p>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>zotero_search</code></td>
+<td>按标题、作者、年份或全文搜索文献，支持按分类与标签筛选</td>
+</tr>
+<tr>
+<td><code>zotero_browse</code></td>
+<td>浏览文献库结构，包括分类合集树、标签列表和保存的搜索</td>
+</tr>
+<tr>
+<td><code>zotero_get</code></td>
+<td>读取单篇文献的元数据详情、摘要、附件与笔记列表</td>
+</tr>
+<tr>
+<td><code>zotero_children</code></td>
+<td>查看文献关联的子条目，包括独立笔记、PDF 附件和阅读批注</td>
+</tr>
+<tr>
+<td><code>zotero_retrieve</code></td>
+<td>围绕问题从全文、笔记与批注中检索相关段落（批注保留页码）</td>
+</tr>
+<tr>
+<td><code>zotero_changes</code></td>
+<td>检查文献库最近的新增、修改或删除记录</td>
+</tr>
+<tr>
+<td><code>zotero_attachment</code></td>
+<td>获取文献关联的本地 PDF 文件路径</td>
+</tr>
+<tr>
+<td><code>zotero_export</code></td>
+<td>生成格式化引用、参考文献列表，或导出 BibTeX、RIS、CSL JSON</td>
+</tr>
+</tbody>
+</table>
+<p>全部 16 个工具的参数定义见 <a href="https://github.com/Vncntvx/dsh-zotero/blob/main/docs/tools.md">工具参考</a>。</p>
+<h2 id="安全与隐私">安全与隐私</h2>
+<ul>
+<li>本地通信：插件仅向本地 Zotero 接口（<code>http://127.0.0.1:23119/api</code>）发起请求，不调用 Zotero 官方云端服务。</li>
+<li>文件访问：仅读取本地附件文件状态，不执行系统 shell 命令，不启动后台常驻守护进程。</li>
+<li>写入确认：写入工具默认禁用。开启后，每次修改文献库都会在界面展示审批卡片，经用户确认后才执行。</li>
+</ul>
+<h2 id="说明文档">说明文档</h2>
+<table>
+<thead>
+<tr>
+<th>文档</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/Vncntvx/dsh-zotero/blob/main/docs/getting-started.md">快速入门</a></td>
+<td>安装步骤、前置条件与连接验证</td>
+</tr>
+<tr>
+<td><a href="https://github.com/Vncntvx/dsh-zotero/blob/main/docs/features.md">功能概览</a></td>
+<td>Sources 来源面板、对话集成与导出工作流</td>
+</tr>
+<tr>
+<td><a href="https://github.com/Vncntvx/dsh-zotero/blob/main/docs/tools.md">工具参考</a></td>
+<td>全部 16 个工具的参数、返回值与错误码</td>
+</tr>
+<tr>
+<td><a href="https://github.com/Vncntvx/dsh-zotero/blob/main/docs/configuration.md">配置参考</a></td>
+<td>35 个配置项说明与默认值</td>
+</tr>
+<tr>
+<td><a href="https://github.com/Vncntvx/dsh-zotero/blob/main/docs/architecture.md">系统架构</a></td>
+<td>数据流、分层职责与设计边界</td>
+</tr>
+<tr>
+<td><a href="https://github.com/Vncntvx/dsh-zotero/blob/main/docs/development.md">开发指南</a></td>
+<td>构建、测试、调试与发布流程</td>
+</tr>
+<tr>
+<td><a href="https://github.com/Vncntvx/dsh-zotero/blob/main/docs/scenarios.md">使用场景</a></td>
+<td>典型对话用例与使用示例</td>
+</tr>
+<tr>
+<td><a href="https://github.com/Vncntvx/dsh-zotero/blob/main/docs/troubleshooting.md">故障排查</a></td>
+<td>常见连接问题诊断与处理方法</td>
+</tr>
+</tbody>
+</table>
+<h2 id="许可证">许可证</h2>
+<p><a href="https://github.com/Vncntvx/dsh-zotero/blob/main/LICENSE">MIT</a></p>
+</article><div class="comments" data-comment-language="zh-CN" data-comment-title="dsh-zotero | Wenjie Xu"></div><script type="module">document.querySelectorAll(`.comments`).forEach(e=>{let t=document.createElement(`script`),n={src:`https://giscus.app/client.js`,"data-repo":`Vncntvx/BlogComments`,"data-repo-id":`R_kgDOMFTH3A`,"data-category":`Announcements`,"data-category-id":`DIC_kwDOMFTH3M4Cf4dF`,"data-mapping":`specific`,"data-term":e.dataset.commentTitle??``,"data-strict":`1`,"data-reactions-enabled":`1`,"data-emit-metadata":`0`,"data-input-position":`bottom`,"data-theme":document.documentElement.dataset.theme??`light`,"data-lang":e.dataset.commentLanguage??`en`,crossorigin:`anonymous`,async:`true`};Object.entries(n).forEach(([e,n])=>t.setAttribute(e,n)),e.append(t),document.addEventListener(`theme-change`,()=>{e.querySelector(`iframe.giscus-frame`)?.contentWindow?.postMessage({giscus:{setConfig:{theme:document.documentElement.dataset.theme??`light`}}},`https://giscus.app`)})});</script></main><footer class="site-footer"><div class="container footer-inner"><span>© 2023–2026 Wenjie Xu</span><span>保留所有权利</span><span>由 Astro 驱动 <a href="https://astro.build/">Astro</a></span><span>更新于 <time datetime="2025-12-01T00:00:00.000Z">2025年12月1日</time></span><a href="#top">返回顶部</a></div></footer></div></body></html>

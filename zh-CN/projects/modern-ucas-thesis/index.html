@@ -1,0 +1,577 @@
+<!DOCTYPE html><html lang="zh-CN" id="top"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="generator" content="Astro v7.3.8"><meta name="description" content="基于 Typst 的中国科学院大学（UCAS）现代学位论文模板，严格规范遵循研究生与本科生学位论文撰写指南。"><meta name="author" content="Wenjie Xu"><link rel="canonical" href="https://lab.wenjiexu.site/zh-CN/projects/modern-ucas-thesis/"><link rel="alternate" hreflang="en" href="https://lab.wenjiexu.site/projects/modern-ucas-thesis/"><link rel="alternate" hreflang="zh-CN" href="https://lab.wenjiexu.site/zh-CN/projects/modern-ucas-thesis/"><link rel="alternate" hreflang="x-default" href="https://lab.wenjiexu.site/projects/modern-ucas-thesis/"><link rel="alternate" type="application/rss+xml" title="徐文杰 — 新闻" href="https://lab.wenjiexu.site/zh-CN/feed.xml"><link rel="icon" href="/assets/img/favicon.ico"><link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png"><meta property="og:title" content="modern-ucas-thesis | Wenjie Xu"><meta property="og:site_name" content="Wenjie Xu"><meta property="og:description" content="基于 Typst 的中国科学院大学（UCAS）现代学位论文模板，严格规范遵循研究生与本科生学位论文撰写指南。"><meta property="og:url" content="https://lab.wenjiexu.site/zh-CN/projects/modern-ucas-thesis/"><meta property="og:type" content="website"><meta property="og:locale" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><meta property="og:image" content="https://lab.wenjiexu.site/assets/img/og-zh-CN.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="modern-ucas-thesis | Wenjie Xu"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="modern-ucas-thesis | Wenjie Xu"><meta name="twitter:description" content="基于 Typst 的中国科学院大学（UCAS）现代学位论文模板，严格规范遵循研究生与本科生学位论文撰写指南。"><meta name="twitter:image" content="https://lab.wenjiexu.site/assets/img/og-zh-CN.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"modern-ucas-thesis","description":"基于 Typst 的中国科学院大学（UCAS）现代学位论文模板，严格规范遵循研究生与本科生学位论文撰写指南。","url":"https://lab.wenjiexu.site/zh-CN/projects/modern-ucas-thesis/","inLanguage":"zh-CN","image":"https://lab.wenjiexu.site/assets/img/og-zh-CN.png","author":{"@type":"Person","name":"Wenjie Xu","url":"https://lab.wenjiexu.site/zh-CN/","sameAs":["https://github.com/Vncntvx","https://orcid.org/0000-0002-7778-0450","https://scholar.google.com/citations?user=eWTidmsAAAAJ","https://www.researchgate.net/profile/Wenjie-Xu-19"]}}</script><title>modern-ucas-thesis | Wenjie Xu</title><script>
+  (() => {
+    const root = document.documentElement;
+    const media = matchMedia("(prefers-color-scheme: dark)");
+    let preference = "system";
+    try {
+      const saved = localStorage.getItem("theme");
+      if (["light", "dark", "system"].includes(saved)) preference = saved;
+    } catch {}
+    const apply = () => {
+      const transitioning = root.dataset.theme !== undefined;
+      if (transitioning) {
+        root.classList.add("theme-transition");
+        window.setTimeout(() => root.classList.remove("theme-transition"), 250);
+      }
+      root.dataset.themeSetting = preference;
+      root.dataset.theme = preference === "system" ? (media.matches ? "dark" : "light") : preference;
+      document.dispatchEvent(new Event("theme-change"));
+    };
+    apply();
+    media.addEventListener("change", apply);
+    window.addEventListener("storage", (event) => {
+      if (event.key === "theme") {
+        preference = ["light", "dark"].includes(event.newValue) ? event.newValue : "system";
+        apply();
+      }
+    });
+    document.addEventListener("theme-request", (event) => {
+      const requested = event instanceof CustomEvent ? event.detail : "system";
+      preference = ["light", "dark", "system"].includes(requested) ? requested : "system";
+      try {
+        localStorage.setItem("theme", preference);
+      } catch {}
+      apply();
+    });
+  })();
+</script><link rel="stylesheet" href="/_astro/BaseLayout.DdgeAcCT.css"></head><body><a class="skip-link" href="#main-content">跳转到正文</a><div class="page-shell"><header class="site-header"><div class="container header-inner"><a class="site-name" href="/zh-CN/">Wenjie Xu</a><details class="navigation" open><summary class="nav-toggle" aria-label="切换导航"><span class="sr-only">切换导航</span><svg class="nav-toggle-icon icon-menu" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg><svg class="nav-toggle-icon icon-close" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg></summary><nav aria-label="主导航"><a href="/zh-CN/">关于</a><a href="/zh-CN/publications/">发表</a><a href="/zh-CN/projects/">项目</a><a href="/zh-CN/teaching/">教学</a><div class="nav-dropdown" data-nav-dropdown><button type="button" class="nav-dropdown-toggle" aria-haspopup="menu" aria-expanded="false"><span>更多</span><svg class="dropdown-caret" viewBox="0 0 10 6" aria-hidden="true" focusable="false"><path d="m1 1 4 4 4-4"></path></svg></button><ul class="nav-dropdown-menu" hidden><li><a href="/zh-CN/cv/">简历</a></li></ul></div><button class="search-button" type="button" data-search-open aria-label="搜索" title="搜索"><svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m16 16 5 5"></path></svg><span class="search-label">搜索</span></button><div class="header-controls"><div class="language-switcher" data-language-switcher><button class="language-toggle" type="button" aria-label="语言" aria-haspopup="menu" aria-expanded="false"><svg class="control-icon lang-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3a14 14 0 0 1 0 18"></path><path d="M12 3a14 14 0 0 0 0 18"></path></svg><span class="language-label">中文</span></button><ul class="language-menu" hidden><li><a href="/projects/modern-ucas-thesis/" lang="en" hreflang="en">English</a></li><li><a href="/zh-CN/projects/modern-ucas-thesis/" lang="zh-CN" hreflang="zh-CN" aria-current="true">中文</a></li></ul></div><script type="module">var e=document.querySelector(`[data-language-switcher]`),t=e?.querySelector(`.language-toggle`),n=e?.querySelector(`.language-menu`),r=r=>{e&&t&&n&&(e.dataset.open=r?`true`:`false`,t.setAttribute(`aria-expanded`,String(r)),n.hidden=!r)};t?.addEventListener(`click`,()=>r(e?.dataset.open!==`true`)),document.addEventListener(`click`,t=>{e?.dataset.open===`true`&&t.target instanceof Node&&!e.contains(t.target)&&r(!1)}),document.addEventListener(`keydown`,n=>{n.key===`Escape`&&e?.dataset.open===`true`&&(r(!1),t?.focus())}),window.addEventListener(`resize`,()=>{e?.dataset.open===`true`&&r(!1)}),document.querySelectorAll(`.language-menu a`).forEach(e=>{e.addEventListener(`click`,()=>{e.hash=window.location.hash,e.search=window.location.search})});</script><button class="theme-control" type="button" data-theme-button hidden aria-label="更改主题" title="更改主题"><svg class="control-icon theme-icon" data-theme-icon="light" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"></path></svg><svg class="control-icon theme-icon" data-theme-icon="dark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446A9 9 0 1 1 12 3z"></path></svg><span class="theme-label">更改主题</span></button><script type="module">var e=document.querySelector(`[data-theme-button]`),t=()=>{e&&(e.dataset.themeSetting=document.documentElement.dataset.themeSetting??`system`)};e?.addEventListener(`click`,()=>{e.classList.remove(`switching`),e.offsetWidth,e.classList.add(`switching`);let t=document.documentElement.dataset.theme??`light`;document.dispatchEvent(new CustomEvent(`theme-request`,{detail:t===`dark`?`light`:`dark`}))}),t(),e&&(e.hidden=!1),document.addEventListener(`theme-change`,t);</script></div></nav></details></div><progress class="reading-progress" data-reading-progress max="100" value="0" aria-label="阅读进度"></progress><dialog class="search-dialog" data-search-dialog data-locale="zh-CN" aria-labelledby="search-title"><div class="search-dialog-inner"><header class="search-dialog-header"><h2 id="search-title">输入以开始搜索</h2><button class="dialog-close" type="button" data-search-close aria-label="关闭"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m6 6 12 12M18 6 6 18"></path></svg></button></header><label class="search-input-label"><span class="sr-only">输入以开始搜索</span><svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m16 16 5 5"></path></svg><input type="search" data-site-search-input autocomplete="off" placeholder="输入以开始搜索"><kbd>Esc</kbd></label><p class="search-result-status" data-search-status data-count-one="{count} 个结果" data-count-other="{count} 个结果" data-count-locale="zh-CN" data-load-failed="搜索索引加载失败。" aria-live="polite"></p><div class="search-results-shell"><ul class="search-results" data-search-results role="listbox" aria-label="输入以开始搜索"></ul><p class="empty-state" data-search-empty="true" hidden>没有找到匹配的内容。</p></div><footer class="search-dialog-footer" aria-label="输入以开始搜索"><span><kbd>↵</kbd>选择</span><span><kbd>↑</kbd><kbd>↓</kbd>导航</span><span><kbd>Esc</kbd>关闭</span></footer></div></dialog><script type="module" src="/_astro/SearchModal.astro_astro_type_script_index_0_lang.CgoGCpiw.js"></script></header><script type="module">var e=document.querySelector(`.navigation`),t=matchMedia(`(min-width: 768px)`),n=()=>{e&&(e.open=t.matches)};n(),t.addEventListener(`change`,n);var r=document.querySelector(`[data-reading-progress]`),i=()=>{if(!r)return;let e=document.documentElement.scrollHeight-window.innerHeight;r.value=e>0?window.scrollY/e*100:0};i(),window.addEventListener(`scroll`,i,{passive:!0}),window.addEventListener(`resize`,i);var a=document.querySelectorAll(`[data-nav-dropdown]`),o=(e,{focus:t=!1}={})=>{if(e.dataset.open!==`true`)return!1;let n=e.querySelector(`.nav-dropdown-toggle`),r=e.querySelector(`.nav-dropdown-menu`);return e.dataset.open=`false`,n?.setAttribute(`aria-expanded`,`false`),r&&(r.hidden=!0),t&&n?.focus(),!0};a.forEach(e=>{let n=e.querySelector(`.nav-dropdown-toggle`),r=e.querySelector(`.nav-dropdown-menu`),i,a=t=>{i&&=(window.clearTimeout(i),void 0),e.dataset.open=t?`true`:`false`,n?.setAttribute(`aria-expanded`,String(t)),r&&(r.hidden=!t)};n?.addEventListener(`click`,t=>{t.stopPropagation(),a(e.dataset.open!==`true`)}),e.addEventListener(`mouseenter`,()=>{t.matches&&a(!0)}),e.addEventListener(`mouseleave`,()=>{t.matches&&(i=window.setTimeout(()=>a(!1),150))})}),document.addEventListener(`click`,n=>{a.forEach(e=>{n.target instanceof Node&&!e.contains(n.target)&&o(e)}),!t.matches&&e?.open&&n.target instanceof Node&&!e.contains(n.target)&&(e.open=!1)}),window.addEventListener(`resize`,()=>{a.forEach(e=>o(e))}),document.addEventListener(`keydown`,n=>{if(n.key!==`Escape`)return;let r=!1;a.forEach(e=>{o(e,{focus:!0})&&(r=!0)}),!r&&!t.matches&&e?.open&&(e.open=!1,e.querySelector(`summary`)?.focus())});</script><main id="main-content" class="container" tabindex="-1"><header class="page-title"><h1>modern-ucas-thesis</h1></header><article class="prose"><h1 align="center">modern-ucas-thesis</h1>
+<p align="center">
+  <img src="https://img.shields.io/badge/status-beta-blue?style=flat-square" alt="Project Status">
+  <img src="https://img.shields.io/github/last-commit/Vncntvx/modern-ucas-thesis?style=flat-square" alt="Last Commit">
+  <img src="https://img.shields.io/github/issues/Vncntvx/modern-ucas-thesis?style=flat-square" alt="Issues">
+  <img src="https://img.shields.io/github/license/Vncntvx/modern-ucas-thesis?style=flat-square" alt="License">
+</p>
+<p>基于 <a href="https://typst.app/">Typst</a> 的中国科学院大学学位论文模板，遵循《中国科学院大学研究生学位论文撰写规范指导意见（2022年）》与《中国科学院大学本科生毕业论文（设计）撰写规范指导意见（2023年10月修订）》格式要求。</p>
+<blockquote>
+<p>⚠️ <strong>免责声明</strong>：本项目非官方出品，使用前请自行核对学校最新格式要求。</p>
+</blockquote>
+<hr>
+<h2 id="快速开始">快速开始</h2>
+<h3 id="1-安装-typst">1. 安装 Typst</h3>
+<pre class="astro-code astro-code-themes github-light-default github-dark-default" style="background-color:#ffffff;--shiki-dark-bg:#0d1117;color:#1f2328;--shiki-dark:#e6edf3; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6E7781;--shiki-dark:#8B949E"># macOS</span></span>
+<span class="line"><span style="color:#953800;--shiki-dark:#FFA657">brew</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> install</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> typst</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6E7781;--shiki-dark:#8B949E"># Windows</span></span>
+<span class="line"><span style="color:#953800;--shiki-dark:#FFA657">winget</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> install</span><span style="color:#0550AE;--shiki-dark:#79C0FF"> --id</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> Typst.Typst</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6E7781;--shiki-dark:#8B949E"># 或使用官方安装脚本</span></span>
+<span class="line"><span style="color:#953800;--shiki-dark:#FFA657">curl</span><span style="color:#0550AE;--shiki-dark:#79C0FF"> -fsSL</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> https://typst.community/install</span><span style="color:#CF222E;--shiki-dark:#FF7B72"> |</span><span style="color:#953800;--shiki-dark:#FFA657"> sh</span></span></code></pre>
+<h3 id="2-使用项目">2. 使用项目</h3>
+<pre class="astro-code astro-code-themes github-light-default github-dark-default" style="background-color:#ffffff;--shiki-dark-bg:#0d1117;color:#1f2328;--shiki-dark:#e6edf3; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6E7781;--shiki-dark:#8B949E"># 克隆仓库</span></span>
+<span class="line"><span style="color:#953800;--shiki-dark:#FFA657">git</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> clone</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> https://github.com/Vncntvx/modern-ucas-thesis.git</span></span>
+<span class="line"><span style="color:#0550AE;--shiki-dark:#79C0FF">cd</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> modern-ucas-thesis</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6E7781;--shiki-dark:#8B949E"># 编译论文</span></span>
+<span class="line"><span style="color:#953800;--shiki-dark:#FFA657">typst</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> compile</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> template/thesis.typ</span><span style="color:#0550AE;--shiki-dark:#79C0FF"> --root</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> .</span><span style="color:#0550AE;--shiki-dark:#79C0FF"> --font-path</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> fonts</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6E7781;--shiki-dark:#8B949E"># 编译开题报告（本科/研究生共用入口，见 template/proposal.typ）</span></span>
+<span class="line"><span style="color:#953800;--shiki-dark:#FFA657">typst</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> compile</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> template/proposal.typ</span><span style="color:#0550AE;--shiki-dark:#79C0FF"> --root</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> .</span><span style="color:#0550AE;--shiki-dark:#79C0FF"> --font-path</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> fonts</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6E7781;--shiki-dark:#8B949E"># 或开启实时预览</span></span>
+<span class="line"><span style="color:#953800;--shiki-dark:#FFA657">typst</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> watch</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> template/thesis.typ</span><span style="color:#0550AE;--shiki-dark:#79C0FF"> --root</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> .</span><span style="color:#0550AE;--shiki-dark:#79C0FF"> --font-path</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> fonts</span></span></code></pre>
+<h3 id="3-配置论文信息">3. 配置论文信息</h3>
+<p>编辑 <code>template/thesis.typ</code>：</p>
+<pre class="astro-code astro-code-themes github-light-default github-dark-default" style="background-color:#ffffff;--shiki-dark-bg:#0d1117;color:#1f2328;--shiki-dark:#e6edf3; overflow-x: auto;" tabindex="0" data-language="typst"><code><span class="line"><span style="color:#CF222E;--shiki-dark:#FF7B72">#import</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> "../lib.typ"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">: documentclass</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#CF222E;--shiki-dark:#FF7B72">#let</span><span style="color:#1F2328;--shiki-dark:#E6EDF3"> (</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">  doc, preface, mainmatter, appendix,</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">  cover, decl-page, abstract, abstract-en,</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">  outline-page, list-of-figures-and-tables, notation,</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">  bilingual-bibliography, acknowledgement, backmatter,</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">  bifigure, bitable, continued-table, auto-table, aligned-equation,</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">) </span><span style="color:#CF222E;--shiki-dark:#FF7B72">= </span><span style="color:#8250DF;--shiki-dark:#D2A8FF">documentclass</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">(</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">  doctype: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"doctor"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">,       </span><span style="color:#6E7781;--shiki-dark:#8B949E">// "bachelor" | "master" | "doctor"</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">  degree: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"academic"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">,      </span><span style="color:#6E7781;--shiki-dark:#8B949E">// "academic" | "professional"</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">  anonymous: </span><span style="color:#0550AE;--shiki-dark:#79C0FF">false</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">,        </span><span style="color:#6E7781;--shiki-dark:#8B949E">// 盲审模式</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">  twoside: </span><span style="color:#0550AE;--shiki-dark:#79C0FF">true</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">,           </span><span style="color:#6E7781;--shiki-dark:#8B949E">// 双面打印模式</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">  fontset: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"mac"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">,          </span><span style="color:#6E7781;--shiki-dark:#8B949E">// "windows" | "mac" | "fandol" | "adobe"</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">  info: (</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">    title: (</span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"论文标题"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">, </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"副标题（可选）"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">),</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">    title-en: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"Thesis Title"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">    author: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"张三"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">    author-en: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"Zhang San"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#6E7781;--shiki-dark:#8B949E">    // 导师：结构化字典列表 (name:, title:, affiliation:)，多导师第一导师在前</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">    supervisors: (</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">      (name: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"李四"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">, title: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"教授"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">, affiliation: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"中国科学院××研究所"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">),</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">      (name: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"王五"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">, title: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"研究员"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">, affiliation: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"中国科学院××研究所"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">),</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">    ),</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">    supervisors-en: (</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">      (name: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"Si Li"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">, title: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"Professor"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">, affiliation: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"Institute of XXX, Chinese Academy of Sciences"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">),</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">      (name: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"Wu Wang"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">, title: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"Professor"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">, affiliation: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"Institute of XXX, Chinese Academy of Sciences"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">),</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">    ),</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">    department: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"中国科学院××研究所"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">    major: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"管理科学与工程"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">    category: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"管理学博士"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">    submit-date: </span><span style="color:#8250DF;--shiki-dark:#D2A8FF">datetime</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">(year: </span><span style="color:#0550AE;--shiki-dark:#79C0FF">2024</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">, month: </span><span style="color:#0550AE;--shiki-dark:#79C0FF">6</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">, day: </span><span style="color:#0550AE;--shiki-dark:#79C0FF">1</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">),</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">  ),</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">  bibliography: bibliography</span><span style="color:#CF222E;--shiki-dark:#FF7B72">.</span><span style="color:#8250DF;--shiki-dark:#D2A8FF">with</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">(</span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"ref.bib"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">),</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#CF222E;--shiki-dark:#FF7B72">#show</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">: doc</span></span>
+<span class="line"><span style="color:#8250DF;--shiki-dark:#D2A8FF">#cover</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#8250DF;--shiki-dark:#D2A8FF">#decl-page</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#CF222E;--shiki-dark:#FF7B72">#show</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">: preface</span></span>
+<span class="line"><span style="color:#6E7781;--shiki-dark:#8B949E">// 摘要、目录、符号表...</span></span>
+<span class="line"><span style="color:#CF222E;--shiki-dark:#FF7B72">#show</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">: mainmatter</span></span>
+<span class="line"><span style="color:#6E7781;--shiki-dark:#8B949E">// 正文...</span></span></code></pre>
+<h3 id="4-配置开题报告">4. 配置开题报告</h3>
+<p>编辑 <code>template/proposal.typ</code>（结构与论文同构，经 <code>proposalclass</code> 组装）：</p>
+<pre class="astro-code astro-code-themes github-light-default github-dark-default" style="background-color:#ffffff;--shiki-dark-bg:#0d1117;color:#1f2328;--shiki-dark:#e6edf3; overflow-x: auto;" tabindex="0" data-language="typst"><code><span class="line"><span style="color:#CF222E;--shiki-dark:#FF7B72">#import</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> "../lib.typ"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">: proposalclass</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#CF222E;--shiki-dark:#FF7B72">#let</span><span style="color:#1F2328;--shiki-dark:#E6EDF3"> (</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">  doc, cover, notice, outline-page, mainmatter, bilingual-bibliography,</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">  bifigure, bitable, continued-table, auto-table, aligned-equation,</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">) </span><span style="color:#CF222E;--shiki-dark:#FF7B72">= </span><span style="color:#8250DF;--shiki-dark:#D2A8FF">proposalclass</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">(</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">  doctype: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"master"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">,       </span><span style="color:#6E7781;--shiki-dark:#8B949E">// "bachelor" | "master"（当前版式一致）</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">  fontset: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"mac"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">  info: (</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">    title: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"论文开题题目"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">    author: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"张三"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">    student-id: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"1234567890"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#6E7781;--shiki-dark:#8B949E">    // 指导教师：填写 supervisors-full 或 supervisors-split 其一；未使用的键可省略</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">    supervisors-full: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"李四教授"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">    degree-category: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"工学硕士"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">    major: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"计算机科学与技术"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">    research-direction: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"智能信息处理"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">    department: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"中国科学院××研究所"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">    submit-date: datetime</span><span style="color:#CF222E;--shiki-dark:#FF7B72">.</span><span style="color:#8250DF;--shiki-dark:#D2A8FF">today</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">(),</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">  ),</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">  bibliography: bibliography</span><span style="color:#CF222E;--shiki-dark:#FF7B72">.</span><span style="color:#8250DF;--shiki-dark:#D2A8FF">with</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">(</span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"ref.bib"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">),</span></span>
+<span class="line"><span style="color:#6E7781;--shiki-dark:#8B949E">  // cfg: (outline-depth: 2),</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#CF222E;--shiki-dark:#FF7B72">#show</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">: doc</span></span>
+<span class="line"><span style="color:#8250DF;--shiki-dark:#D2A8FF">#cover</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#8250DF;--shiki-dark:#D2A8FF">#notice</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#CF222E;--shiki-dark:#FF7B72">#show</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">: mainmatter</span></span>
+<span class="line"><span style="color:#8250DF;--shiki-dark:#D2A8FF">#outline-page</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#6E7781;--shiki-dark:#8B949E">// 正文用 = / == / ===，编号 1. / 1.1. / 1.1.2，段落自动首行缩进</span></span>
+<span class="line"><span style="color:#8250DF;--shiki-dark:#D2A8FF">#bilingual-bibliography</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">(full: </span><span style="color:#0550AE;--shiki-dark:#79C0FF">true</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">)</span></span></code></pre>
+<hr>
+<h2 id="项目结构">项目结构</h2>
+<pre class="astro-code astro-code-themes github-light-default github-dark-default" style="background-color:#ffffff;--shiki-dark-bg:#0d1117;color:#1f2328;--shiki-dark:#e6edf3; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>modern-ucas-thesis/</span></span>
+<span class="line"><span>├── template/              # 论文与开题报告源文件（模板入口）</span></span>
+<span class="line"><span>│   ├── thesis.typ        # 学位论文主文件</span></span>
+<span class="line"><span>│   ├── proposal.typ      # 开题报告主文件</span></span>
+<span class="line"><span>│   ├── ref.bib           # 参考文献（论文与开题共用）</span></span>
+<span class="line"><span>│   └── images/           # 图片目录</span></span>
+<span class="line"><span>├── pages/                # 具体页面实现（封面、声明、摘要、目录、开题报告等）</span></span>
+<span class="line"><span>├── layouts/              # 页面级布局（doc / preface / mainmatter / appendix）</span></span>
+<span class="line"><span>├── utils/                # 可复用工具（双语图表、续表、对齐公式、字体、编号等）</span></span>
+<span class="line"><span>├── assets/               # 静态资源（校徽等 UCAS 视觉标识）</span></span>
+<span class="line"><span>├── fonts/                # 字体目录（用户自行放入字体文件，见 fonts/README.md）</span></span>
+<span class="line"><span>├── docs/                 # 文档（规范原文、定制指南、FAQ 等）</span></span>
+<span class="line"><span>├── lib.typ               # 主库入口（documentclass / proposalclass 闭包工厂）</span></span>
+<span class="line"><span>├── typst.toml            # Typst 包配置</span></span>
+<span class="line"><span>└── Makefile              # 格式化与检查脚本</span></span></code></pre>
+<hr>
+<h2 id="功能特性">功能特性</h2>
+<blockquote>
+<p>实现状态对照《中国科学院大学研究生学位论文撰写规范指导意见（2022年）》<code>docs/RULES-GRAD.md</code> 逐项核验代码现状。状态含义：✅ 已完成｜🟡 部分实现／待完善｜❌ 未开始｜➖ 规范未强制要求。</p>
+</blockquote>
+<h3 id="文档配置">文档配置</h3>
+<table>
+<thead>
+<tr>
+<th>功能项</th>
+<th>状态</th>
+<th>规范依据 / 说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>全局信息配置（文档类型、学位类型、字体等）</td>
+<td>✅</td>
+<td><code>documentclass</code> 闭包工厂统一注入</td>
+</tr>
+<tr>
+<td>盲审模式</td>
+<td>✅</td>
+<td><code>anonymous: true</code> 自动隐藏作者/导师等字段</td>
+</tr>
+<tr>
+<td>双面打印模式</td>
+<td>✅</td>
+<td><code>twoside: true</code> 自动插入空白页使各部分从奇数页开始</td>
+</tr>
+</tbody>
+</table>
+<h3 id="封面与前置页">封面与前置页</h3>
+<table>
+<thead>
+<tr>
+<th>功能项</th>
+<th>状态</th>
+<th>规范依据 / 说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>研究生封面（中/英文，硕/博）</td>
+<td>✅</td>
+<td>标题黑体小三号加粗、字段宋体四号加粗 2 倍行距、日期 Times New Roman 四号加粗</td>
+</tr>
+<tr>
+<td>本科生封面</td>
+<td>✅</td>
+<td>经 <code>bachelor-cover.typ</code> 实现，由 <code>doctype</code> 分发</td>
+</tr>
+<tr>
+<td>书脊</td>
+<td>🟡</td>
+<td>规范要求：黑体小四号，上=题目、中=作者、下=“中国科学院大学”，距上下边界 3cm</td>
+</tr>
+<tr>
+<td>原创性声明与授权说明</td>
+<td>✅</td>
+<td>研究生与本科生均已实现（含统一声明模板，样张3）</td>
+</tr>
+<tr>
+<td>中文摘要（含关键词）</td>
+<td>✅</td>
+<td>“摘　要”二字间空一字符，黑体四号加粗居中；3~5 关键词，中文逗号分隔</td>
+</tr>
+<tr>
+<td>英文摘要（含关键词）</td>
+<td>✅</td>
+<td>“Key Words”加粗，首字母大写，英文逗号分隔</td>
+</tr>
+<tr>
+<td>目录</td>
+<td>✅</td>
+<td>章节缩进至三级（一级顶格、二级 1 字符、三级 2 字符），页码右对齐</td>
+</tr>
+<tr>
+<td>图表目录</td>
+<td>✅</td>
+<td>先列图后列表，置于目录后另页编排</td>
+</tr>
+<tr>
+<td>符号表（术语与符号说明）</td>
+<td>✅</td>
+<td>置于目录之后、正文之前，另页编排</td>
+</tr>
+</tbody>
+</table>
+<h3 id="正文排版">正文排版</h3>
+<table>
+<thead>
+<tr>
+<th>功能项</th>
+<th>状态</th>
+<th>规范依据 / 说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>章节标题编号</td>
+<td>✅</td>
+<td>阿拉伯数字三级（最多四级），章“第1章”居中，子节“1.1 / 1.1.1”顶左</td>
+</tr>
+<tr>
+<td>页眉</td>
+<td>✅</td>
+<td>奇数页=当前章/部分名，偶数页=论文题目；宋体小五号居中，下加分隔线</td>
+</tr>
+<tr>
+<td>页码制式</td>
+<td>✅</td>
+<td>前言大写罗马数字居中；正文默认 <code>twoside: true</code>，奇数页右下、偶数页左下，单面时居中</td>
+</tr>
+<tr>
+<td>脚注</td>
+<td>✅</td>
+<td>五号宋体，章/部分起始重置计数</td>
+</tr>
+<tr>
+<td>尾注</td>
+<td>➖</td>
+<td>规范未强制要求</td>
+</tr>
+<tr>
+<td>交叉引用（图/表/公式/章节）</td>
+<td>✅</td>
+<td>统一前缀：<code>@fig:</code> / <code>@tbl:</code> / <code>@eqt:</code></td>
+</tr>
+<tr>
+<td>段落格式</td>
+<td>✅</td>
+<td>宋体小四号，1.25 倍行距，首行缩进 2 字符，两端对齐</td>
+</tr>
+<tr>
+<td>代码块语法高亮</td>
+<td>✅</td>
+<td>Typst 原生 raw block 支持</td>
+</tr>
+</tbody>
+</table>
+<h3 id="图表处理">图表处理</h3>
+<table>
+<thead>
+<tr>
+<th>功能项</th>
+<th>状态</th>
+<th>规范依据 / 说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>双语图表标题</td>
+<td>✅</td>
+<td>图题居图下、表题居表上，宋体五号加粗居中，1.25 倍行距</td>
+</tr>
+<tr>
+<td>图表注释（表注、图注）</td>
+<td>✅</td>
+<td>“注：“加粗，左缩进 2 字符，续行对齐</td>
+</tr>
+<tr>
+<td>图表按章编号</td>
+<td>✅</td>
+<td>形如 <code>图1-1</code>、<code>表3-2</code>，分章连续编码</td>
+</tr>
+<tr>
+<td>自动续表（长表跨页）</td>
+<td>✅</td>
+<td><code>auto-table</code> 主动分页，自动重复表头并标注“续表”/“(continued)”</td>
+</tr>
+<tr>
+<td>手动续表</td>
+<td>✅</td>
+<td><code>continued-table</code> 需配合源表 label 使用</td>
+</tr>
+<tr>
+<td>附录图表编号</td>
+<td>✅</td>
+<td>沿用正文编号形式（<code>1-1</code>），与规范“附录图表参考正文编号方式”一致</td>
+</tr>
+<tr>
+<td>三线表</td>
+<td>✅</td>
+<td><code>auto-table</code> 默认三线表；<code>table</code>/<code>bitable</code> 可用 <code>table.hline()</code> 手写</td>
+</tr>
+<tr>
+<td>卧排表（横向表格）</td>
+<td>✅</td>
+<td><code>bitable</code>/<code>bifigure</code>/<code>auto-table</code> 内置 <code>landscape: true</code>，逆时针旋转 90°，方位“顶左底右”</td>
+</tr>
+<tr>
+<td>地图审图号注释辅助</td>
+<td>🟡</td>
+<td>规范要求涉国界图件注明“审图号 GS(2021)××××号”，需用户手动添加</td>
+</tr>
+</tbody>
+</table>
+<h3 id="公式与数学">公式与数学</h3>
+<table>
+<thead>
+<tr>
+<th>功能项</th>
+<th>状态</th>
+<th>规范依据 / 说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>行间公式编号</td>
+<td>✅</td>
+<td>编号置于括号内，右端对齐</td>
+</tr>
+<tr>
+<td>多行公式对齐与编号</td>
+<td>✅</td>
+<td><code>aligned-equation</code> 编号对齐到最后一行右侧</td>
+</tr>
+<tr>
+<td>公式按章编号</td>
+<td>✅</td>
+<td>形如 <code>(3-1)</code>，分章连续编码</td>
+</tr>
+<tr>
+<td>不编号公式</td>
+<td>✅</td>
+<td>以 <code>&lt;-&gt;</code> 标签标识</td>
+</tr>
+<tr>
+<td>附录公式编号</td>
+<td>✅</td>
+<td>形如 <code>(1-1)</code>，沿用正文编号形式</td>
+</tr>
+<tr>
+<td>长公式转行</td>
+<td>✅</td>
+<td>在 <code>+ - × ÷ &lt; &gt;</code> 等运算符后转行（Typst 原生支持）</td>
+</tr>
+<tr>
+<td>定理/引理/证明环境</td>
+<td>➖</td>
+<td>规范未强制要求</td>
+</tr>
+</tbody>
+</table>
+<h3 id="参考文献">参考文献</h3>
+<table>
+<thead>
+<tr>
+<th>功能项</th>
+<th>状态</th>
+<th>规范依据 / 说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>双语参考文献标题</td>
+<td>✅</td>
+<td>中文“参考文献”，英文自动处理</td>
+</tr>
+<tr>
+<td>GB/T 7714-2015 格式（顺序编码制）</td>
+<td>✅</td>
+<td>默认 <code>gb-7714-2015-numeric</code></td>
+</tr>
+<tr>
+<td>GB/T 7714-2015 格式（著者—出版年制）</td>
+<td>🟡</td>
+<td>可经 <code>style: "gb-7714-2015-author-date"</code> 切换，但未提供默认配置与样式校验</td>
+</tr>
+<tr>
+<td>中英文文献格式自动转换</td>
+<td>✅</td>
+<td>自动识别中英文文献并转换“等/卷/册/译/版”等术语</td>
+</tr>
+<tr>
+<td>文献引用与交叉引用</td>
+<td>✅</td>
+<td><code>@citekey</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="附录与后置">附录与后置</h3>
+<table>
+<thead>
+<tr>
+<th>功能项</th>
+<th>状态</th>
+<th>规范依据 / 说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>附录章节</td>
+<td>✅</td>
+<td>一级标题无编号，子节 <code>1.1</code>，图表 <code>1-1</code>，公式 <code>(1-1)</code></td>
+</tr>
+<tr>
+<td>致谢页</td>
+<td>✅</td>
+<td>标题二字间空一字符，末尾具日期与封面一致</td>
+</tr>
+<tr>
+<td>作者简介与学术成果</td>
+<td>✅</td>
+<td>含教育/工作经历、论文清单（同参考文献格式）、专利、项目、获奖</td>
+</tr>
+<tr>
+<td>学位类别中英文对照表</td>
+<td>🟡</td>
+<td>规范附件2，仅作为附录示例表格存在于 <code>thesis.typ</code>，未抽取为可复用组件</td>
+</tr>
+</tbody>
+</table>
+<h3 id="字体与排版">字体与排版</h3>
+<table>
+<thead>
+<tr>
+<th>功能项</th>
+<th>状态</th>
+<th>规范依据 / 说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>预定义字体组</td>
+<td>✅</td>
+<td><code>windows</code> / <code>mac</code> / <code>fandol</code> / <code>adobe</code> 四套，含宋/黑/楷/仿宋/等宽</td>
+</tr>
+<tr>
+<td>自定义字体配置</td>
+<td>✅</td>
+<td><code>fonts</code> 参数覆盖 <code>fontset</code> 单项</td>
+</tr>
+<tr>
+<td>中西文字体混排</td>
+<td>✅</td>
+<td>中文宋体/黑体等 + 英文 Times New Roman</td>
+</tr>
+<tr>
+<td>中文伪加粗</td>
+<td>✅</td>
+<td>非 fandol 字体组经 <code>@preview/cuti:0.4.0</code> 启用</td>
+</tr>
+</tbody>
+</table>
+<h3 id="其他文档类型">其他文档类型</h3>
+<table>
+<thead>
+<tr>
+<th>功能项</th>
+<th>状态</th>
+<th>规范依据 / 说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>本科生开题报告</td>
+<td>✅</td>
+<td><code>template/proposal.typ</code>，<code>proposalclass(doctype: "bachelor")</code>；版式暂与研究生一致</td>
+</tr>
+<tr>
+<td>研究生开题报告</td>
+<td>✅</td>
+<td><code>template/proposal.typ</code>，<code>proposalclass(doctype: "master")</code>；样式在 <code>pages/proposal.typ</code></td>
+</tr>
+<tr>
+<td>开题报告正文编号与缩进</td>
+<td>✅</td>
+<td>标题 <code>1.</code> / <code>1.1.</code> / <code>1.1.2</code>，正文首行缩进 2em</td>
+</tr>
+<tr>
+<td>开题报告参考文献</td>
+<td>✅</td>
+<td>与学位论文共用 <code>bilingual-bibliography</code> 与 <code>template/ref.bib</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="文档">文档</h2>
+<ul>
+<li><a href="https://github.com/Vncntvx/modern-ucas-thesis/blob/main/docs/RULES-GRAD.md">研究生撰写规范</a>（中国科学院大学研究生学位论文撰写规范指导意见 2022）</li>
+<li><a href="https://github.com/Vncntvx/modern-ucas-thesis/blob/main/docs/RULES-BACHELOR.md">本科生撰写规范</a>（中国科学院大学本科生毕业论文（设计）撰写规范指导意见 2023年10月修订）</li>
+<li><a href="https://github.com/Vncntvx/modern-ucas-thesis/blob/main/docs/CUSTOMIZE.md">定制指南</a></li>
+<li><a href="https://github.com/Vncntvx/modern-ucas-thesis/blob/main/docs/FAQ.md">常见问题</a></li>
+<li><a href="https://github.com/Vncntvx/modern-ucas-thesis/blob/main/docs/FORMAT.md">格式化工具</a></li>
+<li><a href="https://github.com/Vncntvx/modern-ucas-thesis/blob/main/docs/LOGO_COPYRIGHT.md">UCAS 标识版权说明</a></li>
+</ul>
+<hr>
+<h2 id="开发">开发</h2>
+<pre class="astro-code astro-code-themes github-light-default github-dark-default" style="background-color:#ffffff;--shiki-dark-bg:#0d1117;color:#1f2328;--shiki-dark:#e6edf3; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6E7781;--shiki-dark:#8B949E"># 格式化代码（需先安装 typstyle）</span></span>
+<span class="line"><span style="color:#953800;--shiki-dark:#FFA657">make</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> format</span><span style="color:#6E7781;--shiki-dark:#8B949E">           # 格式化所有 .typ</span></span>
+<span class="line"><span style="color:#953800;--shiki-dark:#FFA657">make</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> format-check</span><span style="color:#6E7781;--shiki-dark:#8B949E">     # 只检查不改，CI 守门</span></span>
+<span class="line"><span style="color:#953800;--shiki-dark:#FFA657">make</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> lint-quick</span><span style="color:#6E7781;--shiki-dark:#8B949E">       # 检查 typst.toml 字段与入口，不依赖外部 index</span></span></code></pre>
+<hr>
+<h2 id="致谢">致谢</h2>
+<ul>
+<li>基于 <a href="https://github.com/nju-lug/modern-nju-thesis">modern-nju-thesis</a> 开发</li>
+<li>参考 <a href="https://github.com/mohuangrui/ucasthesis">ucasthesis</a> LaTeX 模板</li>
+</ul>
+<hr>
+<h2 id="许可证">许可证</h2>
+<p>本项目代码采用 <a href="https://github.com/Vncntvx/modern-ucas-thesis/blob/main/LICENSE">MIT</a> 许可证开源。</p>
+<p><strong>关于 UCAS 标识</strong>：<code>assets/vi/</code> 目录下的校徽、Logo 等视觉标识的版权归中国科学院大学所有。本项目将其纳入仅为方便用户撰写学位论文（属于个人学习/教学合理使用范畴），请勿用于其他商业或官方用途。如需商用授权，请联系学校相关部门。详见 <a href="https://github.com/Vncntvx/modern-ucas-thesis/blob/main/docs/LOGO_COPYRIGHT.md">docs/LOGO_COPYRIGHT.md</a>。</p>
+<hr>
+<p align="center">
+  <a href="https://github.com/Vncntvx/modern-ucas-thesis/issues">报告问题</a> ·
+  <a href="https://github.com/Vncntvx/modern-ucas-thesis/discussions">讨论交流</a> ·
+  <a href="https://github.com/Vncntvx/modern-ucas-thesis/pulls">贡献代码</a>
+</p>
+</article><div class="comments" data-comment-language="zh-CN" data-comment-title="modern-ucas-thesis | Wenjie Xu"></div><script type="module">document.querySelectorAll(`.comments`).forEach(e=>{let t=document.createElement(`script`),n={src:`https://giscus.app/client.js`,"data-repo":`Vncntvx/BlogComments`,"data-repo-id":`R_kgDOMFTH3A`,"data-category":`Announcements`,"data-category-id":`DIC_kwDOMFTH3M4Cf4dF`,"data-mapping":`specific`,"data-term":e.dataset.commentTitle??``,"data-strict":`1`,"data-reactions-enabled":`1`,"data-emit-metadata":`0`,"data-input-position":`bottom`,"data-theme":document.documentElement.dataset.theme??`light`,"data-lang":e.dataset.commentLanguage??`en`,crossorigin:`anonymous`,async:`true`};Object.entries(n).forEach(([e,n])=>t.setAttribute(e,n)),e.append(t),document.addEventListener(`theme-change`,()=>{e.querySelector(`iframe.giscus-frame`)?.contentWindow?.postMessage({giscus:{setConfig:{theme:document.documentElement.dataset.theme??`light`}}},`https://giscus.app`)})});</script></main><footer class="site-footer"><div class="container footer-inner"><span>© 2023–2026 Wenjie Xu</span><span>保留所有权利</span><span>由 Astro 驱动 <a href="https://astro.build/">Astro</a></span><span>更新于 <time datetime="2025-12-01T00:00:00.000Z">2025年12月1日</time></span><a href="#top">返回顶部</a></div></footer></div></body></html>

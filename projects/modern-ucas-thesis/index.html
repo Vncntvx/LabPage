@@ -1,0 +1,549 @@
+<!DOCTYPE html><html lang="en" id="top"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="generator" content="Astro v7.3.8"><meta name="description" content="A Thesis/Dissertation Template for University of Chinese Academy of Sciences in Typst."><meta name="author" content="Wenjie Xu"><link rel="canonical" href="https://lab.wenjiexu.site/projects/modern-ucas-thesis/"><link rel="alternate" hreflang="en" href="https://lab.wenjiexu.site/projects/modern-ucas-thesis/"><link rel="alternate" hreflang="zh-CN" href="https://lab.wenjiexu.site/zh-CN/projects/modern-ucas-thesis/"><link rel="alternate" hreflang="x-default" href="https://lab.wenjiexu.site/projects/modern-ucas-thesis/"><link rel="alternate" type="application/rss+xml" title="Wenjie Xu — News" href="https://lab.wenjiexu.site/feed.xml"><link rel="icon" href="/assets/img/favicon.ico"><link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png"><meta property="og:title" content="modern-ucas-thesis | Wenjie Xu"><meta property="og:site_name" content="Wenjie Xu"><meta property="og:description" content="A Thesis/Dissertation Template for University of Chinese Academy of Sciences in Typst."><meta property="og:url" content="https://lab.wenjiexu.site/projects/modern-ucas-thesis/"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:image" content="https://lab.wenjiexu.site/assets/img/og-en.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="modern-ucas-thesis | Wenjie Xu"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="modern-ucas-thesis | Wenjie Xu"><meta name="twitter:description" content="A Thesis/Dissertation Template for University of Chinese Academy of Sciences in Typst."><meta name="twitter:image" content="https://lab.wenjiexu.site/assets/img/og-en.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"modern-ucas-thesis","description":"A Thesis/Dissertation Template for University of Chinese Academy of Sciences in Typst.","url":"https://lab.wenjiexu.site/projects/modern-ucas-thesis/","inLanguage":"en","image":"https://lab.wenjiexu.site/assets/img/og-en.png","author":{"@type":"Person","name":"Wenjie Xu","url":"https://lab.wenjiexu.site/","sameAs":["https://github.com/Vncntvx","https://orcid.org/0000-0002-7778-0450","https://scholar.google.com/citations?user=eWTidmsAAAAJ","https://www.researchgate.net/profile/Wenjie-Xu-19"]}}</script><title>modern-ucas-thesis | Wenjie Xu</title><script>
+  (() => {
+    const root = document.documentElement;
+    const media = matchMedia("(prefers-color-scheme: dark)");
+    let preference = "system";
+    try {
+      const saved = localStorage.getItem("theme");
+      if (["light", "dark", "system"].includes(saved)) preference = saved;
+    } catch {}
+    const apply = () => {
+      const transitioning = root.dataset.theme !== undefined;
+      if (transitioning) {
+        root.classList.add("theme-transition");
+        window.setTimeout(() => root.classList.remove("theme-transition"), 250);
+      }
+      root.dataset.themeSetting = preference;
+      root.dataset.theme = preference === "system" ? (media.matches ? "dark" : "light") : preference;
+      document.dispatchEvent(new Event("theme-change"));
+    };
+    apply();
+    media.addEventListener("change", apply);
+    window.addEventListener("storage", (event) => {
+      if (event.key === "theme") {
+        preference = ["light", "dark"].includes(event.newValue) ? event.newValue : "system";
+        apply();
+      }
+    });
+    document.addEventListener("theme-request", (event) => {
+      const requested = event instanceof CustomEvent ? event.detail : "system";
+      preference = ["light", "dark", "system"].includes(requested) ? requested : "system";
+      try {
+        localStorage.setItem("theme", preference);
+      } catch {}
+      apply();
+    });
+  })();
+</script><link rel="stylesheet" href="/_astro/BaseLayout.DdgeAcCT.css"></head><body><a class="skip-link" href="#main-content">Skip to content</a><div class="page-shell"><header class="site-header"><div class="container header-inner"><a class="site-name" href="/">Wenjie Xu</a><details class="navigation" open><summary class="nav-toggle" aria-label="Toggle navigation"><span class="sr-only">Toggle navigation</span><svg class="nav-toggle-icon icon-menu" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg><svg class="nav-toggle-icon icon-close" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg></summary><nav aria-label="Primary navigation"><a href="/">About</a><a href="/publications/">Publications</a><a href="/projects/">Projects</a><a href="/teaching/">Teaching</a><div class="nav-dropdown" data-nav-dropdown><button type="button" class="nav-dropdown-toggle" aria-haspopup="menu" aria-expanded="false"><span>More</span><svg class="dropdown-caret" viewBox="0 0 10 6" aria-hidden="true" focusable="false"><path d="m1 1 4 4 4-4"></path></svg></button><ul class="nav-dropdown-menu" hidden><li><a href="/cv/">CV</a></li></ul></div><button class="search-button" type="button" data-search-open aria-label="Search" title="Search"><svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m16 16 5 5"></path></svg><span class="search-label">Search</span></button><div class="header-controls"><div class="language-switcher" data-language-switcher><button class="language-toggle" type="button" aria-label="Language" aria-haspopup="menu" aria-expanded="false"><svg class="control-icon lang-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3a14 14 0 0 1 0 18"></path><path d="M12 3a14 14 0 0 0 0 18"></path></svg><span class="language-label">English</span></button><ul class="language-menu" hidden><li><a href="/projects/modern-ucas-thesis/" lang="en" hreflang="en" aria-current="true">English</a></li><li><a href="/zh-CN/projects/modern-ucas-thesis/" lang="zh-CN" hreflang="zh-CN">中文</a></li></ul></div><script type="module">var e=document.querySelector(`[data-language-switcher]`),t=e?.querySelector(`.language-toggle`),n=e?.querySelector(`.language-menu`),r=r=>{e&&t&&n&&(e.dataset.open=r?`true`:`false`,t.setAttribute(`aria-expanded`,String(r)),n.hidden=!r)};t?.addEventListener(`click`,()=>r(e?.dataset.open!==`true`)),document.addEventListener(`click`,t=>{e?.dataset.open===`true`&&t.target instanceof Node&&!e.contains(t.target)&&r(!1)}),document.addEventListener(`keydown`,n=>{n.key===`Escape`&&e?.dataset.open===`true`&&(r(!1),t?.focus())}),window.addEventListener(`resize`,()=>{e?.dataset.open===`true`&&r(!1)}),document.querySelectorAll(`.language-menu a`).forEach(e=>{e.addEventListener(`click`,()=>{e.hash=window.location.hash,e.search=window.location.search})});</script><button class="theme-control" type="button" data-theme-button hidden aria-label="Change theme" title="Change theme"><svg class="control-icon theme-icon" data-theme-icon="light" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"></path></svg><svg class="control-icon theme-icon" data-theme-icon="dark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446A9 9 0 1 1 12 3z"></path></svg><span class="theme-label">Change theme</span></button><script type="module">var e=document.querySelector(`[data-theme-button]`),t=()=>{e&&(e.dataset.themeSetting=document.documentElement.dataset.themeSetting??`system`)};e?.addEventListener(`click`,()=>{e.classList.remove(`switching`),e.offsetWidth,e.classList.add(`switching`);let t=document.documentElement.dataset.theme??`light`;document.dispatchEvent(new CustomEvent(`theme-request`,{detail:t===`dark`?`light`:`dark`}))}),t(),e&&(e.hidden=!1),document.addEventListener(`theme-change`,t);</script></div></nav></details></div><progress class="reading-progress" data-reading-progress max="100" value="0" aria-label="Reading progress"></progress><dialog class="search-dialog" data-search-dialog data-locale="en" aria-labelledby="search-title"><div class="search-dialog-inner"><header class="search-dialog-header"><h2 id="search-title">Type to start searching</h2><button class="dialog-close" type="button" data-search-close aria-label="to close"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m6 6 12 12M18 6 6 18"></path></svg></button></header><label class="search-input-label"><span class="sr-only">Type to start searching</span><svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m16 16 5 5"></path></svg><input type="search" data-site-search-input autocomplete="off" placeholder="Type to start searching"><kbd>Esc</kbd></label><p class="search-result-status" data-search-status data-count-one="{count} result" data-count-other="{count} results" data-count-locale="en" data-load-failed="Search index could not be loaded." aria-live="polite"></p><div class="search-results-shell"><ul class="search-results" data-search-results role="listbox" aria-label="Type to start searching"></ul><p class="empty-state" data-search-empty="true" hidden>No matching results.</p></div><footer class="search-dialog-footer" aria-label="Type to start searching"><span><kbd>↵</kbd>to select</span><span><kbd>↑</kbd><kbd>↓</kbd>to navigate</span><span><kbd>Esc</kbd>to close</span></footer></div></dialog><script type="module" src="/_astro/SearchModal.astro_astro_type_script_index_0_lang.CgoGCpiw.js"></script></header><script type="module">var e=document.querySelector(`.navigation`),t=matchMedia(`(min-width: 768px)`),n=()=>{e&&(e.open=t.matches)};n(),t.addEventListener(`change`,n);var r=document.querySelector(`[data-reading-progress]`),i=()=>{if(!r)return;let e=document.documentElement.scrollHeight-window.innerHeight;r.value=e>0?window.scrollY/e*100:0};i(),window.addEventListener(`scroll`,i,{passive:!0}),window.addEventListener(`resize`,i);var a=document.querySelectorAll(`[data-nav-dropdown]`),o=(e,{focus:t=!1}={})=>{if(e.dataset.open!==`true`)return!1;let n=e.querySelector(`.nav-dropdown-toggle`),r=e.querySelector(`.nav-dropdown-menu`);return e.dataset.open=`false`,n?.setAttribute(`aria-expanded`,`false`),r&&(r.hidden=!0),t&&n?.focus(),!0};a.forEach(e=>{let n=e.querySelector(`.nav-dropdown-toggle`),r=e.querySelector(`.nav-dropdown-menu`),i,a=t=>{i&&=(window.clearTimeout(i),void 0),e.dataset.open=t?`true`:`false`,n?.setAttribute(`aria-expanded`,String(t)),r&&(r.hidden=!t)};n?.addEventListener(`click`,t=>{t.stopPropagation(),a(e.dataset.open!==`true`)}),e.addEventListener(`mouseenter`,()=>{t.matches&&a(!0)}),e.addEventListener(`mouseleave`,()=>{t.matches&&(i=window.setTimeout(()=>a(!1),150))})}),document.addEventListener(`click`,n=>{a.forEach(e=>{n.target instanceof Node&&!e.contains(n.target)&&o(e)}),!t.matches&&e?.open&&n.target instanceof Node&&!e.contains(n.target)&&(e.open=!1)}),window.addEventListener(`resize`,()=>{a.forEach(e=>o(e))}),document.addEventListener(`keydown`,n=>{if(n.key!==`Escape`)return;let r=!1;a.forEach(e=>{o(e,{focus:!0})&&(r=!0)}),!r&&!t.matches&&e?.open&&(e.open=!1,e.querySelector(`summary`)?.focus())});</script><main id="main-content" class="container" tabindex="-1"><header class="page-title"><h1>modern-ucas-thesis</h1></header><article class="prose"><h1 align="center">modern-ucas-thesis</h1>
+<p align="center">
+  <img src="https://img.shields.io/badge/status-beta-blue?style=flat-square" alt="Project Status">
+  <img src="https://img.shields.io/github/last-commit/Vncntvx/modern-ucas-thesis?style=flat-square" alt="Last Commit">
+  <img src="https://img.shields.io/github/issues/Vncntvx/modern-ucas-thesis?style=flat-square" alt="Issues">
+  <img src="https://img.shields.io/github/license/Vncntvx/modern-ucas-thesis?style=flat-square" alt="License">
+</p>
+<p>A <a href="https://typst.app/">Typst</a>-based thesis template for the University of Chinese Academy of Sciences (UCAS), following the <em>UCAS Graduate Thesis Writing Guidelines (2022)</em> and the <em>UCAS Undergraduate Thesis (Design) Writing Guidelines (2023-10 revision)</em>.</p>
+<blockquote>
+<p>⚠️ <strong>Disclaimer</strong>: This project is not officially produced. Verify the latest format requirements from the university before use.</p>
+</blockquote>
+<hr>
+<h2 id="quick-start">Quick Start</h2>
+<h3 id="1-install-typst">1. Install Typst</h3>
+<pre class="astro-code astro-code-themes github-light-default github-dark-default" style="background-color:#ffffff;--shiki-dark-bg:#0d1117;color:#1f2328;--shiki-dark:#e6edf3; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6E7781;--shiki-dark:#8B949E"># macOS</span></span>
+<span class="line"><span style="color:#953800;--shiki-dark:#FFA657">brew</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> install</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> typst</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6E7781;--shiki-dark:#8B949E"># Windows</span></span>
+<span class="line"><span style="color:#953800;--shiki-dark:#FFA657">winget</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> install</span><span style="color:#0550AE;--shiki-dark:#79C0FF"> --id</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> Typst.Typst</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6E7781;--shiki-dark:#8B949E"># Or use the official installation script</span></span>
+<span class="line"><span style="color:#953800;--shiki-dark:#FFA657">curl</span><span style="color:#0550AE;--shiki-dark:#79C0FF"> -fsSL</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> https://typst.community/install</span><span style="color:#CF222E;--shiki-dark:#FF7B72"> |</span><span style="color:#953800;--shiki-dark:#FFA657"> sh</span></span></code></pre>
+<h3 id="2-use-the-project">2. Use the Project</h3>
+<pre class="astro-code astro-code-themes github-light-default github-dark-default" style="background-color:#ffffff;--shiki-dark-bg:#0d1117;color:#1f2328;--shiki-dark:#e6edf3; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6E7781;--shiki-dark:#8B949E"># Clone the repository</span></span>
+<span class="line"><span style="color:#953800;--shiki-dark:#FFA657">git</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> clone</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> https://github.com/Vncntvx/modern-ucas-thesis.git</span></span>
+<span class="line"><span style="color:#0550AE;--shiki-dark:#79C0FF">cd</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> modern-ucas-thesis</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6E7781;--shiki-dark:#8B949E"># Compile the thesis</span></span>
+<span class="line"><span style="color:#953800;--shiki-dark:#FFA657">typst</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> compile</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> template/thesis.typ</span><span style="color:#0550AE;--shiki-dark:#79C0FF"> --root</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> .</span><span style="color:#0550AE;--shiki-dark:#79C0FF"> --font-path</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> fonts</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6E7781;--shiki-dark:#8B949E"># Compile the research proposal (shared entry for bachelor/master; see template/proposal.typ)</span></span>
+<span class="line"><span style="color:#953800;--shiki-dark:#FFA657">typst</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> compile</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> template/proposal.typ</span><span style="color:#0550AE;--shiki-dark:#79C0FF"> --root</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> .</span><span style="color:#0550AE;--shiki-dark:#79C0FF"> --font-path</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> fonts</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6E7781;--shiki-dark:#8B949E"># Or enable live preview</span></span>
+<span class="line"><span style="color:#953800;--shiki-dark:#FFA657">typst</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> watch</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> template/thesis.typ</span><span style="color:#0550AE;--shiki-dark:#79C0FF"> --root</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> .</span><span style="color:#0550AE;--shiki-dark:#79C0FF"> --font-path</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> fonts</span></span></code></pre>
+<h3 id="3-configure-thesis-information">3. Configure Thesis Information</h3>
+<p>Edit <code>template/thesis.typ</code>:</p>
+<pre class="astro-code astro-code-themes github-light-default github-dark-default" style="background-color:#ffffff;--shiki-dark-bg:#0d1117;color:#1f2328;--shiki-dark:#e6edf3; overflow-x: auto;" tabindex="0" data-language="typst"><code><span class="line"><span style="color:#CF222E;--shiki-dark:#FF7B72">#import</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> "../lib.typ"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">: documentclass</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#CF222E;--shiki-dark:#FF7B72">#let</span><span style="color:#1F2328;--shiki-dark:#E6EDF3"> (</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">  doc, preface, mainmatter, appendix,</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">  cover, decl-page, abstract, abstract-en,</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">  outline-page, list-of-figures-and-tables, notation,</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">  bilingual-bibliography, acknowledgement, backmatter,</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">  bifigure, bitable, continued-table, auto-table, aligned-equation,</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">) </span><span style="color:#CF222E;--shiki-dark:#FF7B72">= </span><span style="color:#8250DF;--shiki-dark:#D2A8FF">documentclass</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">(</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">  doctype: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"doctor"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">,       </span><span style="color:#6E7781;--shiki-dark:#8B949E">// "bachelor" | "master" | "doctor"</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">  degree: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"academic"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">,      </span><span style="color:#6E7781;--shiki-dark:#8B949E">// "academic" | "professional"</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">  anonymous: </span><span style="color:#0550AE;--shiki-dark:#79C0FF">false</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">,        </span><span style="color:#6E7781;--shiki-dark:#8B949E">// Blind-review mode</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">  twoside: </span><span style="color:#0550AE;--shiki-dark:#79C0FF">true</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">,           </span><span style="color:#6E7781;--shiki-dark:#8B949E">// Double-sided printing mode</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">  fontset: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"mac"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">,          </span><span style="color:#6E7781;--shiki-dark:#8B949E">// "windows" | "mac" | "fandol" | "adobe"</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">  info: (</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">    title: (</span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"Thesis Title"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">, </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"Optional Subtitle"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">),</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">    title-en: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"Thesis Title"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">    author: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"San Zhang"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">    author-en: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"Zhang San"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#6E7781;--shiki-dark:#8B949E">    // Supervisors: a list of dicts (name:, title:, affiliation:); the first supervisor comes first</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">    supervisors: (</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">      (name: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"Si Li"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">, title: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"Professor"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">, affiliation: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"Institute of XXX, Chinese Academy of Sciences"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">),</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">      (name: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"Wu Wang"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">, title: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"Professor"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">, affiliation: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"Institute of XXX, Chinese Academy of Sciences"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">),</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">    ),</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">    supervisors-en: (</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">      (name: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"Si Li"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">, title: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"Professor"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">, affiliation: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"Institute of XXX, Chinese Academy of Sciences"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">),</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">      (name: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"Wu Wang"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">, title: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"Professor"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">, affiliation: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"Institute of XXX, Chinese Academy of Sciences"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">),</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">    ),</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">    department: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"Institute of XXX, Chinese Academy of Sciences"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">    major: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"Management Science and Engineering"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">    category: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"Doctor of Management"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">    submit-date: </span><span style="color:#8250DF;--shiki-dark:#D2A8FF">datetime</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">(year: </span><span style="color:#0550AE;--shiki-dark:#79C0FF">2024</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">, month: </span><span style="color:#0550AE;--shiki-dark:#79C0FF">6</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">, day: </span><span style="color:#0550AE;--shiki-dark:#79C0FF">1</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">),</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">  ),</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">  bibliography: bibliography</span><span style="color:#CF222E;--shiki-dark:#FF7B72">.</span><span style="color:#8250DF;--shiki-dark:#D2A8FF">with</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">(</span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"ref.bib"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">),</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#CF222E;--shiki-dark:#FF7B72">#show</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">: doc</span></span>
+<span class="line"><span style="color:#8250DF;--shiki-dark:#D2A8FF">#cover</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#8250DF;--shiki-dark:#D2A8FF">#decl-page</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#CF222E;--shiki-dark:#FF7B72">#show</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">: preface</span></span>
+<span class="line"><span style="color:#6E7781;--shiki-dark:#8B949E">// Abstract, outline, notation list, ...</span></span>
+<span class="line"><span style="color:#CF222E;--shiki-dark:#FF7B72">#show</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">: mainmatter</span></span>
+<span class="line"><span style="color:#6E7781;--shiki-dark:#8B949E">// Main text, ...</span></span></code></pre>
+<hr>
+<h2 id="project-structure">Project Structure</h2>
+<pre class="astro-code astro-code-themes github-light-default github-dark-default" style="background-color:#ffffff;--shiki-dark-bg:#0d1117;color:#1f2328;--shiki-dark:#e6edf3; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>modern-ucas-thesis/</span></span>
+<span class="line"><span>├── template/              # Thesis and research proposal sources (template entry)</span></span>
+<span class="line"><span>│   ├── thesis.typ        # Thesis main file</span></span>
+<span class="line"><span>│   ├── proposal.typ      # Research-proposal main file</span></span>
+<span class="line"><span>│   ├── ref.bib           # Bibliography (shared by the thesis and the proposal)</span></span>
+<span class="line"><span>│   └── images/           # Image directory</span></span>
+<span class="line"><span>├── pages/                # Page implementations (cover, declaration, abstract, outline, proposal, etc.)</span></span>
+<span class="line"><span>├── layouts/              # Page-level layouts (doc / preface / mainmatter / appendix)</span></span>
+<span class="line"><span>├── utils/                # Reusable utilities (bilingual figures/tables, continued tables, aligned equations, fonts, numbering, etc.)</span></span>
+<span class="line"><span>├── assets/               # Static assets (UCAS visual identity, etc.)</span></span>
+<span class="line"><span>├── fonts/                # Font directory (place font files yourself; see fonts/README.md)</span></span>
+<span class="line"><span>├── docs/                 # Documentation (guideline texts, customization guide, FAQ, etc.)</span></span>
+<span class="line"><span>├── lib.typ               # Main library entry (documentclass / proposalclass closure factories)</span></span>
+<span class="line"><span>├── typst.toml            # Typst package manifest</span></span>
+<span class="line"><span>└── Makefile              # Formatting and check scripts</span></span></code></pre>
+<hr>
+<h2 id="features">Features</h2>
+<blockquote>
+<p>Implementation status is checked item by item against <em>UCAS Graduate Thesis Writing Guidelines (2022)</em> in <code>docs/RULES-GRAD.md</code>. Status legend: ✅ Completed | 🟡 Partial / needs polish | ❌ Not started | ➖ Not required by the guidelines.</p>
+</blockquote>
+<h3 id="document-configuration">Document Configuration</h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Status</th>
+<th>Guideline basis / notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Global configuration (document type, degree type, fonts, etc.)</td>
+<td>✅</td>
+<td>Injected through the <code>documentclass</code> closure factory</td>
+</tr>
+<tr>
+<td>Blind-review mode</td>
+<td>✅</td>
+<td><code>anonymous: true</code> automatically hides author/supervisor and related fields</td>
+</tr>
+<tr>
+<td>Double-sided printing mode</td>
+<td>✅</td>
+<td><code>twoside: true</code> inserts blank pages so every part starts on an odd page</td>
+</tr>
+</tbody>
+</table>
+<h3 id="cover-and-front-matter">Cover and Front Matter</h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Status</th>
+<th>Guideline basis / notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Graduate cover (Chinese/English; master/doctor)</td>
+<td>✅</td>
+<td>Title in Heiti 小三 bold, fields in Songti 四号 bold with double line spacing, date in Times New Roman 四号 bold</td>
+</tr>
+<tr>
+<td>Undergraduate cover</td>
+<td>✅</td>
+<td>Implemented in <code>bachelor-cover.typ</code>, dispatched by <code>doctype</code></td>
+</tr>
+<tr>
+<td>Spine</td>
+<td>🟡</td>
+<td>Required by the guidelines: Heiti 小四; top = title, middle = author, bottom = “University of Chinese Academy of Sciences”; 3 cm from the top and bottom edges</td>
+</tr>
+<tr>
+<td>Originality statement and authorization</td>
+<td>✅</td>
+<td>Implemented for both graduate and undergraduate (unified statement template, sample 3)</td>
+</tr>
+<tr>
+<td>Chinese abstract (with keywords)</td>
+<td>✅</td>
+<td>“摘　要” with a blank character between the two characters; Heiti 四号 bold centered; 3–5 keywords separated by Chinese commas</td>
+</tr>
+<tr>
+<td>English abstract (with keywords)</td>
+<td>✅</td>
+<td>“Key Words” bold, initial capitals, English commas</td>
+</tr>
+<tr>
+<td>Table of contents</td>
+<td>✅</td>
+<td>Indented to level 3 (level 1 flush, level 2 one character, level 3 two characters), page numbers right-aligned</td>
+</tr>
+<tr>
+<td>List of figures and tables</td>
+<td>✅</td>
+<td>Figures first, then tables; placed after the TOC on a new page</td>
+</tr>
+<tr>
+<td>Notation list (terms and symbols)</td>
+<td>✅</td>
+<td>Placed after the TOC and before the main text, on a new page</td>
+</tr>
+</tbody>
+</table>
+<h3 id="main-text-typesetting">Main Text Typesetting</h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Status</th>
+<th>Guideline basis / notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Chapter heading numbering</td>
+<td>✅</td>
+<td>Arabic numerals to level 3 (at most level 4); chapters centered as “第1章”, subsections flush left as “1.1 / 1.1.1”</td>
+</tr>
+<tr>
+<td>Headers</td>
+<td>✅</td>
+<td>Odd pages = current chapter/part name, even pages = thesis title; Songti 小五 centered with a rule below</td>
+</tr>
+<tr>
+<td>Page numbering</td>
+<td>✅</td>
+<td>Front matter in centered uppercase Roman numerals; main text defaults to <code>twoside: true</code>, odd pages bottom-right and even pages bottom-left, centered when single-sided</td>
+</tr>
+<tr>
+<td>Footnotes</td>
+<td>✅</td>
+<td>五号 Songti, counter resets at chapter/part starts</td>
+</tr>
+<tr>
+<td>Endnotes</td>
+<td>➖</td>
+<td>Not required by the guidelines</td>
+</tr>
+<tr>
+<td>Cross-references (figures/tables/equations/sections)</td>
+<td>✅</td>
+<td>Unified prefixes: <code>@fig:</code> / <code>@tbl:</code> / <code>@eqt:</code></td>
+</tr>
+<tr>
+<td>Paragraph format</td>
+<td>✅</td>
+<td>小四 Songti, 1.25× line spacing, 2-character first-line indent, justified</td>
+</tr>
+<tr>
+<td>Code block syntax highlighting</td>
+<td>✅</td>
+<td>Native Typst raw block support</td>
+</tr>
+</tbody>
+</table>
+<h3 id="figures-and-tables">Figures and Tables</h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Status</th>
+<th>Guideline basis / notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bilingual figure/table captions</td>
+<td>✅</td>
+<td>Figure captions below the figure, table captions above the table; 五号 Songti bold centered, 1.25× line spacing</td>
+</tr>
+<tr>
+<td>Figure/table notes</td>
+<td>✅</td>
+<td>“注：” bold, left-indented 2 characters, continuation lines aligned</td>
+</tr>
+<tr>
+<td>Chapter-based figure/table numbering</td>
+<td>✅</td>
+<td>In the form <code>图1-1</code>, <code>表3-2</code>, numbered continuously within each chapter</td>
+</tr>
+<tr>
+<td>Automatic continued tables (long tables spanning pages)</td>
+<td>✅</td>
+<td><code>auto-table</code> breaks pages proactively, repeats the header, and labels “续表”/“(continued)”</td>
+</tr>
+<tr>
+<td>Manual continued tables</td>
+<td>✅</td>
+<td><code>continued-table</code> must be used together with the source table label</td>
+</tr>
+<tr>
+<td>Appendix figure/table numbering</td>
+<td>✅</td>
+<td>Reuses the main-text numbering form (<code>1-1</code>), matching the guideline clause that appendix figures/tables follow main-text numbering</td>
+</tr>
+<tr>
+<td>Three-line tables</td>
+<td>✅</td>
+<td><code>auto-table</code> defaults to three-line tables; <code>table</code>/<code>bitable</code> can write them by hand with <code>table.hline()</code></td>
+</tr>
+<tr>
+<td>Landscape tables</td>
+<td>✅</td>
+<td><code>bitable</code>/<code>bifigure</code>/<code>auto-table</code> support <code>landscape: true</code>, rotated 90° counterclockwise, oriented “top-left, bottom-right”</td>
+</tr>
+<tr>
+<td>Map approval-number note helper</td>
+<td>🟡</td>
+<td>The guidelines require border maps to note “审图号 GS(2021)××××号”; the user must add it manually</td>
+</tr>
+</tbody>
+</table>
+<h3 id="equations-and-math">Equations and Math</h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Status</th>
+<th>Guideline basis / notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Display equation numbering</td>
+<td>✅</td>
+<td>Number inside parentheses, right-aligned</td>
+</tr>
+<tr>
+<td>Multi-line equation alignment and numbering</td>
+<td>✅</td>
+<td><code>aligned-equation</code> aligns the number to the right of the last line</td>
+</tr>
+<tr>
+<td>Chapter-based equation numbering</td>
+<td>✅</td>
+<td>In the form <code>(3-1)</code>, numbered continuously within each chapter</td>
+</tr>
+<tr>
+<td>Unnumbered equations</td>
+<td>✅</td>
+<td>Tagged with <code>&lt;-&gt;</code></td>
+</tr>
+<tr>
+<td>Appendix equation numbering</td>
+<td>✅</td>
+<td>In the form <code>(1-1)</code>, reusing the main-text numbering form</td>
+</tr>
+<tr>
+<td>Long equation line breaks</td>
+<td>✅</td>
+<td>Break after <code>+ - × ÷ &lt; &gt;</code> and similar operators (native Typst support)</td>
+</tr>
+<tr>
+<td>Theorem/lemma/proof environments</td>
+<td>➖</td>
+<td>Not required by the guidelines</td>
+</tr>
+</tbody>
+</table>
+<h3 id="references">References</h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Status</th>
+<th>Guideline basis / notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bilingual bibliography title</td>
+<td>✅</td>
+<td>Chinese “参考文献”; the English title is handled automatically</td>
+</tr>
+<tr>
+<td>GB/T 7714-2015 (numeric)</td>
+<td>✅</td>
+<td>Default <code>gb-7714-2015-numeric</code></td>
+</tr>
+<tr>
+<td>GB/T 7714-2015 (author–date)</td>
+<td>🟡</td>
+<td>Switchable via <code>style: "gb-7714-2015-author-date"</code>, but no default configuration or style validation is provided</td>
+</tr>
+<tr>
+<td>Automatic Chinese/English entry conversion</td>
+<td>✅</td>
+<td>Detects the language of an entry and converts terms such as 等/卷/册/译/版</td>
+</tr>
+<tr>
+<td>Citations and cross-references</td>
+<td>✅</td>
+<td><code>@citekey</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="appendix-and-back-matter">Appendix and Back Matter</h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Status</th>
+<th>Guideline basis / notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Appendix chapters</td>
+<td>✅</td>
+<td>Level-1 headings unnumbered, subsections <code>1.1</code>, figures/tables <code>1-1</code>, equations <code>(1-1)</code></td>
+</tr>
+<tr>
+<td>Acknowledgements</td>
+<td>✅</td>
+<td>A blank character between 致 and 谢 in the title; a date at the end matching the cover</td>
+</tr>
+<tr>
+<td>Author biography and academic achievements</td>
+<td>✅</td>
+<td>Education/work history, paper list (in the same format as references), patents, projects, and awards</td>
+</tr>
+<tr>
+<td>Degree-category bilingual table</td>
+<td>🟡</td>
+<td>Attachment 2 of the guidelines; present only as an example table in <code>thesis.typ</code>, not extracted into a reusable component</td>
+</tr>
+</tbody>
+</table>
+<h3 id="fonts-and-typesetting">Fonts and Typesetting</h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Status</th>
+<th>Guideline basis / notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Predefined font sets</td>
+<td>✅</td>
+<td>Four sets — <code>windows</code> / <code>mac</code> / <code>fandol</code> / <code>adobe</code> — covering Song/Hei/Kai/FangSong/monospace</td>
+</tr>
+<tr>
+<td>Custom font configuration</td>
+<td>✅</td>
+<td>The <code>fonts</code> parameter overrides individual <code>fontset</code> entries</td>
+</tr>
+<tr>
+<td>Chinese–Western mixed typography</td>
+<td>✅</td>
+<td>Chinese Songti/Heiti etc. plus English Times New Roman</td>
+</tr>
+<tr>
+<td>CJK faux bold</td>
+<td>✅</td>
+<td>Enabled through <code>@preview/cuti:0.4.0</code> for non-fandol font sets</td>
+</tr>
+</tbody>
+</table>
+<h3 id="other-document-types">Other Document Types</h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Status</th>
+<th>Guideline basis / notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Undergraduate research proposal</td>
+<td>✅</td>
+<td><code>template/proposal.typ</code> with <code>proposalclass(doctype: "bachelor")</code>; layout currently matches the graduate version</td>
+</tr>
+<tr>
+<td>Graduate research proposal</td>
+<td>✅</td>
+<td><code>template/proposal.typ</code> with <code>proposalclass(doctype: "master")</code>; styles live in <code>pages/proposal.typ</code></td>
+</tr>
+<tr>
+<td>Proposal heading numbering and indent</td>
+<td>✅</td>
+<td>Headings <code>1.</code> / <code>1.1.</code> / <code>1.1.2</code>, body first-line indent 2em</td>
+</tr>
+<tr>
+<td>Proposal bibliography</td>
+<td>✅</td>
+<td>Shares <code>bilingual-bibliography</code> and <code>template/ref.bib</code> with the thesis</td>
+</tr>
+<tr>
+<td>Proposal supervisor field</td>
+<td>✅</td>
+<td>Required: provide exactly one of <code>supervisors-full</code> or <code>supervisors-split</code>; providing both or neither is a compile error</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="documentation">Documentation</h2>
+<ul>
+<li><a href="https://github.com/Vncntvx/modern-ucas-thesis/blob/main/docs/RULES-GRAD.md">Graduate Writing Guidelines (Chinese)</a> (<em>UCAS Graduate Thesis Writing Guidelines</em>, 2022)</li>
+<li><a href="https://github.com/Vncntvx/modern-ucas-thesis/blob/main/docs/RULES-BACHELOR.md">Undergraduate Writing Guidelines (Chinese)</a> (<em>UCAS Undergraduate Thesis (Design) Writing Guidelines</em>, 2023-10 revision)</li>
+<li><a href="https://github.com/Vncntvx/modern-ucas-thesis/blob/main/docs/CUSTOMIZE.md">Customization Guide</a></li>
+<li><a href="https://github.com/Vncntvx/modern-ucas-thesis/blob/main/docs/FAQ.md">FAQ</a></li>
+<li><a href="https://github.com/Vncntvx/modern-ucas-thesis/blob/main/docs/FORMAT.md">Formatting Tools</a></li>
+<li><a href="https://github.com/Vncntvx/modern-ucas-thesis/blob/main/docs/LOGO_COPYRIGHT.md">UCAS Logo Copyright</a></li>
+</ul>
+<hr>
+<h2 id="development">Development</h2>
+<pre class="astro-code astro-code-themes github-light-default github-dark-default" style="background-color:#ffffff;--shiki-dark-bg:#0d1117;color:#1f2328;--shiki-dark:#e6edf3; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6E7781;--shiki-dark:#8B949E"># Format code (requires typstyle)</span></span>
+<span class="line"><span style="color:#953800;--shiki-dark:#FFA657">make</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> format</span><span style="color:#6E7781;--shiki-dark:#8B949E">           # Format all .typ files</span></span>
+<span class="line"><span style="color:#953800;--shiki-dark:#FFA657">make</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> format-check</span><span style="color:#6E7781;--shiki-dark:#8B949E">     # Check only, no writes; the CI gate</span></span>
+<span class="line"><span style="color:#953800;--shiki-dark:#FFA657">make</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> lint-quick</span><span style="color:#6E7781;--shiki-dark:#8B949E">       # Check typst.toml fields and the entry point; no external index</span></span></code></pre>
+<hr>
+<h2 id="acknowledgements">Acknowledgements</h2>
+<ul>
+<li>Built on <a href="https://github.com/nju-lug/modern-nju-thesis">modern-nju-thesis</a></li>
+<li>References the <a href="https://github.com/mohuangrui/ucasthesis">ucasthesis</a> LaTeX template</li>
+</ul>
+<hr>
+<h2 id="license">License</h2>
+<p>The code of this project is open-sourced under the <a href="https://github.com/Vncntvx/modern-ucas-thesis/blob/main/LICENSE">MIT</a> License.</p>
+<p><strong>About the UCAS logo</strong>: The visual identity elements in the <code>assets/vi/</code> directory, including the university emblem and logo, are copyrighted by the University of Chinese Academy of Sciences. They are included in this project solely for the convenience of users writing degree theses (within the scope of personal learning/teaching fair use). Do not use them for other commercial or official purposes. For commercial licensing, contact the relevant university departments. See <a href="https://github.com/Vncntvx/modern-ucas-thesis/blob/main/docs/LOGO_COPYRIGHT.md">LOGO_COPYRIGHT.md</a> for details.</p>
+<hr>
+<p align="center">
+  <a href="https://github.com/Vncntvx/modern-ucas-thesis/issues">Report Issues</a> ·
+  <a href="https://github.com/Vncntvx/modern-ucas-thesis/discussions">Discussions</a> ·
+  <a href="https://github.com/Vncntvx/modern-ucas-thesis/pulls">Contribute</a>
+</p>
+</article><div class="comments" data-comment-language="en" data-comment-title="modern-ucas-thesis | Wenjie Xu"></div><script type="module">document.querySelectorAll(`.comments`).forEach(e=>{let t=document.createElement(`script`),n={src:`https://giscus.app/client.js`,"data-repo":`Vncntvx/BlogComments`,"data-repo-id":`R_kgDOMFTH3A`,"data-category":`Announcements`,"data-category-id":`DIC_kwDOMFTH3M4Cf4dF`,"data-mapping":`specific`,"data-term":e.dataset.commentTitle??``,"data-strict":`1`,"data-reactions-enabled":`1`,"data-emit-metadata":`0`,"data-input-position":`bottom`,"data-theme":document.documentElement.dataset.theme??`light`,"data-lang":e.dataset.commentLanguage??`en`,crossorigin:`anonymous`,async:`true`};Object.entries(n).forEach(([e,n])=>t.setAttribute(e,n)),e.append(t),document.addEventListener(`theme-change`,()=>{e.querySelector(`iframe.giscus-frame`)?.contentWindow?.postMessage({giscus:{setConfig:{theme:document.documentElement.dataset.theme??`light`}}},`https://giscus.app`)})});</script></main><footer class="site-footer"><div class="container footer-inner"><span>© 2023–2026 Wenjie Xu</span><span>All rights reserved</span><span>Powered by <a href="https://astro.build/">Astro</a></span><span>Last updated <time datetime="2025-12-01T00:00:00.000Z">Dec 1, 2025</time></span><a href="#top">Back to top</a></div></footer></div></body></html>

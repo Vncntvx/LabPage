@@ -1,0 +1,188 @@
+<!DOCTYPE html><html lang="en" id="top"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="generator" content="Astro v7.3.8"><meta name="description" content="A standardized, flexible template for scientific research projects supporting reproducible computing, uv, and Julia."><meta name="author" content="Wenjie Xu"><link rel="canonical" href="https://lab.wenjiexu.site/projects/cookiecutter-scientific-research/"><link rel="alternate" hreflang="en" href="https://lab.wenjiexu.site/projects/cookiecutter-scientific-research/"><link rel="alternate" hreflang="zh-CN" href="https://lab.wenjiexu.site/zh-CN/projects/cookiecutter-scientific-research/"><link rel="alternate" hreflang="x-default" href="https://lab.wenjiexu.site/projects/cookiecutter-scientific-research/"><link rel="alternate" type="application/rss+xml" title="Wenjie Xu — News" href="https://lab.wenjiexu.site/feed.xml"><link rel="icon" href="/assets/img/favicon.ico"><link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png"><meta property="og:title" content="cookiecutter-scientific-research | Wenjie Xu"><meta property="og:site_name" content="Wenjie Xu"><meta property="og:description" content="A standardized, flexible template for scientific research projects supporting reproducible computing, uv, and Julia."><meta property="og:url" content="https://lab.wenjiexu.site/projects/cookiecutter-scientific-research/"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:image" content="https://lab.wenjiexu.site/assets/img/og-en.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="cookiecutter-scientific-research | Wenjie Xu"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="cookiecutter-scientific-research | Wenjie Xu"><meta name="twitter:description" content="A standardized, flexible template for scientific research projects supporting reproducible computing, uv, and Julia."><meta name="twitter:image" content="https://lab.wenjiexu.site/assets/img/og-en.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"cookiecutter-scientific-research","description":"A standardized, flexible template for scientific research projects supporting reproducible computing, uv, and Julia.","url":"https://lab.wenjiexu.site/projects/cookiecutter-scientific-research/","inLanguage":"en","image":"https://lab.wenjiexu.site/assets/img/og-en.png","author":{"@type":"Person","name":"Wenjie Xu","url":"https://lab.wenjiexu.site/","sameAs":["https://github.com/Vncntvx","https://orcid.org/0000-0002-7778-0450","https://scholar.google.com/citations?user=eWTidmsAAAAJ","https://www.researchgate.net/profile/Wenjie-Xu-19"]}}</script><title>cookiecutter-scientific-research | Wenjie Xu</title><script>
+  (() => {
+    const root = document.documentElement;
+    const media = matchMedia("(prefers-color-scheme: dark)");
+    let preference = "system";
+    try {
+      const saved = localStorage.getItem("theme");
+      if (["light", "dark", "system"].includes(saved)) preference = saved;
+    } catch {}
+    const apply = () => {
+      const transitioning = root.dataset.theme !== undefined;
+      if (transitioning) {
+        root.classList.add("theme-transition");
+        window.setTimeout(() => root.classList.remove("theme-transition"), 250);
+      }
+      root.dataset.themeSetting = preference;
+      root.dataset.theme = preference === "system" ? (media.matches ? "dark" : "light") : preference;
+      document.dispatchEvent(new Event("theme-change"));
+    };
+    apply();
+    media.addEventListener("change", apply);
+    window.addEventListener("storage", (event) => {
+      if (event.key === "theme") {
+        preference = ["light", "dark"].includes(event.newValue) ? event.newValue : "system";
+        apply();
+      }
+    });
+    document.addEventListener("theme-request", (event) => {
+      const requested = event instanceof CustomEvent ? event.detail : "system";
+      preference = ["light", "dark", "system"].includes(requested) ? requested : "system";
+      try {
+        localStorage.setItem("theme", preference);
+      } catch {}
+      apply();
+    });
+  })();
+</script><link rel="stylesheet" href="/_astro/BaseLayout.DdgeAcCT.css"></head><body><a class="skip-link" href="#main-content">Skip to content</a><div class="page-shell"><header class="site-header"><div class="container header-inner"><a class="site-name" href="/">Wenjie Xu</a><details class="navigation" open><summary class="nav-toggle" aria-label="Toggle navigation"><span class="sr-only">Toggle navigation</span><svg class="nav-toggle-icon icon-menu" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg><svg class="nav-toggle-icon icon-close" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg></summary><nav aria-label="Primary navigation"><a href="/">About</a><a href="/publications/">Publications</a><a href="/projects/">Projects</a><a href="/teaching/">Teaching</a><div class="nav-dropdown" data-nav-dropdown><button type="button" class="nav-dropdown-toggle" aria-haspopup="menu" aria-expanded="false"><span>More</span><svg class="dropdown-caret" viewBox="0 0 10 6" aria-hidden="true" focusable="false"><path d="m1 1 4 4 4-4"></path></svg></button><ul class="nav-dropdown-menu" hidden><li><a href="/cv/">CV</a></li></ul></div><button class="search-button" type="button" data-search-open aria-label="Search" title="Search"><svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m16 16 5 5"></path></svg><span class="search-label">Search</span></button><div class="header-controls"><div class="language-switcher" data-language-switcher><button class="language-toggle" type="button" aria-label="Language" aria-haspopup="menu" aria-expanded="false"><svg class="control-icon lang-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3a14 14 0 0 1 0 18"></path><path d="M12 3a14 14 0 0 0 0 18"></path></svg><span class="language-label">English</span></button><ul class="language-menu" hidden><li><a href="/projects/cookiecutter-scientific-research/" lang="en" hreflang="en" aria-current="true">English</a></li><li><a href="/zh-CN/projects/cookiecutter-scientific-research/" lang="zh-CN" hreflang="zh-CN">中文</a></li></ul></div><script type="module">var e=document.querySelector(`[data-language-switcher]`),t=e?.querySelector(`.language-toggle`),n=e?.querySelector(`.language-menu`),r=r=>{e&&t&&n&&(e.dataset.open=r?`true`:`false`,t.setAttribute(`aria-expanded`,String(r)),n.hidden=!r)};t?.addEventListener(`click`,()=>r(e?.dataset.open!==`true`)),document.addEventListener(`click`,t=>{e?.dataset.open===`true`&&t.target instanceof Node&&!e.contains(t.target)&&r(!1)}),document.addEventListener(`keydown`,n=>{n.key===`Escape`&&e?.dataset.open===`true`&&(r(!1),t?.focus())}),window.addEventListener(`resize`,()=>{e?.dataset.open===`true`&&r(!1)}),document.querySelectorAll(`.language-menu a`).forEach(e=>{e.addEventListener(`click`,()=>{e.hash=window.location.hash,e.search=window.location.search})});</script><button class="theme-control" type="button" data-theme-button hidden aria-label="Change theme" title="Change theme"><svg class="control-icon theme-icon" data-theme-icon="light" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"></path></svg><svg class="control-icon theme-icon" data-theme-icon="dark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446A9 9 0 1 1 12 3z"></path></svg><span class="theme-label">Change theme</span></button><script type="module">var e=document.querySelector(`[data-theme-button]`),t=()=>{e&&(e.dataset.themeSetting=document.documentElement.dataset.themeSetting??`system`)};e?.addEventListener(`click`,()=>{e.classList.remove(`switching`),e.offsetWidth,e.classList.add(`switching`);let t=document.documentElement.dataset.theme??`light`;document.dispatchEvent(new CustomEvent(`theme-request`,{detail:t===`dark`?`light`:`dark`}))}),t(),e&&(e.hidden=!1),document.addEventListener(`theme-change`,t);</script></div></nav></details></div><progress class="reading-progress" data-reading-progress max="100" value="0" aria-label="Reading progress"></progress><dialog class="search-dialog" data-search-dialog data-locale="en" aria-labelledby="search-title"><div class="search-dialog-inner"><header class="search-dialog-header"><h2 id="search-title">Type to start searching</h2><button class="dialog-close" type="button" data-search-close aria-label="to close"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m6 6 12 12M18 6 6 18"></path></svg></button></header><label class="search-input-label"><span class="sr-only">Type to start searching</span><svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m16 16 5 5"></path></svg><input type="search" data-site-search-input autocomplete="off" placeholder="Type to start searching"><kbd>Esc</kbd></label><p class="search-result-status" data-search-status data-count-one="{count} result" data-count-other="{count} results" data-count-locale="en" data-load-failed="Search index could not be loaded." aria-live="polite"></p><div class="search-results-shell"><ul class="search-results" data-search-results role="listbox" aria-label="Type to start searching"></ul><p class="empty-state" data-search-empty="true" hidden>No matching results.</p></div><footer class="search-dialog-footer" aria-label="Type to start searching"><span><kbd>↵</kbd>to select</span><span><kbd>↑</kbd><kbd>↓</kbd>to navigate</span><span><kbd>Esc</kbd>to close</span></footer></div></dialog><script type="module" src="/_astro/SearchModal.astro_astro_type_script_index_0_lang.CgoGCpiw.js"></script></header><script type="module">var e=document.querySelector(`.navigation`),t=matchMedia(`(min-width: 768px)`),n=()=>{e&&(e.open=t.matches)};n(),t.addEventListener(`change`,n);var r=document.querySelector(`[data-reading-progress]`),i=()=>{if(!r)return;let e=document.documentElement.scrollHeight-window.innerHeight;r.value=e>0?window.scrollY/e*100:0};i(),window.addEventListener(`scroll`,i,{passive:!0}),window.addEventListener(`resize`,i);var a=document.querySelectorAll(`[data-nav-dropdown]`),o=(e,{focus:t=!1}={})=>{if(e.dataset.open!==`true`)return!1;let n=e.querySelector(`.nav-dropdown-toggle`),r=e.querySelector(`.nav-dropdown-menu`);return e.dataset.open=`false`,n?.setAttribute(`aria-expanded`,`false`),r&&(r.hidden=!0),t&&n?.focus(),!0};a.forEach(e=>{let n=e.querySelector(`.nav-dropdown-toggle`),r=e.querySelector(`.nav-dropdown-menu`),i,a=t=>{i&&=(window.clearTimeout(i),void 0),e.dataset.open=t?`true`:`false`,n?.setAttribute(`aria-expanded`,String(t)),r&&(r.hidden=!t)};n?.addEventListener(`click`,t=>{t.stopPropagation(),a(e.dataset.open!==`true`)}),e.addEventListener(`mouseenter`,()=>{t.matches&&a(!0)}),e.addEventListener(`mouseleave`,()=>{t.matches&&(i=window.setTimeout(()=>a(!1),150))})}),document.addEventListener(`click`,n=>{a.forEach(e=>{n.target instanceof Node&&!e.contains(n.target)&&o(e)}),!t.matches&&e?.open&&n.target instanceof Node&&!e.contains(n.target)&&(e.open=!1)}),window.addEventListener(`resize`,()=>{a.forEach(e=>o(e))}),document.addEventListener(`keydown`,n=>{if(n.key!==`Escape`)return;let r=!1;a.forEach(e=>{o(e,{focus:!0})&&(r=!0)}),!r&&!t.matches&&e?.open&&(e.open=!1,e.querySelector(`summary`)?.focus())});</script><main id="main-content" class="container" tabindex="-1"><header class="page-title"><h1>cookiecutter-scientific-research</h1></header><article class="prose"><h1 id="-cookiecutter-scientific-research">🧪 Cookiecutter Scientific Research</h1>
+<p align="center">
+  <strong>A standardized, flexible template for scientific research projects</strong>
+</p>
+<p align="center">
+  <a href="#project-overview">Project Overview</a> •
+  <a href="#features">Features</a> •
+  <a href="#quick-start">Quick Start</a> •
+  <a href="#project-structure">Project Structure</a> •
+  <a href="#development-guide">Development Guide</a> •
+  <a href="#acknowledgements">Acknowledgements</a> •
+  <a href="#license">License</a>
+</p>
+<p><a id="project-overview"></a></p>
+<h2 id="-project-overview">📋 Project Overview</h2>
+<p>Cookiecutter Scientific Research is a project template generator designed for scientific research projects, aimed at providing a standardized structure and tool configuration to help researchers focus on scientific discovery rather than project setup. Through predefined best practices, this template supports high-quality scientific computing and data analysis workflows, ensuring the reproducibility and reliability of the research process.</p>
+<p><a id="features"></a></p>
+<h2 id="-features">✨ Features</h2>
+<ul>
+<li>
+<p><strong>Dual Structure Modes</strong> - <code>exploratory</code> (lightweight, script-first for rapid iteration) and <code>structured</code> (layered package for production pipelines)</p>
+</li>
+<li>
+<p><strong>Multi-Language Support</strong> - Choose <code>python</code>, <code>julia</code>, or <code>both</code> (hybrid with Arrow/Parquet interchange)</p>
+</li>
+<li>
+<p><strong>Standardized Project Structure</strong> - Conforms to best practices for modern scientific computing projects</p>
+</li>
+<li>
+<p><strong>Reproducible Experimental Environment</strong> - Built-in environment management and dependency locking mechanisms</p>
+</li>
+<li>
+<p><strong>Integrated Documentation System</strong> - Preconfigured MkDocs documentation for showcasing research results</p>
+</li>
+<li>
+<p><strong>Testing and Quality Control</strong> - Built-in testing frameworks and code quality tools</p>
+</li>
+<li>
+<p><strong>Modern Package Management</strong> - <code>uv</code> for Python, <code>Pkg</code> for Julia, with separated <code>make</code> targets (<code>lint-py</code>/<code>lint-jl</code>, <code>data-py</code>/<code>data-jl</code>, etc.)</p>
+</li>
+</ul>
+<p><a id="quick-start"></a></p>
+<h2 id="-quick-start">🚀 Quick Start</h2>
+<h3 id="prerequisites">Prerequisites</h3>
+<ul>
+<li>Python 3.9 or higher</li>
+<li><a href="https://docs.astral.sh/uv/">uv</a> or <a href="https://pipx.pypa.io/stable/">pipx</a> (recommended for tool installation)</li>
+</ul>
+<h3 id="installation">Installation</h3>
+<p>This project is available on PyPI. As a cross-project tool, we recommend using uv or pipx for installation:</p>
+<pre class="astro-code astro-code-themes github-light-default github-dark-default" style="background-color:#ffffff;--shiki-dark-bg:#0d1117;color:#1f2328;--shiki-dark:#e6edf3; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6E7781;--shiki-dark:#8B949E"># Install using uv (recommended)</span></span>
+<span class="line"><span style="color:#953800;--shiki-dark:#FFA657">uv</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> tool</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> install</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> cookiecutter-scientific-research</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6E7781;--shiki-dark:#8B949E"># Or install using pipx</span></span>
+<span class="line"><span style="color:#953800;--shiki-dark:#FFA657">pipx</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> install</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> cookiecutter-scientific-research</span></span></code></pre>
+<h3 id="creating-a-new-project">Creating a New Project</h3>
+<p>After installation, simply run the following command and follow the prompts:</p>
+<pre class="astro-code astro-code-themes github-light-default github-dark-default" style="background-color:#ffffff;--shiki-dark-bg:#0d1117;color:#1f2328;--shiki-dark:#e6edf3; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#953800;--shiki-dark:#FFA657">ccsr</span></span></code></pre>
+<h3 id="initializing-the-project-environment">Initializing the Project Environment</h3>
+<p>After creating the project, navigate to the project directory and initialize the environment:</p>
+<pre class="astro-code astro-code-themes github-light-default github-dark-default" style="background-color:#ffffff;--shiki-dark-bg:#0d1117;color:#1f2328;--shiki-dark:#e6edf3; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#0550AE;--shiki-dark:#79C0FF">cd</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> your-project-name</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6E7781;--shiki-dark:#8B949E"># Use uv to manage dependencies (recommended)</span></span>
+<span class="line"><span style="color:#953800;--shiki-dark:#FFA657">uv</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> lock</span></span>
+<span class="line"><span style="color:#953800;--shiki-dark:#FFA657">uv</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> sync</span></span></code></pre>
+<p><a id="project-structure"></a></p>
+<h2 id="-project-structure">📂 Project Structure</h2>
+<p>The generated project follows the directory structure below, with each section having a clear responsibility:</p>
+<pre class="astro-code astro-code-themes github-light-default github-dark-default" style="background-color:#ffffff;--shiki-dark-bg:#0d1117;color:#1f2328;--shiki-dark:#e6edf3; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>├── LICENSE            &lt;- Project license</span></span>
+<span class="line"><span>├── Makefile           &lt;- Makefile with common commands</span></span>
+<span class="line"><span>├── README.md          &lt;- Project documentation</span></span>
+<span class="line"><span>├── pyproject.toml     &lt;- Project configuration and dependency management</span></span>
+<span class="line"><span>│</span></span>
+<span class="line"><span>├── data               &lt;- Data directory</span></span>
+<span class="line"><span>│   ├── external       &lt;- Third-party data</span></span>
+<span class="line"><span>│   ├── interim        &lt;- Intermediate processed data</span></span>
+<span class="line"><span>│   ├── processed      &lt;- Final analysis datasets</span></span>
+<span class="line"><span>│   └── raw            &lt;- Original data (read-only)</span></span>
+<span class="line"><span>│</span></span>
+<span class="line"><span>├── {{ cookiecutter.module_name }}  &lt;- Project source code (structured: 5 modules)</span></span>
+<span class="line"><span>│   ├── __init__.py           &lt;- Package initialization file</span></span>
+<span class="line"><span>│   ├── config.py             &lt;- Configuration parameter management</span></span>
+<span class="line"><span>│   ├── data                  &lt;- Data acquisition and loading</span></span>
+<span class="line"><span>│   │   ├── __init__.py</span></span>
+<span class="line"><span>│   │   └── make_dataset.py   &lt;- raw → processed (Parquet)</span></span>
+<span class="line"><span>│   ├── features              &lt;- Feature engineering</span></span>
+<span class="line"><span>│   │   ├── __init__.py</span></span>
+<span class="line"><span>│   │   └── build_features.py &lt;- Features from processed data</span></span>
+<span class="line"><span>│   ├── models                &lt;- Model training</span></span>
+<span class="line"><span>│   │   ├── __init__.py</span></span>
+<span class="line"><span>│   │   └── train_model.py    &lt;- Train &amp; persist model</span></span>
+<span class="line"><span>│   ├── visualization         &lt;- Data visualization</span></span>
+<span class="line"><span>│   │   ├── __init__.py</span></span>
+<span class="line"><span>│   │   └── visualize.py      &lt;- Plots to reports/figures</span></span>
+<span class="line"><span>│   └── utils                 &lt;- Utility functions</span></span>
+<span class="line"><span>│       ├── __init__.py</span></span>
+<span class="line"><span>│       └── tools.py</span></span>
+<span class="line"><span>│</span></span>
+<span class="line"><span>├── notebooks          &lt;- Jupyter/Marimo notebooks</span></span>
+<span class="line"><span>│                         (Naming convention: number-creator-description)</span></span>
+<span class="line"><span>│</span></span>
+<span class="line"><span>├── docs               &lt;- Project documentation (MkDocs)</span></span>
+<span class="line"><span>│</span></span>
+<span class="line"><span>├── references         &lt;- Reference materials and literature</span></span>
+<span class="line"><span>│</span></span>
+<span class="line"><span>├── reports            &lt;- Analysis reports and results</span></span>
+<span class="line"><span>│   ├── figures        &lt;- Generated charts</span></span>
+<span class="line"><span>│   └── logs           &lt;- Experiment logs</span></span>
+<span class="line"><span>│</span></span>
+<span class="line"><span>└── tests              &lt;- Test directory</span></span></code></pre>
+<blockquote>
+<p><strong>Two modes:</strong> <code>structured</code> keeps the full tree above; <code>exploratory</code> keeps only <code>{{module}}/config.py</code> + <code>utils</code> + flat <code>scripts/</code> (Python) or <code>src/config.jl</code>+<code>utils.jl</code>+<code>scripts/</code> (Julia). With <code>project_language=julia</code> you get <code>Project.toml</code>+<code>src/</code> instead of <code>pyproject.toml</code>+<code>{{module}}/</code>; with <code>both</code> you get both trees and Arrow/Feather as interchange (<code>data/interim/*.arrow</code>). <code>make</code> targets are separated: <code>lint</code>/<code>lint-py</code> vs <code>lint-jl</code>, <code>data</code>/<code>data-py</code> vs <code>data-jl</code>, <code>create_environment</code> vs <code>create_environment-jl</code>, etc.</p>
+</blockquote>
+<p><a id="development-guide"></a></p>
+<h2 id="-development-guide">🔧 Development Guide</h2>
+<h3 id="package-management-and-building">Package Management and Building</h3>
+<p>This project uses <code>flit_core</code> as the build backend, supporting modern Python package management. To build distribution packages:</p>
+<pre class="astro-code astro-code-themes github-light-default github-dark-default" style="background-color:#ffffff;--shiki-dark-bg:#0d1117;color:#1f2328;--shiki-dark:#e6edf3; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6E7781;--shiki-dark:#8B949E"># Install build dependencies</span></span>
+<span class="line"><span style="color:#953800;--shiki-dark:#FFA657">uv</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> lock</span></span>
+<span class="line"><span style="color:#6E7781;--shiki-dark:#8B949E"># Install all optional dependencies</span></span>
+<span class="line"><span style="color:#953800;--shiki-dark:#FFA657">uv</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> sync</span><span style="color:#0550AE;--shiki-dark:#79C0FF"> --all-extras</span></span>
+<span class="line"><span style="color:#6E7781;--shiki-dark:#8B949E"># Or install specific dependency groups</span></span>
+<span class="line"><span style="color:#953800;--shiki-dark:#FFA657">uv</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> sync</span><span style="color:#0550AE;--shiki-dark:#79C0FF"> -e</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> dev</span><span style="color:#6E7781;--shiki-dark:#8B949E">    # Development dependencies</span></span>
+<span class="line"><span style="color:#953800;--shiki-dark:#FFA657">uv</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> sync</span><span style="color:#0550AE;--shiki-dark:#79C0FF"> -e</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> test</span><span style="color:#6E7781;--shiki-dark:#8B949E">   # Testing dependencies</span></span>
+<span class="line"><span style="color:#953800;--shiki-dark:#FFA657">uv</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> sync</span><span style="color:#0550AE;--shiki-dark:#79C0FF"> -e</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> docs</span><span style="color:#6E7781;--shiki-dark:#8B949E">   # Documentation dependencies</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6E7781;--shiki-dark:#8B949E"># Build distribution packages</span></span>
+<span class="line"><span style="color:#953800;--shiki-dark:#FFA657">uv</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> build</span></span></code></pre>
+<p>The built wheel files and source distribution packages will be saved in the <code>dist/</code> directory.</p>
+<h3 id="project-customization">Project Customization</h3>
+<p>During the template generation process, you can customize various aspects of the project according to prompts:</p>
+<ul>
+<li><strong>Project style</strong> - <code>exploratory</code> (flat <code>scripts/</code> + minimal <code>config/utils</code>) vs <code>structured</code> (full layered package)</li>
+<li><strong>Programming language</strong> - <code>python</code>, <code>julia</code>, or <code>both</code> (hybrid with <code>Project.toml</code> + <code>pyproject.toml</code>)</li>
+<li>Project name and module name</li>
+<li>Author information</li>
+<li>License type</li>
+<li>Dependency management method</li>
+<li>Test framework selection</li>
+<li>Notebook and linting choices</li>
+<li>And more</li>
+</ul>
+<blockquote>
+<p><code>structured</code> now uses a slimmed 5-module scaffold (<code>data/features/models/visualization/utils</code>) — <code>make_dataset.py</code> / <code>build_features.py</code> / <code>train_model.py</code> / <code>visualize.py</code> each expose <code>def main(...)</code> for testable pipelines; <code>exploratory</code> keeps only <code>config.py</code> + <code>utils</code> (+ <code>scripts/01_*.py</code> linear scripts) for fast iteration. For Julia, <code>.jl</code> scaffold mirrors Python under <code>src/</code> (<code>make_dataset.jl</code> etc.) and <code>Project.toml</code> is committed (like <code>uv.lock</code>) for reproducibility. <code>cross_language.*</code> is only kept for <code>both</code>.</p>
+</blockquote>
+<p><a id="acknowledgements"></a></p>
+<h2 id="-acknowledgements">🙏 Acknowledgements</h2>
+<p>This project is modified from <a href="https://github.com/drivendataorg/cookiecutter-data-science">cookiecutter-data-science</a>, special thanks to the DrivenData team for providing the excellent template and inspiration. The project has been customized for scientific research scenarios on the original basis, including tool chain optimization, workflow adjustments, and documentation structure optimization.</p>
+<p><a id="license"></a></p>
+<h2 id="-license">📄 License</h2>
+<p>This project is licensed under the MIT License - see the <a href="https://github.com/Vncntvx/cookiecutter-scientific-research/blob/master/LICENSE">LICENSE</a> file for details.</p>
+</article><div class="comments" data-comment-language="en" data-comment-title="cookiecutter-scientific-research | Wenjie Xu"></div><script type="module">document.querySelectorAll(`.comments`).forEach(e=>{let t=document.createElement(`script`),n={src:`https://giscus.app/client.js`,"data-repo":`Vncntvx/BlogComments`,"data-repo-id":`R_kgDOMFTH3A`,"data-category":`Announcements`,"data-category-id":`DIC_kwDOMFTH3M4Cf4dF`,"data-mapping":`specific`,"data-term":e.dataset.commentTitle??``,"data-strict":`1`,"data-reactions-enabled":`1`,"data-emit-metadata":`0`,"data-input-position":`bottom`,"data-theme":document.documentElement.dataset.theme??`light`,"data-lang":e.dataset.commentLanguage??`en`,crossorigin:`anonymous`,async:`true`};Object.entries(n).forEach(([e,n])=>t.setAttribute(e,n)),e.append(t),document.addEventListener(`theme-change`,()=>{e.querySelector(`iframe.giscus-frame`)?.contentWindow?.postMessage({giscus:{setConfig:{theme:document.documentElement.dataset.theme??`light`}}},`https://giscus.app`)})});</script></main><footer class="site-footer"><div class="container footer-inner"><span>© 2023–2026 Wenjie Xu</span><span>All rights reserved</span><span>Powered by <a href="https://astro.build/">Astro</a></span><span>Last updated <time datetime="2025-12-01T00:00:00.000Z">Dec 1, 2025</time></span><a href="#top">Back to top</a></div></footer></div></body></html>

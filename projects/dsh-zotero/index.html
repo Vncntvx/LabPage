@@ -1,0 +1,192 @@
+<!DOCTYPE html><html lang="en" id="top"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="generator" content="Astro v7.3.8"><meta name="description" content="Local Zotero plugin for DeepSeek Harness to search papers, read full-text PDFs and notes, and trace source citations."><meta name="author" content="Wenjie Xu"><link rel="canonical" href="https://lab.wenjiexu.site/projects/dsh-zotero/"><link rel="alternate" hreflang="en" href="https://lab.wenjiexu.site/projects/dsh-zotero/"><link rel="alternate" hreflang="zh-CN" href="https://lab.wenjiexu.site/zh-CN/projects/dsh-zotero/"><link rel="alternate" hreflang="x-default" href="https://lab.wenjiexu.site/projects/dsh-zotero/"><link rel="alternate" type="application/rss+xml" title="Wenjie Xu — News" href="https://lab.wenjiexu.site/feed.xml"><link rel="icon" href="/assets/img/favicon.ico"><link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png"><meta property="og:title" content="dsh-zotero | Wenjie Xu"><meta property="og:site_name" content="Wenjie Xu"><meta property="og:description" content="Local Zotero plugin for DeepSeek Harness to search papers, read full-text PDFs and notes, and trace source citations."><meta property="og:url" content="https://lab.wenjiexu.site/projects/dsh-zotero/"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:image" content="https://lab.wenjiexu.site/assets/img/og-en.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="dsh-zotero | Wenjie Xu"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="dsh-zotero | Wenjie Xu"><meta name="twitter:description" content="Local Zotero plugin for DeepSeek Harness to search papers, read full-text PDFs and notes, and trace source citations."><meta name="twitter:image" content="https://lab.wenjiexu.site/assets/img/og-en.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"dsh-zotero","description":"Local Zotero plugin for DeepSeek Harness to search papers, read full-text PDFs and notes, and trace source citations.","url":"https://lab.wenjiexu.site/projects/dsh-zotero/","inLanguage":"en","image":"https://lab.wenjiexu.site/assets/img/og-en.png","author":{"@type":"Person","name":"Wenjie Xu","url":"https://lab.wenjiexu.site/","sameAs":["https://github.com/Vncntvx","https://orcid.org/0000-0002-7778-0450","https://scholar.google.com/citations?user=eWTidmsAAAAJ","https://www.researchgate.net/profile/Wenjie-Xu-19"]}}</script><title>dsh-zotero | Wenjie Xu</title><script>
+  (() => {
+    const root = document.documentElement;
+    const media = matchMedia("(prefers-color-scheme: dark)");
+    let preference = "system";
+    try {
+      const saved = localStorage.getItem("theme");
+      if (["light", "dark", "system"].includes(saved)) preference = saved;
+    } catch {}
+    const apply = () => {
+      const transitioning = root.dataset.theme !== undefined;
+      if (transitioning) {
+        root.classList.add("theme-transition");
+        window.setTimeout(() => root.classList.remove("theme-transition"), 250);
+      }
+      root.dataset.themeSetting = preference;
+      root.dataset.theme = preference === "system" ? (media.matches ? "dark" : "light") : preference;
+      document.dispatchEvent(new Event("theme-change"));
+    };
+    apply();
+    media.addEventListener("change", apply);
+    window.addEventListener("storage", (event) => {
+      if (event.key === "theme") {
+        preference = ["light", "dark"].includes(event.newValue) ? event.newValue : "system";
+        apply();
+      }
+    });
+    document.addEventListener("theme-request", (event) => {
+      const requested = event instanceof CustomEvent ? event.detail : "system";
+      preference = ["light", "dark", "system"].includes(requested) ? requested : "system";
+      try {
+        localStorage.setItem("theme", preference);
+      } catch {}
+      apply();
+    });
+  })();
+</script><link rel="stylesheet" href="/_astro/BaseLayout.DdgeAcCT.css"></head><body><a class="skip-link" href="#main-content">Skip to content</a><div class="page-shell"><header class="site-header"><div class="container header-inner"><a class="site-name" href="/">Wenjie Xu</a><details class="navigation" open><summary class="nav-toggle" aria-label="Toggle navigation"><span class="sr-only">Toggle navigation</span><svg class="nav-toggle-icon icon-menu" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg><svg class="nav-toggle-icon icon-close" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg></summary><nav aria-label="Primary navigation"><a href="/">About</a><a href="/publications/">Publications</a><a href="/projects/">Projects</a><a href="/teaching/">Teaching</a><div class="nav-dropdown" data-nav-dropdown><button type="button" class="nav-dropdown-toggle" aria-haspopup="menu" aria-expanded="false"><span>More</span><svg class="dropdown-caret" viewBox="0 0 10 6" aria-hidden="true" focusable="false"><path d="m1 1 4 4 4-4"></path></svg></button><ul class="nav-dropdown-menu" hidden><li><a href="/cv/">CV</a></li></ul></div><button class="search-button" type="button" data-search-open aria-label="Search" title="Search"><svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m16 16 5 5"></path></svg><span class="search-label">Search</span></button><div class="header-controls"><div class="language-switcher" data-language-switcher><button class="language-toggle" type="button" aria-label="Language" aria-haspopup="menu" aria-expanded="false"><svg class="control-icon lang-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3a14 14 0 0 1 0 18"></path><path d="M12 3a14 14 0 0 0 0 18"></path></svg><span class="language-label">English</span></button><ul class="language-menu" hidden><li><a href="/projects/dsh-zotero/" lang="en" hreflang="en" aria-current="true">English</a></li><li><a href="/zh-CN/projects/dsh-zotero/" lang="zh-CN" hreflang="zh-CN">中文</a></li></ul></div><script type="module">var e=document.querySelector(`[data-language-switcher]`),t=e?.querySelector(`.language-toggle`),n=e?.querySelector(`.language-menu`),r=r=>{e&&t&&n&&(e.dataset.open=r?`true`:`false`,t.setAttribute(`aria-expanded`,String(r)),n.hidden=!r)};t?.addEventListener(`click`,()=>r(e?.dataset.open!==`true`)),document.addEventListener(`click`,t=>{e?.dataset.open===`true`&&t.target instanceof Node&&!e.contains(t.target)&&r(!1)}),document.addEventListener(`keydown`,n=>{n.key===`Escape`&&e?.dataset.open===`true`&&(r(!1),t?.focus())}),window.addEventListener(`resize`,()=>{e?.dataset.open===`true`&&r(!1)}),document.querySelectorAll(`.language-menu a`).forEach(e=>{e.addEventListener(`click`,()=>{e.hash=window.location.hash,e.search=window.location.search})});</script><button class="theme-control" type="button" data-theme-button hidden aria-label="Change theme" title="Change theme"><svg class="control-icon theme-icon" data-theme-icon="light" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"></path></svg><svg class="control-icon theme-icon" data-theme-icon="dark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446A9 9 0 1 1 12 3z"></path></svg><span class="theme-label">Change theme</span></button><script type="module">var e=document.querySelector(`[data-theme-button]`),t=()=>{e&&(e.dataset.themeSetting=document.documentElement.dataset.themeSetting??`system`)};e?.addEventListener(`click`,()=>{e.classList.remove(`switching`),e.offsetWidth,e.classList.add(`switching`);let t=document.documentElement.dataset.theme??`light`;document.dispatchEvent(new CustomEvent(`theme-request`,{detail:t===`dark`?`light`:`dark`}))}),t(),e&&(e.hidden=!1),document.addEventListener(`theme-change`,t);</script></div></nav></details></div><progress class="reading-progress" data-reading-progress max="100" value="0" aria-label="Reading progress"></progress><dialog class="search-dialog" data-search-dialog data-locale="en" aria-labelledby="search-title"><div class="search-dialog-inner"><header class="search-dialog-header"><h2 id="search-title">Type to start searching</h2><button class="dialog-close" type="button" data-search-close aria-label="to close"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m6 6 12 12M18 6 6 18"></path></svg></button></header><label class="search-input-label"><span class="sr-only">Type to start searching</span><svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m16 16 5 5"></path></svg><input type="search" data-site-search-input autocomplete="off" placeholder="Type to start searching"><kbd>Esc</kbd></label><p class="search-result-status" data-search-status data-count-one="{count} result" data-count-other="{count} results" data-count-locale="en" data-load-failed="Search index could not be loaded." aria-live="polite"></p><div class="search-results-shell"><ul class="search-results" data-search-results role="listbox" aria-label="Type to start searching"></ul><p class="empty-state" data-search-empty="true" hidden>No matching results.</p></div><footer class="search-dialog-footer" aria-label="Type to start searching"><span><kbd>↵</kbd>to select</span><span><kbd>↑</kbd><kbd>↓</kbd>to navigate</span><span><kbd>Esc</kbd>to close</span></footer></div></dialog><script type="module" src="/_astro/SearchModal.astro_astro_type_script_index_0_lang.CgoGCpiw.js"></script></header><script type="module">var e=document.querySelector(`.navigation`),t=matchMedia(`(min-width: 768px)`),n=()=>{e&&(e.open=t.matches)};n(),t.addEventListener(`change`,n);var r=document.querySelector(`[data-reading-progress]`),i=()=>{if(!r)return;let e=document.documentElement.scrollHeight-window.innerHeight;r.value=e>0?window.scrollY/e*100:0};i(),window.addEventListener(`scroll`,i,{passive:!0}),window.addEventListener(`resize`,i);var a=document.querySelectorAll(`[data-nav-dropdown]`),o=(e,{focus:t=!1}={})=>{if(e.dataset.open!==`true`)return!1;let n=e.querySelector(`.nav-dropdown-toggle`),r=e.querySelector(`.nav-dropdown-menu`);return e.dataset.open=`false`,n?.setAttribute(`aria-expanded`,`false`),r&&(r.hidden=!0),t&&n?.focus(),!0};a.forEach(e=>{let n=e.querySelector(`.nav-dropdown-toggle`),r=e.querySelector(`.nav-dropdown-menu`),i,a=t=>{i&&=(window.clearTimeout(i),void 0),e.dataset.open=t?`true`:`false`,n?.setAttribute(`aria-expanded`,String(t)),r&&(r.hidden=!t)};n?.addEventListener(`click`,t=>{t.stopPropagation(),a(e.dataset.open!==`true`)}),e.addEventListener(`mouseenter`,()=>{t.matches&&a(!0)}),e.addEventListener(`mouseleave`,()=>{t.matches&&(i=window.setTimeout(()=>a(!1),150))})}),document.addEventListener(`click`,n=>{a.forEach(e=>{n.target instanceof Node&&!e.contains(n.target)&&o(e)}),!t.matches&&e?.open&&n.target instanceof Node&&!e.contains(n.target)&&(e.open=!1)}),window.addEventListener(`resize`,()=>{a.forEach(e=>o(e))}),document.addEventListener(`keydown`,n=>{if(n.key!==`Escape`)return;let r=!1;a.forEach(e=>{o(e,{focus:!0})&&(r=!0)}),!r&&!t.matches&&e?.open&&(e.open=!1,e.querySelector(`summary`)?.focus())});</script><main id="main-content" class="container" tabindex="-1"><header class="page-title"><h1>dsh-zotero</h1></header><article class="prose"><div align="center">
+<h1 id="dsh-zotero">dsh-zotero</h1>
+<p><img
+src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=500&size=18&pause=2000&color=CC2936&center=true&vCenter=true&width=760&lines=%3E+Search%2C+read%2C+and+cite+papers+from+local+Zotero."
+alt="dsh-zotero"
+/></p>
+<p align="center">
+  <a href="https://www.npmjs.com/package/dsh-zotero"><img src="https://img.shields.io/npm/v/dsh-zotero" alt="npm version" style="max-width:100%;"></a>
+  <a href="https://www.npmjs.com/package/dsh-zotero"><img src="https://img.shields.io/npm/dm/dsh-zotero" alt="npm downloads" style="max-width:100%;"></a>
+  <a href="https://www.npmjs.com/package/dsh-zotero"><img src="https://img.shields.io/npm/l/dsh-zotero" alt="license" style="max-width:100%;"></a>
+  <a href="https://github.com/deepseek-ai/deepseek-harness/releases/tag/dsh-v0.2.1-alpha.2"><img src="https://img.shields.io/badge/dsh-0.2.1--alpha.2-blue" alt="dsh version" style="max-width:100%;"></a>
+  <a href="https://awesome-dsh-plugin.com"><img src="https://awesome-dsh-plugin.com/badge.svg" alt="Awesome DSH Plugin"></a>
+</p>
+</div>
+<p>dsh-zotero is a local Zotero plugin for DeepSeek Harness. It allows chat agents to search your library, read PDF full text and notes, extract relevant passages, and generate academic citations.</p>
+<p>All operations interact with the local Zotero API (<code>127.0.0.1:23119</code>); reads need no API key.</p>
+<h2 id="features">Features</h2>
+<ul>
+<li><strong>Library search and discovery</strong>: Search papers by title, author, year, tags, or full text, with support for collection scopes and recently added items.</li>
+<li><strong>PDF full text and note reading</strong>: Agents can read structured bibliographic metadata, abstracts, personal notes, and parse local PDF attachments directly.</li>
+<li><strong>Passage retrieval</strong>: Query papers to locate relevant passages across full text, notes, and annotations; PDF annotations retain original page numbers for direct verification.</li>
+<li><strong>Citation formatting and export</strong>: Generate formatted citations or export selected items as BibTeX, RIS, or CSL JSON for copying or downloading.</li>
+<li><strong>Dedicated conversation tab</strong>: Papers referenced in chat automatically sync to the “Zotero” tab at the top of the session, where you can inspect item details, review passages, or open local PDFs.</li>
+<li><strong>Two-way notes and organization</strong>: Allow the agent to draft reading notes, add tags, and organize collections, with plan review and interactive approval for every write operation.</li>
+</ul>
+<h2 id="install">Install</h2>
+<p>From npm (recommended):</p>
+<pre class="astro-code astro-code-themes github-light-default github-dark-default" style="background-color:#ffffff;--shiki-dark-bg:#0d1117;color:#1f2328;--shiki-dark:#e6edf3; overflow-x: auto;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#953800;--shiki-dark:#FFA657">dsh</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> plugin</span><span style="color:#0550AE;--shiki-dark:#79C0FF"> --profile</span><span style="color:#CF222E;--shiki-dark:#FF7B72"> &lt;</span><span style="color:#0A3069;--shiki-dark:#A5D6FF">nam</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">e</span><span style="color:#CF222E;--shiki-dark:#FF7B72">&gt;</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> add</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> dsh-zotero</span></span></code></pre>
+<p>From GitHub prebuilt branch:</p>
+<pre class="astro-code astro-code-themes github-light-default github-dark-default" style="background-color:#ffffff;--shiki-dark-bg:#0d1117;color:#1f2328;--shiki-dark:#e6edf3; overflow-x: auto;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#953800;--shiki-dark:#FFA657">dsh</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> plugin</span><span style="color:#0550AE;--shiki-dark:#79C0FF"> --profile</span><span style="color:#CF222E;--shiki-dark:#FF7B72"> &lt;</span><span style="color:#0A3069;--shiki-dark:#A5D6FF">nam</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">e</span><span style="color:#CF222E;--shiki-dark:#FF7B72">&gt;</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> add</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> github:Vncntvx/dsh-zotero#release</span></span></code></pre>
+<p>After installation, start a new session to use Zotero tools. The plugin provides a configuration page under <strong>Settings → Zotero</strong> to adjust API address, concurrency limits, and retrieval parameters.</p>
+<blockquote>
+<p>Note: Installing directly from the main source branch requires local compilation. Because pnpm blocks dependency builds by default, use the <code>#release</code> branch to skip local build setup.</p>
+</blockquote>
+<h2 id="prerequisites">Prerequisites</h2>
+<ol>
+<li>Zotero 7 or newer desktop app (writes require Zotero 10).</li>
+<li>Enable local API in Zotero: <strong>Settings → Advanced → check “Allow other applications on this computer to communicate with Zotero”</strong>.</li>
+</ol>
+<h2 id="usage-example">Usage example</h2>
+<p>The agent calls tools during conversation, and referenced papers update the Sources panel in real time:</p>
+<pre class="astro-code astro-code-themes github-light-default github-dark-default" style="background-color:#ffffff;--shiki-dark-bg:#0d1117;color:#1f2328;--shiki-dark:#e6edf3; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>User: Find papers about Risk</span></span>
+<span class="line"><span>Agent → zotero_search(query: "Risk", itemTypes: ["journalArticle"])</span></span>
+<span class="line"><span>       5 matches; items populate the session's Zotero tab</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>User: What does the first one's abstract say?</span></span>
+<span class="line"><span>Agent → zotero_get(ref: "zotero://user/0/item/ABCD1234")</span></span>
+<span class="line"><span>       Returns metadata and full abstract</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>User: Find the methodology discussion in this paper</span></span>
+<span class="line"><span>Agent → zotero_retrieve(ref: "zotero://user/0/item/ABCD1234", query: "methodology",</span></span>
+<span class="line"><span>                        sources: ["annotation", "fulltext"])</span></span>
+<span class="line"><span>       Returns ranked passages with source tags (annotations include page numbers)</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>User: Export all three as BibTeX</span></span>
+<span class="line"><span>Agent → zotero_export(refs: ["zotero://user/0/item/ABCD1234",</span></span>
+<span class="line"><span>                             "zotero://user/0/item/EFGH5678",</span></span>
+<span class="line"><span>                             "zotero://user/0/item/IJKL9012"], format: "bibtex")</span></span>
+<span class="line"><span>       Generates BibTeX entries; copy or download directly in the UI</span></span></code></pre>
+<h2 id="tools">Tools</h2>
+<p>The plugin includes 8 read tools and 8 write tools. Write tools are disabled by default until <code>writeEnabled</code> is turned on in settings.</p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>zotero_search</code></td>
+<td>Search by title, author, year, or full text across libraries, collections, and tags</td>
+</tr>
+<tr>
+<td><code>zotero_browse</code></td>
+<td>Browse library hierarchy: collections tree, saved searches, and tags</td>
+</tr>
+<tr>
+<td><code>zotero_get</code></td>
+<td>Read structured metadata for an item, including abstract, notes, and attachment list</td>
+</tr>
+<tr>
+<td><code>zotero_children</code></td>
+<td>List child items, including standalone notes, PDF attachments, and annotations</td>
+</tr>
+<tr>
+<td><code>zotero_retrieve</code></td>
+<td>Query passages across full text, notes, and annotations (annotations retain page numbers)</td>
+</tr>
+<tr>
+<td><code>zotero_changes</code></td>
+<td>Check recently added, modified, or deleted items in the library</td>
+</tr>
+<tr>
+<td><code>zotero_attachment</code></td>
+<td>Resolve an item to its local PDF file path</td>
+</tr>
+<tr>
+<td><code>zotero_export</code></td>
+<td>Generate formatted citations or export BibTeX, RIS, and CSL JSON</td>
+</tr>
+</tbody>
+</table>
+<p>See the <a href="https://github.com/Vncntvx/dsh-zotero/blob/main/docs/tools.en.md">Tool reference</a> for complete parameter definitions of all 16 tools.</p>
+<h2 id="security-and-privacy">Security and privacy</h2>
+<ul>
+<li>Local requests: The plugin sends HTTP requests only to the local Zotero API (<code>http://127.0.0.1:23119/api</code>), without depending on Zotero cloud servers.</li>
+<li>Filesystem access: The plugin only checks the existence of local attachment files, executing no shell commands and running no background daemons.</li>
+<li>Write safety: Write tools are disabled by default. When enabled, any changes to your library present an approval card in the interface and require user confirmation before executing.</li>
+</ul>
+<h2 id="documentation">Documentation</h2>
+<table>
+<thead>
+<tr>
+<th>Document</th>
+<th>Covers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/Vncntvx/dsh-zotero/blob/main/docs/getting-started.en.md">Getting started</a></td>
+<td>Installation, prerequisites, and connection verification</td>
+</tr>
+<tr>
+<td><a href="https://github.com/Vncntvx/dsh-zotero/blob/main/docs/features.en.md">Features</a></td>
+<td>Sources panel, chat integration, and export workflows</td>
+</tr>
+<tr>
+<td><a href="https://github.com/Vncntvx/dsh-zotero/blob/main/docs/tools.en.md">Tool reference</a></td>
+<td>Parameters, return values, and error codes for all 16 tools</td>
+</tr>
+<tr>
+<td><a href="https://github.com/Vncntvx/dsh-zotero/blob/main/docs/configuration.en.md">Configuration reference</a></td>
+<td>35 configuration fields and default values</td>
+</tr>
+<tr>
+<td><a href="https://github.com/Vncntvx/dsh-zotero/blob/main/docs/architecture.en.md">Architecture</a></td>
+<td>Data flow, layer responsibilities, and design boundaries</td>
+</tr>
+<tr>
+<td><a href="https://github.com/Vncntvx/dsh-zotero/blob/main/docs/development.en.md">Development guide</a></td>
+<td>Build, test, local development, and release workflow</td>
+</tr>
+<tr>
+<td><a href="https://github.com/Vncntvx/dsh-zotero/blob/main/docs/scenarios.en.md">Scenarios</a></td>
+<td>Real-conversation acceptance cases and everyday usage prompts</td>
+</tr>
+<tr>
+<td><a href="https://github.com/Vncntvx/dsh-zotero/blob/main/docs/troubleshooting.en.md">Troubleshooting</a></td>
+<td>Common issues, diagnostic steps, and fixes</td>
+</tr>
+</tbody>
+</table>
+<h2 id="license">License</h2>
+<p><a href="https://github.com/Vncntvx/dsh-zotero/blob/main/LICENSE">MIT</a></p>
+</article><div class="comments" data-comment-language="en" data-comment-title="dsh-zotero | Wenjie Xu"></div><script type="module">document.querySelectorAll(`.comments`).forEach(e=>{let t=document.createElement(`script`),n={src:`https://giscus.app/client.js`,"data-repo":`Vncntvx/BlogComments`,"data-repo-id":`R_kgDOMFTH3A`,"data-category":`Announcements`,"data-category-id":`DIC_kwDOMFTH3M4Cf4dF`,"data-mapping":`specific`,"data-term":e.dataset.commentTitle??``,"data-strict":`1`,"data-reactions-enabled":`1`,"data-emit-metadata":`0`,"data-input-position":`bottom`,"data-theme":document.documentElement.dataset.theme??`light`,"data-lang":e.dataset.commentLanguage??`en`,crossorigin:`anonymous`,async:`true`};Object.entries(n).forEach(([e,n])=>t.setAttribute(e,n)),e.append(t),document.addEventListener(`theme-change`,()=>{e.querySelector(`iframe.giscus-frame`)?.contentWindow?.postMessage({giscus:{setConfig:{theme:document.documentElement.dataset.theme??`light`}}},`https://giscus.app`)})});</script></main><footer class="site-footer"><div class="container footer-inner"><span>© 2023–2026 Wenjie Xu</span><span>All rights reserved</span><span>Powered by <a href="https://astro.build/">Astro</a></span><span>Last updated <time datetime="2025-12-01T00:00:00.000Z">Dec 1, 2025</time></span><a href="#top">Back to top</a></div></footer></div></body></html>

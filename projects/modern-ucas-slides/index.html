@@ -1,0 +1,254 @@
+<!DOCTYPE html><html lang="en" id="top"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="generator" content="Astro v7.3.8"><meta name="description" content="A modern academic presentation slides template for the University of Chinese Academy of Sciences (UCAS) powered by Typst and Touying."><meta name="author" content="Wenjie Xu"><link rel="canonical" href="https://lab.wenjiexu.site/projects/modern-ucas-slides/"><link rel="alternate" hreflang="en" href="https://lab.wenjiexu.site/projects/modern-ucas-slides/"><link rel="alternate" hreflang="zh-CN" href="https://lab.wenjiexu.site/zh-CN/projects/modern-ucas-slides/"><link rel="alternate" hreflang="x-default" href="https://lab.wenjiexu.site/projects/modern-ucas-slides/"><link rel="alternate" type="application/rss+xml" title="Wenjie Xu — News" href="https://lab.wenjiexu.site/feed.xml"><link rel="icon" href="/assets/img/favicon.ico"><link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png"><meta property="og:title" content="modern-ucas-slides | Wenjie Xu"><meta property="og:site_name" content="Wenjie Xu"><meta property="og:description" content="A modern academic presentation slides template for the University of Chinese Academy of Sciences (UCAS) powered by Typst and Touying."><meta property="og:url" content="https://lab.wenjiexu.site/projects/modern-ucas-slides/"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:image" content="https://lab.wenjiexu.site/assets/img/og-en.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="modern-ucas-slides | Wenjie Xu"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="modern-ucas-slides | Wenjie Xu"><meta name="twitter:description" content="A modern academic presentation slides template for the University of Chinese Academy of Sciences (UCAS) powered by Typst and Touying."><meta name="twitter:image" content="https://lab.wenjiexu.site/assets/img/og-en.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"modern-ucas-slides","description":"A modern academic presentation slides template for the University of Chinese Academy of Sciences (UCAS) powered by Typst and Touying.","url":"https://lab.wenjiexu.site/projects/modern-ucas-slides/","inLanguage":"en","image":"https://lab.wenjiexu.site/assets/img/og-en.png","author":{"@type":"Person","name":"Wenjie Xu","url":"https://lab.wenjiexu.site/","sameAs":["https://github.com/Vncntvx","https://orcid.org/0000-0002-7778-0450","https://scholar.google.com/citations?user=eWTidmsAAAAJ","https://www.researchgate.net/profile/Wenjie-Xu-19"]}}</script><title>modern-ucas-slides | Wenjie Xu</title><script>
+  (() => {
+    const root = document.documentElement;
+    const media = matchMedia("(prefers-color-scheme: dark)");
+    let preference = "system";
+    try {
+      const saved = localStorage.getItem("theme");
+      if (["light", "dark", "system"].includes(saved)) preference = saved;
+    } catch {}
+    const apply = () => {
+      const transitioning = root.dataset.theme !== undefined;
+      if (transitioning) {
+        root.classList.add("theme-transition");
+        window.setTimeout(() => root.classList.remove("theme-transition"), 250);
+      }
+      root.dataset.themeSetting = preference;
+      root.dataset.theme = preference === "system" ? (media.matches ? "dark" : "light") : preference;
+      document.dispatchEvent(new Event("theme-change"));
+    };
+    apply();
+    media.addEventListener("change", apply);
+    window.addEventListener("storage", (event) => {
+      if (event.key === "theme") {
+        preference = ["light", "dark"].includes(event.newValue) ? event.newValue : "system";
+        apply();
+      }
+    });
+    document.addEventListener("theme-request", (event) => {
+      const requested = event instanceof CustomEvent ? event.detail : "system";
+      preference = ["light", "dark", "system"].includes(requested) ? requested : "system";
+      try {
+        localStorage.setItem("theme", preference);
+      } catch {}
+      apply();
+    });
+  })();
+</script><link rel="stylesheet" href="/_astro/BaseLayout.DdgeAcCT.css"></head><body><a class="skip-link" href="#main-content">Skip to content</a><div class="page-shell"><header class="site-header"><div class="container header-inner"><a class="site-name" href="/">Wenjie Xu</a><details class="navigation" open><summary class="nav-toggle" aria-label="Toggle navigation"><span class="sr-only">Toggle navigation</span><svg class="nav-toggle-icon icon-menu" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg><svg class="nav-toggle-icon icon-close" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg></summary><nav aria-label="Primary navigation"><a href="/">About</a><a href="/publications/">Publications</a><a href="/projects/">Projects</a><a href="/teaching/">Teaching</a><div class="nav-dropdown" data-nav-dropdown><button type="button" class="nav-dropdown-toggle" aria-haspopup="menu" aria-expanded="false"><span>More</span><svg class="dropdown-caret" viewBox="0 0 10 6" aria-hidden="true" focusable="false"><path d="m1 1 4 4 4-4"></path></svg></button><ul class="nav-dropdown-menu" hidden><li><a href="/cv/">CV</a></li></ul></div><button class="search-button" type="button" data-search-open aria-label="Search" title="Search"><svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m16 16 5 5"></path></svg><span class="search-label">Search</span></button><div class="header-controls"><div class="language-switcher" data-language-switcher><button class="language-toggle" type="button" aria-label="Language" aria-haspopup="menu" aria-expanded="false"><svg class="control-icon lang-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3a14 14 0 0 1 0 18"></path><path d="M12 3a14 14 0 0 0 0 18"></path></svg><span class="language-label">English</span></button><ul class="language-menu" hidden><li><a href="/projects/modern-ucas-slides/" lang="en" hreflang="en" aria-current="true">English</a></li><li><a href="/zh-CN/projects/modern-ucas-slides/" lang="zh-CN" hreflang="zh-CN">中文</a></li></ul></div><script type="module">var e=document.querySelector(`[data-language-switcher]`),t=e?.querySelector(`.language-toggle`),n=e?.querySelector(`.language-menu`),r=r=>{e&&t&&n&&(e.dataset.open=r?`true`:`false`,t.setAttribute(`aria-expanded`,String(r)),n.hidden=!r)};t?.addEventListener(`click`,()=>r(e?.dataset.open!==`true`)),document.addEventListener(`click`,t=>{e?.dataset.open===`true`&&t.target instanceof Node&&!e.contains(t.target)&&r(!1)}),document.addEventListener(`keydown`,n=>{n.key===`Escape`&&e?.dataset.open===`true`&&(r(!1),t?.focus())}),window.addEventListener(`resize`,()=>{e?.dataset.open===`true`&&r(!1)}),document.querySelectorAll(`.language-menu a`).forEach(e=>{e.addEventListener(`click`,()=>{e.hash=window.location.hash,e.search=window.location.search})});</script><button class="theme-control" type="button" data-theme-button hidden aria-label="Change theme" title="Change theme"><svg class="control-icon theme-icon" data-theme-icon="light" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"></path></svg><svg class="control-icon theme-icon" data-theme-icon="dark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446A9 9 0 1 1 12 3z"></path></svg><span class="theme-label">Change theme</span></button><script type="module">var e=document.querySelector(`[data-theme-button]`),t=()=>{e&&(e.dataset.themeSetting=document.documentElement.dataset.themeSetting??`system`)};e?.addEventListener(`click`,()=>{e.classList.remove(`switching`),e.offsetWidth,e.classList.add(`switching`);let t=document.documentElement.dataset.theme??`light`;document.dispatchEvent(new CustomEvent(`theme-request`,{detail:t===`dark`?`light`:`dark`}))}),t(),e&&(e.hidden=!1),document.addEventListener(`theme-change`,t);</script></div></nav></details></div><progress class="reading-progress" data-reading-progress max="100" value="0" aria-label="Reading progress"></progress><dialog class="search-dialog" data-search-dialog data-locale="en" aria-labelledby="search-title"><div class="search-dialog-inner"><header class="search-dialog-header"><h2 id="search-title">Type to start searching</h2><button class="dialog-close" type="button" data-search-close aria-label="to close"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m6 6 12 12M18 6 6 18"></path></svg></button></header><label class="search-input-label"><span class="sr-only">Type to start searching</span><svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m16 16 5 5"></path></svg><input type="search" data-site-search-input autocomplete="off" placeholder="Type to start searching"><kbd>Esc</kbd></label><p class="search-result-status" data-search-status data-count-one="{count} result" data-count-other="{count} results" data-count-locale="en" data-load-failed="Search index could not be loaded." aria-live="polite"></p><div class="search-results-shell"><ul class="search-results" data-search-results role="listbox" aria-label="Type to start searching"></ul><p class="empty-state" data-search-empty="true" hidden>No matching results.</p></div><footer class="search-dialog-footer" aria-label="Type to start searching"><span><kbd>↵</kbd>to select</span><span><kbd>↑</kbd><kbd>↓</kbd>to navigate</span><span><kbd>Esc</kbd>to close</span></footer></div></dialog><script type="module" src="/_astro/SearchModal.astro_astro_type_script_index_0_lang.CgoGCpiw.js"></script></header><script type="module">var e=document.querySelector(`.navigation`),t=matchMedia(`(min-width: 768px)`),n=()=>{e&&(e.open=t.matches)};n(),t.addEventListener(`change`,n);var r=document.querySelector(`[data-reading-progress]`),i=()=>{if(!r)return;let e=document.documentElement.scrollHeight-window.innerHeight;r.value=e>0?window.scrollY/e*100:0};i(),window.addEventListener(`scroll`,i,{passive:!0}),window.addEventListener(`resize`,i);var a=document.querySelectorAll(`[data-nav-dropdown]`),o=(e,{focus:t=!1}={})=>{if(e.dataset.open!==`true`)return!1;let n=e.querySelector(`.nav-dropdown-toggle`),r=e.querySelector(`.nav-dropdown-menu`);return e.dataset.open=`false`,n?.setAttribute(`aria-expanded`,`false`),r&&(r.hidden=!0),t&&n?.focus(),!0};a.forEach(e=>{let n=e.querySelector(`.nav-dropdown-toggle`),r=e.querySelector(`.nav-dropdown-menu`),i,a=t=>{i&&=(window.clearTimeout(i),void 0),e.dataset.open=t?`true`:`false`,n?.setAttribute(`aria-expanded`,String(t)),r&&(r.hidden=!t)};n?.addEventListener(`click`,t=>{t.stopPropagation(),a(e.dataset.open!==`true`)}),e.addEventListener(`mouseenter`,()=>{t.matches&&a(!0)}),e.addEventListener(`mouseleave`,()=>{t.matches&&(i=window.setTimeout(()=>a(!1),150))})}),document.addEventListener(`click`,n=>{a.forEach(e=>{n.target instanceof Node&&!e.contains(n.target)&&o(e)}),!t.matches&&e?.open&&n.target instanceof Node&&!e.contains(n.target)&&(e.open=!1)}),window.addEventListener(`resize`,()=>{a.forEach(e=>o(e))}),document.addEventListener(`keydown`,n=>{if(n.key!==`Escape`)return;let r=!1;a.forEach(e=>{o(e,{focus:!0})&&(r=!0)}),!r&&!t.matches&&e?.open&&(e.open=!1,e.querySelector(`summary`)?.focus())});</script><main id="main-content" class="container" tabindex="-1"><header class="page-title"><h1>modern-ucas-slides</h1></header><article class="prose"><h1 align="center">modern-ucas-slides</h1>
+<p align="center">
+  <a href="https://typst.app"><img src="https://img.shields.io/badge/Typst-0.15+-239dad.svg" alt="Typst"></a>
+  <a href="https://github.com/touying-typ/touying"><img src="https://img.shields.io/badge/Touying-0.8.0-blue.svg" alt="Touying"></a>
+  <a href="https://github.com/Vncntvx/modern-ucas-slides/blob/main/LICENSE"><img src="https://img.shields.io/github/license/Vncntvx/modern-ucas-slides?style=flat-square" alt="License"></a>
+</p>
+<p>A modern academic presentation slides template for the University of Chinese Academy of Sciences (UCAS), built with <strong><a href="https://typst.app/">Typst</a></strong> and <strong><a href="https://github.com/touying-typ/touying">Touying (0.8.0)</a></strong>.</p>
+<p>It ships three visual styles (<code>academic</code>, <code>minimal</code>, and <code>bold</code>), supports both <code>16:9</code> widescreen and <code>4:3</code> traditional projector aspect ratios, and includes structured academic blocks, theorem and proof environments, normalized three-line tables, and bibliography management.</p>
+<hr>
+<h2 id="features">Features</h2>
+<ul>
+<li><strong>Three dedicated theme styles</strong>:
+<ul>
+<li><code>academic</code> (Official Elegance · Default): A 1.5pt UCAS Blue accent rule at the top, section breadcrumb navigation, the official circular emblem in the upper-right corner, and a structured metadata footer with author, title, date, and page number. Suited to proposal reports, mid-term reviews, and degree defenses.</li>
+<li><code>minimal</code> (Clean &amp; Contemporary): A pure white layout with a compact chapter kicker at the top and a streamlined page number at the bottom, suited to seminars and international conference talks.</li>
+<li><code>bold</code> (Modern Tech): A colored reading-progress bar at the top, pill-shaped badge page numbers at the bottom, and full-bleed deep-blue section transition slides, suited to forward-looking lectures and technical deep dives.</li>
+</ul>
+</li>
+<li><strong>Aspect ratio support</strong>: Native support for <code>aspect-ratio: "16-9"</code> (default widescreen) and <code>"4-3"</code> (traditional projection), with page size and margins adapting automatically.</li>
+<li><strong>Structured block system</strong>: Standard blocks (<code>tblock</code>), example blocks (<code>exampleblock</code>), alert blocks (<code>alertblock</code>), and callout bars (<code>callout</code>), each with page-break protection.</li>
+<li><strong>Academic typesetting environments</strong>: Built-in theorem environments (<code>theorem</code>), proof environments (<code>proof</code>), unnumbered bottom footnotes (<code>blfootnote</code>), and normalized academic three-line tables.</li>
+<li><strong>Official vector emblems</strong>: The UCAS official horizontal and circular vector emblems (SVG) are built in, with support for custom overrides or hiding.</li>
+<li><strong>Bibliography integration</strong>: Supports BibTeX libraries and in-text <code>@key</code> citations.</li>
+</ul>
+<hr>
+<h2 id="quick-start">Quick Start</h2>
+<h3 id="1-install-typst">1. Install Typst</h3>
+<ul>
+<li><strong>macOS (Homebrew)</strong>:
+<pre class="astro-code astro-code-themes github-light-default github-dark-default" style="background-color:#ffffff;--shiki-dark-bg:#0d1117;color:#1f2328;--shiki-dark:#e6edf3; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#953800;--shiki-dark:#FFA657">brew</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> install</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> typst</span></span></code></pre>
+</li>
+<li><strong>Windows (winget)</strong>:
+<pre class="astro-code astro-code-themes github-light-default github-dark-default" style="background-color:#ffffff;--shiki-dark-bg:#0d1117;color:#1f2328;--shiki-dark:#e6edf3; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#953800;--shiki-dark:#FFA657">winget</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> install</span><span style="color:#0550AE;--shiki-dark:#79C0FF"> --id</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> Typst.Typst</span></span></code></pre>
+</li>
+<li><strong>Linux / other platforms</strong>:
+See the <a href="https://github.com/typst/typst/releases">official Typst installation guide</a>.</li>
+</ul>
+<h3 id="2-compile--preview">2. Compile &amp; Preview</h3>
+<p>You can use the project’s built-in Makefile targets:</p>
+<pre class="astro-code astro-code-themes github-light-default github-dark-default" style="background-color:#ffffff;--shiki-dark-bg:#0d1117;color:#1f2328;--shiki-dark:#e6edf3; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6E7781;--shiki-dark:#8B949E"># Compile to template/main.pdf</span></span>
+<span class="line"><span style="color:#953800;--shiki-dark:#FFA657">make</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> compile</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6E7781;--shiki-dark:#8B949E"># Watch files and hot-reload (re-render on save)</span></span>
+<span class="line"><span style="color:#953800;--shiki-dark:#FFA657">make</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> watch</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6E7781;--shiki-dark:#8B949E"># Compile and open the PDF in the system viewer</span></span>
+<span class="line"><span style="color:#953800;--shiki-dark:#FFA657">make</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> preview</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6E7781;--shiki-dark:#8B949E"># Normalize code formatting</span></span>
+<span class="line"><span style="color:#953800;--shiki-dark:#FFA657">make</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> format</span></span></code></pre>
+<p>You can also call the Typst CLI directly (note the <code>--root .</code> argument):</p>
+<pre class="astro-code astro-code-themes github-light-default github-dark-default" style="background-color:#ffffff;--shiki-dark-bg:#0d1117;color:#1f2328;--shiki-dark:#e6edf3; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6E7781;--shiki-dark:#8B949E"># Compile the main document</span></span>
+<span class="line"><span style="color:#953800;--shiki-dark:#FFA657">typst</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> compile</span><span style="color:#0550AE;--shiki-dark:#79C0FF"> --root</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> .</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> template/main.typ</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6E7781;--shiki-dark:#8B949E"># Watch for changes</span></span>
+<span class="line"><span style="color:#953800;--shiki-dark:#FFA657">typst</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> watch</span><span style="color:#0550AE;--shiki-dark:#79C0FF"> --root</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> .</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> template/main.typ</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6E7781;--shiki-dark:#8B949E"># Compile with the style overridden on the command line</span></span>
+<span class="line"><span style="color:#953800;--shiki-dark:#FFA657">typst</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> compile</span><span style="color:#0550AE;--shiki-dark:#79C0FF"> --root</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> .</span><span style="color:#0550AE;--shiki-dark:#79C0FF"> --input</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> style=minimal</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> template/main.typ</span></span></code></pre>
+<hr>
+<h2 id="project-structure">Project Structure</h2>
+<pre class="astro-code astro-code-themes github-light-default github-dark-default" style="background-color:#ffffff;--shiki-dark-bg:#0d1117;color:#1f2328;--shiki-dark:#e6edf3; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>modern-ucas-slides/</span></span>
+<span class="line"><span>├── typst.toml                 # Typst package manifest</span></span>
+<span class="line"><span>├── lib.typ                    # Template entry library (exports all themes and components)</span></span>
+<span class="line"><span>├── themes/                    # Theme style engine</span></span>
+<span class="line"><span>│   ├── colors.typ             # Theme palette</span></span>
+<span class="line"><span>│   ├── header.typ             # Header layout function</span></span>
+<span class="line"><span>│   ├── footer.typ             # Footer layout function</span></span>
+<span class="line"><span>│   ├── preamble.typ           # Page title area rendering</span></span>
+<span class="line"><span>│   ├── slide.typ              # Slide function and speaker-notes panel</span></span>
+<span class="line"><span>│   └── ucas.typ               # Theme initialization entry</span></span>
+<span class="line"><span>├── components/                # Page and typesetting components</span></span>
+<span class="line"><span>│   ├── logo.typ               # Emblem vector rendering function</span></span>
+<span class="line"><span>│   ├── cards.typ              # Cards and base blocks (tblock, exampleblock, alertblock)</span></span>
+<span class="line"><span>│   ├── theorems.typ           # Theorem and proof environments (theorem, proof)</span></span>
+<span class="line"><span>│   ├── callout.typ            # Callout bar (callout)</span></span>
+<span class="line"><span>│   ├── helpers.typ            # Text emphasis and bottom footnotes (alert, blfootnote, red, green)</span></span>
+<span class="line"><span>│   └── slides/                # Dedicated page components</span></span>
+<span class="line"><span>│       ├── title.typ          # Title slide</span></span>
+<span class="line"><span>│       ├── outline.typ        # Outline slide</span></span>
+<span class="line"><span>│       ├── section.typ        # Section transition slide</span></span>
+<span class="line"><span>│       └── ending.typ         # Closing slide</span></span>
+<span class="line"><span>├── assets/</span></span>
+<span class="line"><span>│   └── vi/                    # Official vector emblems (SVG)</span></span>
+<span class="line"><span>├── template/                  # Template example directory</span></span>
+<span class="line"><span>│   ├── main.typ               # Complete typesetting example and usage notes</span></span>
+<span class="line"><span>│   └── ref.bib                # BibTeX bibliography</span></span>
+<span class="line"><span>├── Makefile                   # Compile, watch, preview, and format build scripts</span></span>
+<span class="line"><span>├── build.sh                   # Shell build helper script</span></span>
+<span class="line"><span>├── .gitignore                 # Git ignore rules</span></span>
+<span class="line"><span>└── README.md                  # Project documentation</span></span></code></pre>
+<hr>
+<h2 id="configuration">Configuration</h2>
+<p>In <code>template/main.typ</code>, parameters are configured through <code>#show: ucas-theme.with(...)</code>:</p>
+<pre class="astro-code astro-code-themes github-light-default github-dark-default" style="background-color:#ffffff;--shiki-dark-bg:#0d1117;color:#1f2328;--shiki-dark:#e6edf3; overflow-x: auto;" tabindex="0" data-language="typst"><code><span class="line"><span style="color:#CF222E;--shiki-dark:#FF7B72">#import</span><span style="color:#0A3069;--shiki-dark:#A5D6FF"> "../lib.typ"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">: </span><span style="color:#CF222E;--shiki-dark:#FF7B72">*</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#CF222E;--shiki-dark:#FF7B72">#show</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">: ucas-theme</span><span style="color:#CF222E;--shiki-dark:#FF7B72">.</span><span style="color:#8250DF;--shiki-dark:#D2A8FF">with</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">(</span></span>
+<span class="line"><span style="color:#6E7781;--shiki-dark:#8B949E">  // 1. Style switch: "academic" (default) | "minimal" | "bold"</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">  style: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"academic"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">,</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6E7781;--shiki-dark:#8B949E">  // 2. Aspect ratio switch: "16-9" (default widescreen) | "4-3" (traditional projection)</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">  aspect-ratio: </span><span style="color:#0A3069;--shiki-dark:#A5D6FF">"16-9"</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">,</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6E7781;--shiki-dark:#8B949E">  // 3. Section transition slides: generate a transition slide for level-1 headings (default false)</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">  new-section-slide: </span><span style="color:#0550AE;--shiki-dark:#79C0FF">false</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">,</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6E7781;--shiki-dark:#8B949E">  // 4. Emblem configuration: uses the built-in vector emblem by default; pass a custom image or none</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">  logo: </span><span style="color:#CF222E;--shiki-dark:#FF7B72">auto</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">,</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6E7781;--shiki-dark:#8B949E">  // 5. Presentation metadata</span></span>
+<span class="line"><span style="color:#8250DF;--shiki-dark:#D2A8FF">  config-info</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">(</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">    title: [UCAS Academic Slides in Typst],</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">    short-title: [modern-ucas-slides],</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">    subtitle: [Template Usage and Typesetting Example],</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">    author: [Wenjie Xu],</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">    short-author: [Wenjie Xu],</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">    institution: [University of Chinese Academy of Sciences · School of Computer Science and Technology],</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">    date: datetime</span><span style="color:#CF222E;--shiki-dark:#FF7B72">.</span><span style="color:#8250DF;--shiki-dark:#D2A8FF">today</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">(),</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">  ),</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6E7781;--shiki-dark:#8B949E">// --------------------------------- Page calls --------------------------------- //</span></span>
+<span class="line"><span style="color:#8250DF;--shiki-dark:#D2A8FF">#title-slide</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">()    </span><span style="color:#6E7781;--shiki-dark:#8B949E">// Title slide</span></span>
+<span class="line"><span style="color:#8250DF;--shiki-dark:#D2A8FF">#outline-slide</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">()  </span><span style="color:#6E7781;--shiki-dark:#8B949E">// Outline slide</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#0550AE;--shiki-light-font-weight:bold;--shiki-dark:#79C0FF;--shiki-dark-font-weight:bold">= Chapter 1 Section Title</span></span>
+<span class="line"><span style="color:#8250DF;--shiki-dark:#D2A8FF">#slide</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">(title: [Page Title])[</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">  Page body content</span></span>
+<span class="line"><span style="color:#1F2328;--shiki-dark:#E6EDF3">]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8250DF;--shiki-dark:#D2A8FF">#ending-slide</span><span style="color:#1F2328;--shiki-dark:#E6EDF3">(title: [End of Presentation]) </span><span style="color:#6E7781;--shiki-dark:#8B949E">// Closing slide</span></span></code></pre>
+<hr>
+<h2 id="syntax-quick-reference">Syntax Quick Reference</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left">Feature</th>
+<th style="text-align: left">Example</th>
+<th style="text-align: left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left"><strong>Single-column slide</strong></td>
+<td style="text-align: left"><code>#slide(title: [Title])[Content]</code></td>
+<td style="text-align: left">Basic slide page</td>
+</tr>
+<tr>
+<td style="text-align: left"><strong>Multi-column layout</strong></td>
+<td style="text-align: left"><code>#slide(composer: (1fr, 1.2fr))[Left][Right]</code></td>
+<td style="text-align: left">Set column width ratios with <code>composer</code></td>
+</tr>
+<tr>
+<td style="text-align: left"><strong>Incremental reveal</strong></td>
+<td style="text-align: left"><code>#pause</code></td>
+<td style="text-align: left">Reveal elements step by step</td>
+</tr>
+<tr>
+<td style="text-align: left"><strong>Nested bullet list</strong></td>
+<td style="text-align: left"><code>- Level 1 item</code><br><code>  - Level 2 item</code><br><code>    - Level 3 item</code></td>
+<td style="text-align: left">Matches UCAS blue squares, dots, and dashes</td>
+</tr>
+<tr>
+<td style="text-align: left"><strong>Nested numbered list</strong></td>
+<td style="text-align: left"><code>+ Level 1 number</code><br><code>  + Level 2 number</code></td>
+<td style="text-align: left">Auto-incrementing numbers</td>
+</tr>
+<tr>
+<td style="text-align: left"><strong>Standard block</strong></td>
+<td style="text-align: left"><code>#tblock(title: [Title])[...]</code></td>
+<td style="text-align: left">Left accent bar with light gray background</td>
+</tr>
+<tr>
+<td style="text-align: left"><strong>Example block</strong></td>
+<td style="text-align: left"><code>#exampleblock(title: [Title])[...]</code></td>
+<td style="text-align: left">For cases and data display</td>
+</tr>
+<tr>
+<td style="text-align: left"><strong>Alert block</strong></td>
+<td style="text-align: left"><code>#alertblock(title: [Title])[...]</code></td>
+<td style="text-align: left">For edge cases and cautions</td>
+</tr>
+<tr>
+<td style="text-align: left"><strong>Callout bar</strong></td>
+<td style="text-align: left"><code>#callout(title: [Note])[...]</code></td>
+<td style="text-align: left">For summarizing points and hints</td>
+</tr>
+<tr>
+<td style="text-align: left"><strong>Theorem environment</strong></td>
+<td style="text-align: left"><code>#theorem(title: [Name])[...]</code></td>
+<td style="text-align: left">Theorem statement environment</td>
+</tr>
+<tr>
+<td style="text-align: left"><strong>Proof environment</strong></td>
+<td style="text-align: left"><code>#proof[...]</code></td>
+<td style="text-align: left">Derivation environment, with an automatic end-of-proof mark</td>
+</tr>
+<tr>
+<td style="text-align: left"><strong>Bottom footnote</strong></td>
+<td style="text-align: left"><code>#blfootnote[...]</code></td>
+<td style="text-align: left">Anchored to the slide bottom without disturbing the body layout</td>
+</tr>
+<tr>
+<td style="text-align: left"><strong>Bibliography citation</strong></td>
+<td style="text-align: left"><code>@key</code></td>
+<td style="text-align: left">Pulls the entry from <code>ref.bib</code> automatically</td>
+</tr>
+<tr>
+<td style="text-align: left"><strong>Bibliography list</strong></td>
+<td style="text-align: left"><code>#bibliography("ref.bib", title: none)</code></td>
+<td style="text-align: left">Generates the reference list automatically</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="license">License</h2>
+<p>This project is released under the <a href="https://github.com/Vncntvx/modern-ucas-slides/blob/main/LICENSE">MIT License</a>.</p>
+</article><div class="comments" data-comment-language="en" data-comment-title="modern-ucas-slides | Wenjie Xu"></div><script type="module">document.querySelectorAll(`.comments`).forEach(e=>{let t=document.createElement(`script`),n={src:`https://giscus.app/client.js`,"data-repo":`Vncntvx/BlogComments`,"data-repo-id":`R_kgDOMFTH3A`,"data-category":`Announcements`,"data-category-id":`DIC_kwDOMFTH3M4Cf4dF`,"data-mapping":`specific`,"data-term":e.dataset.commentTitle??``,"data-strict":`1`,"data-reactions-enabled":`1`,"data-emit-metadata":`0`,"data-input-position":`bottom`,"data-theme":document.documentElement.dataset.theme??`light`,"data-lang":e.dataset.commentLanguage??`en`,crossorigin:`anonymous`,async:`true`};Object.entries(n).forEach(([e,n])=>t.setAttribute(e,n)),e.append(t),document.addEventListener(`theme-change`,()=>{e.querySelector(`iframe.giscus-frame`)?.contentWindow?.postMessage({giscus:{setConfig:{theme:document.documentElement.dataset.theme??`light`}}},`https://giscus.app`)})});</script></main><footer class="site-footer"><div class="container footer-inner"><span>© 2023–2026 Wenjie Xu</span><span>All rights reserved</span><span>Powered by <a href="https://astro.build/">Astro</a></span><span>Last updated <time datetime="2025-12-01T00:00:00.000Z">Dec 1, 2025</time></span><a href="#top">Back to top</a></div></footer></div></body></html>
