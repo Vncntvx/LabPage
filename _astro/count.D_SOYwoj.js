@@ -1,1 +1,0 @@
-var e=new Map,t=t=>{let n=e.get(t);return n||(n=new Intl.PluralRules(t),e.set(t,n)),n},n=(e,n,r)=>(t(e).select(r)===`one`?n.one:n.other).replace(`{count}`,String(r));export{n as t};
