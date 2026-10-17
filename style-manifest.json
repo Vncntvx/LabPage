@@ -1,0 +1,85 @@
+{
+  "version": 1,
+  "pages": {
+    "/zh-CN/publications/": [
+      "/_astro/PageTitle.8WuyPC5_.css",
+      "/_astro/PublicationsView.Bj1ebL2n.css"
+    ],
+    "/zh-CN/": [
+      "/_astro/PageTitle.8WuyPC5_.css"
+    ],
+    "/zh-CN/404/": [
+      "/_astro/PageTitle.8WuyPC5_.css"
+    ],
+    "/zh-CN/projects/dsh-zotero/": [
+      "/_astro/PageTitle.8WuyPC5_.css"
+    ],
+    "/zh-CN/projects/": [
+      "/_astro/PageTitle.8WuyPC5_.css"
+    ],
+    "/zh-CN/projects/typush/": [
+      "/_astro/PageTitle.8WuyPC5_.css"
+    ],
+    "/zh-CN/projects/modern-ucas-thesis/": [
+      "/_astro/PageTitle.8WuyPC5_.css"
+    ],
+    "/zh-CN/projects/cookiecutter-scientific-research/": [
+      "/_astro/PageTitle.8WuyPC5_.css"
+    ],
+    "/zh-CN/projects/modern-ucas-slides/": [
+      "/_astro/PageTitle.8WuyPC5_.css"
+    ],
+    "/zh-CN/news/announcement_校长奖学金/": [
+      "/_astro/PageTitle.8WuyPC5_.css"
+    ],
+    "/zh-CN/news/": [
+      "/_astro/PageTitle.8WuyPC5_.css"
+    ],
+    "/zh-CN/news/announcement_优秀本科毕业论文/": [
+      "/_astro/PageTitle.8WuyPC5_.css"
+    ],
+    "/zh-CN/news/announcement_国家奖学金/": [
+      "/_astro/PageTitle.8WuyPC5_.css"
+    ],
+    "/publications/": [
+      "/_astro/PageTitle.8WuyPC5_.css",
+      "/_astro/PublicationsView.Bj1ebL2n.css"
+    ],
+    "/": [
+      "/_astro/PageTitle.8WuyPC5_.css"
+    ],
+    "/404.html": [
+      "/_astro/PageTitle.8WuyPC5_.css"
+    ],
+    "/projects/dsh-zotero/": [
+      "/_astro/PageTitle.8WuyPC5_.css"
+    ],
+    "/projects/": [
+      "/_astro/PageTitle.8WuyPC5_.css"
+    ],
+    "/projects/typush/": [
+      "/_astro/PageTitle.8WuyPC5_.css"
+    ],
+    "/projects/modern-ucas-thesis/": [
+      "/_astro/PageTitle.8WuyPC5_.css"
+    ],
+    "/projects/cookiecutter-scientific-research/": [
+      "/_astro/PageTitle.8WuyPC5_.css"
+    ],
+    "/projects/modern-ucas-slides/": [
+      "/_astro/PageTitle.8WuyPC5_.css"
+    ],
+    "/news/announcement_校长奖学金/": [
+      "/_astro/PageTitle.8WuyPC5_.css"
+    ],
+    "/news/": [
+      "/_astro/PageTitle.8WuyPC5_.css"
+    ],
+    "/news/announcement_优秀本科毕业论文/": [
+      "/_astro/PageTitle.8WuyPC5_.css"
+    ],
+    "/news/announcement_国家奖学金/": [
+      "/_astro/PageTitle.8WuyPC5_.css"
+    ]
+  }
+}
